@@ -1,0 +1,12 @@
+{
+    "name": "WhatsApp QR Scanner",
+    "short_name": "WhatsApp QR",
+    "description": "Sistema para escanear QR de WhatsApp",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": []
+}
+
+
