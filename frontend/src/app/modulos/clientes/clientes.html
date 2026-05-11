@@ -1,0 +1,921 @@
+<!-- CONTENEDOR CLIENTES - Mobile First -->
+<div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
+
+  <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 h-full">
+
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div class="mb-4 sm:mb-6 border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+        <div class="flex-1 w-full">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
+            <!-- Icono - Responsive -->
+            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md">
+              <i class="fas fa-users text-white text-lg sm:text-xl md:text-2xl"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <!-- Título - Responsive -->
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+                <i class="fas fa-chart-line text-[#aedd2b] text-lg sm:text-xl md:text-2xl"></i>
+                <span class="truncate">Gestión de Clientes</span>
+              </h2>
+              <!-- Descripción - Ocultar en móvil muy pequeño -->
+              <p class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2">
+                <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+                <span>Administración de clientes registrados en el sistema</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Botones - Lado a lado -->
+        <div class="flex flex-row w-full sm:w-auto gap-2">
+          <button
+            (click)="router.navigate(['/mapa-clientes'])"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Ver Mapa</span>
+          </button>
+          <button
+            (click)="abrirModalCliente()"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agregar Cliente</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- BARRA DE BÚSQUEDA -->
+      <div class="mt-4 sm:mt-6">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-search text-[#066699] text-sm sm:text-base"></i>
+          </div>
+          <input
+            type="text"
+            [(ngModel)]="terminoBusqueda"
+            (input)="filtrarClientes()"
+            placeholder="Buscar por nombre o documento..."
+            class="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg focus:outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)] transition-all duration-200">
+          <button
+            *ngIf="terminoBusqueda"
+            (click)="limpiarBusqueda()"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-[#6b7280] hover:text-[#dc3545] transition-colors duration-200">
+            <i class="fas fa-times-circle"></i>
+          </button>
+        </div>
+        <p *ngIf="terminoBusqueda && clientesFiltrados.length > 0" class="mt-2 text-xs sm:text-sm text-[#6b7280]">
+          <i class="fas fa-info-circle text-[#066699] mr-1"></i>
+          Mostrando {{ clientesFiltrados.length }} de {{ listaClientes.length }} cliente(s)
+        </p>
+        <p *ngIf="terminoBusqueda && clientesFiltrados.length === 0" class="mt-2 text-xs sm:text-sm text-red-600">
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          No se encontraron clientes que coincidan con "{{ terminoBusqueda }}"
+        </p>
+      </div>
+    </div>
+
+    <!-- TABLA CLIENTES PROFESIONAL - Mobile First (Solo Tabla) -->
+    <div class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white -webkit-overflow-scrolling-touch">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden">
+          <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
+        <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+          <tr>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">ID</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Documento</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Foto</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Cliente</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Dirección</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Teléfono</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Teléfono 2</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Estado</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Usuario</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Ruta</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Reg.</th>
+            <!-- Columnas del Fiador -->
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">Doc. Fiador</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">Foto Fiador</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">Fiador</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">Tel. Fiador</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">Dir. Fiador</th>
+            <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+
+          <!-- CARGANDO -->
+          <tr *ngIf="cargando">
+            <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3"></div>
+                <span class="text-[#02416d] text-sm sm:text-base font-semibold">Cargando clientes...</span>
+              </div>
+            </td>
+          </tr>
+
+          <!-- LISTA DE CLIENTES -->
+          <tr *ngFor="let cliente of clientesFiltrados" 
+              class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)]">
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
+              <span class="bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{ cliente.id_cliente }}</span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.documento }}</td>
+            
+            <!-- FOTO CLIENTE PROFESIONAL -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
+              <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                <div (click)="abrirModalFotoCliente(cliente)"
+                     class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border border-[#e5e7eb] bg-[#f8f8ec] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#066699] hover:scale-105 hover:shadow-md"
+                     title="Click para ampliar foto">
+                  <img *ngIf="cliente.foto_cliente" 
+                       [src]="environment.apiUrl + '/' + cliente.foto_cliente"
+                       class="w-full h-full object-cover rounded"
+                       onerror="this.src='assets/dist/img/documentos/foto.jpg'">
+                  <img *ngIf="!cliente.foto_cliente" 
+                       src="assets/dist/img/documentos/foto.jpg"
+                       class="w-full h-full object-cover rounded">
+                </div>
+                <button
+                  (click)="abrirModalDocumentos(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded bg-gradient-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
+                  <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
+                  <span class="hidden sm:inline">Doc</span>
+                </button>
+              </div>
+            </td>
+            
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+              <span class="font-semibold text-[#02416d] text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">{{ cliente.nombres }} {{ cliente.apellidos }}</span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[80px] sm:max-w-[120px] md:max-w-none" title="{{ cliente.direccion || '-' }}">{{ cliente.direccion || '-' }}</td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.telefono || '-' }}</td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.telefono2 || '-' }}</td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
+              <span [class]="cliente.activo ? 'text-green-600' : 'text-red-600'" class="font-semibold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                {{ cliente.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">{{ cliente.id_usuario || '-' }}</td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+              <span *ngIf="cliente.nombre_ruta" class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)] whitespace-nowrap">
+                {{ cliente.nombre_ruta }}
+              </span>
+              <span *ngIf="!cliente.nombre_ruta" class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                Sin ruta
+              </span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+              {{ cliente.fecha_registro || '-' }}
+            </td>
+            
+            <!-- Datos del Fiador -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.documento_fiador || '-' }}
+            </td>
+            
+            <!-- FOTO FIADOR PROFESIONAL -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
+              <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2" *ngIf="cliente.id_fiador">
+                <div (click)="abrirModalFotoFiador(cliente)"
+                     class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border-2 border-[#aedd2b] bg-[rgba(174,221,43,0.1)] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#9bc825] hover:scale-105 hover:shadow-md"
+                     title="Click para ampliar foto">
+                  <img *ngIf="cliente.foto_fiador" 
+                       [src]="environment.apiUrl + '/' + cliente.foto_fiador"
+                       class="w-full h-full object-cover rounded"
+                       onerror="this.src='assets/dist/img/documentos/foto.jpg'">
+                  <img *ngIf="!cliente.foto_fiador && cliente.id_fiador" 
+                       src="assets/dist/img/documentos/foto.jpg"
+                       class="w-full h-full object-cover rounded">
+                </div>
+                <button
+                  (click)="abrirModalDocumentosFiador(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded bg-gradient-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
+                  <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
+                  <span class="hidden sm:inline">Doc</span>
+                </button>
+              </div>
+              <span *ngIf="!cliente.id_fiador" class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">-</span>
+            </td>
+            
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[80px] sm:max-w-[120px] md:max-w-none" title="{{ cliente.nombre_completo_fiador || '-' }}">
+              {{ cliente.nombre_completo_fiador || '-' }}
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.telefono_fiador || '-' }}
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[80px] sm:max-w-[120px] md:max-w-none" title="{{ cliente.direccion_fiador || '-' }}">
+              {{ cliente.direccion_fiador || '-' }}
+            </td>
+            <!-- ACCIONES PROFESIONALES -->
+            <td class="px-0.5 sm:px-1 md:px-2 lg:px-3 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+              <div class="flex flex-col gap-0.5 sm:gap-1 md:gap-1.5">
+                <!-- Botón Editar (Todos los roles) -->
+                <button
+                  (click)="editarCliente(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                  Editar
+                </button>
+                <!-- Botones Activar/Inactivar -->
+                <button
+                  *ngIf="rolUsuario === 'admin' && cliente.activo"
+                  (click)="inactivarCliente(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#facc15] to-[#eab308] text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                  Inactivar
+                </button>
+                <button
+                  *ngIf="(rolUsuario === 'admin' || rolUsuario === 'cobrador') && !cliente.activo"
+                  (click)="activarCliente(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                  Activar
+                </button>
+                <!-- Botón Eliminar (Solo Administradores) -->
+                <button
+                  *ngIf="rolUsuario === 'admin'"
+                  (click)="eliminarCliente(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#dc3545] to-[#c82333] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- SIN REGISTROS -->
+          <tr *ngIf="!cargando && clientesFiltrados.length === 0 && !terminoBusqueda">
+            <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
+                <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay clientes registrados</span>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MODAL AGREGAR CLIENTE + FIADOR PROFESIONAL - Mobile First -->
+<div id="modalCliente"
+  class="modal-cliente-backdrop fixed inset-0 hidden items-center justify-center z-50 p-2 sm:p-4 bg-[rgba(2,65,109,0.75)] backdrop-blur-sm"
+  (click)="cerrarModalCliente()">
+
+  <div class="modal-cliente-container bg-white rounded-lg sm:rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] sm:max-h-[90vh] flex flex-col transform transition-all animate-scaleIn"
+       (click)="$event.stopPropagation()">
+
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div class="modal-cliente-header flex-shrink-0 bg-gradient-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-b-4 border-[#aedd2b] rounded-t-lg sm:rounded-t-xl shadow-lg">
+      <div class="flex items-center justify-between gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
+          <div class="w-10 h-10 sm:w-12 sm:h-14 md:w-14 md:h-14 bg-gradient-to-br from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.15)] rounded-lg sm:rounded-xl flex items-center justify-center border-2 border-[rgba(255,255,255,0.3)] shadow-md flex-shrink-0">
+            <i class="fas fa-user-plus text-white text-base sm:text-xl md:text-2xl drop-shadow-md"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-base sm:text-xl md:text-2xl font-extrabold text-white m-0 drop-shadow-md tracking-wide flex items-center gap-1 sm:gap-2">
+              <i class="fas fa-edit text-[#aedd2b] text-sm sm:text-base md:text-lg"></i>
+              <span class="truncate">{{ modoEdicion ? 'Editar Cliente' : 'Nuevo Cliente' }}</span>
+            </h3>
+            <p class="text-xs sm:text-sm md:text-base text-[rgba(255,255,255,0.95)] mt-1 sm:mt-1.5 font-medium hidden sm:flex items-center gap-2">
+              <i class="fas fa-info-circle text-xs"></i>
+              <span>{{ modoEdicion ? 'Modificar datos del cliente' : 'Registro de clientes del sistema' }}</span>
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalCliente()"
+          class="w-8 h-8 sm:w-10 sm:h-10 bg-[rgba(255,255,255,0.15)] border-2 border-[rgba(255,255,255,0.2)] rounded-lg text-white text-lg sm:text-xl cursor-pointer flex items-center justify-center transition-all duration-200 shadow-sm hover:bg-[rgba(255,255,255,0.25)] hover:border-[rgba(255,255,255,0.4)] hover:scale-105 flex-shrink-0">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL - Mobile First -->
+    <div class="modal-cliente-body bg-[#f8f8ec] p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto overflow-x-hidden flex-1 min-h-0 max-h-[calc(95vh-180px)] sm:max-h-[calc(90vh-200px)]">
+
+    <!-- FORM CLIENTE PROFESIONAL - Mobile First -->
+    <form id="formCliente" enctype="multipart/form-data" (ngSubmit)="guardarCliente($event)" novalidate>
+
+      <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-[#02416d] mb-3 sm:mb-4 md:mb-6 flex items-center gap-2 sm:gap-3 pb-2 sm:pb-3 border-b-2 border-[#aedd2b]">
+        <i class="fas fa-user text-[#066699] text-base sm:text-lg md:text-xl"></i>
+        <span>Datos del Cliente</span>
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+        <div>
+          <label class="block text-sm sm:text-base font-semibold text-[#02416d] mb-1.5 sm:mb-2 flex items-center gap-2">
+            <i class="fas fa-id-card text-[#066699] text-xs sm:text-sm"></i>
+            <span>Documento <span class="text-red-600">*</span></span>
+          </label>
+          <input type="text" name="documento" placeholder="Documento" required
+            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg transition-all duration-200 outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)]">
+        </div>
+
+        <div>
+          <label class="block text-sm sm:text-base font-semibold text-[#02416d] mb-1.5 sm:mb-2 flex items-center gap-2">
+            <i class="fas fa-user text-[#066699] text-xs sm:text-sm"></i>
+            <span>Nombres <span class="text-red-600">*</span></span>
+          </label>
+          <input type="text" name="nombres" placeholder="Nombres" required
+            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg transition-all duration-200 outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)]">
+        </div>
+
+        <div>
+          <label class="block text-sm sm:text-base font-semibold text-[#02416d] mb-1.5 sm:mb-2 flex items-center gap-2">
+            <i class="fas fa-user text-[#066699] text-xs sm:text-sm"></i>
+            <span>Apellidos <span class="text-red-600">*</span></span>
+          </label>
+          <input type="text" name="apellidos" placeholder="Apellidos" required
+            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg transition-all duration-200 outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)]">
+        </div>
+
+        <div>
+          <label class="block text-sm sm:text-base font-semibold text-[#02416d] mb-1.5 sm:mb-2 flex items-center gap-2">
+            <i class="fas fa-map-marker-alt text-[#066699] text-xs sm:text-sm"></i>
+            <span>Dirección</span>
+          </label>
+          <input type="text" name="direccion" placeholder="Dirección"
+            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg transition-all duration-200 outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)]">
+        </div>
+
+        <!-- Captura de Ubicación GPS -->
+        <div style="grid-column: 1 / -1;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-map-marked-alt" style="color: #066699;"></i>
+            Ubicación GPS
+            <span style="color: #6b7280; font-weight: 400; font-size: 0.75rem;">(Opcional)</span>
+          </label>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <button type="button"
+                    (click)="capturarUbicacion()"
+                    [disabled]="capturandoUbicacion"
+                    style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: 2px solid #066699; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+                    [style.opacity]="capturandoUbicacion ? '0.5' : '1'"
+                    [style.cursor]="capturandoUbicacion ? 'not-allowed' : 'pointer'"
+                    onmouseover="if(!capturandoUbicacion) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
+              <i *ngIf="!capturandoUbicacion" class="fas fa-crosshairs"></i>
+              <i *ngIf="capturandoUbicacion" class="fas fa-spinner fa-spin"></i>
+              <span>{{ capturandoUbicacion ? 'Capturando...' : 'Capturar Ubicación' }}</span>
+            </button>
+            <div id="indicadorUbicacion" style="display: none; padding: 0.5rem 1rem; background-color: rgba(16, 185, 129, 0.1); border-radius: 0.5rem; border: 1px solid rgba(16, 185, 129, 0.3);"></div>
+          </div>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
+            <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
+            Permite al navegador acceder a tu ubicación para guardar las coordenadas GPS del cliente
+          </p>
+          <!-- Campos ocultos para latitud y longitud -->
+          <input type="hidden" name="latitud" [value]="latitud">
+          <input type="hidden" name="longitud" [value]="longitud">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-phone" style="color: #066699;"></i>
+            Teléfono
+          </label>
+          <input type="text" name="telefono" placeholder="Teléfono"
+            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-phone-alt" style="color: #066699;"></i>
+            Teléfono 2
+          </label>
+          <input type="text" name="telefono2" placeholder="Teléfono 2"
+            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+        </div>
+
+        <!-- CAMPO RUTA PROFESIONAL -->
+        <div class="md:col-span-2">
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-route" style="color: #066699;"></i>
+            Ruta
+            <span *ngIf="rolUsuario === 'admin' && !modoEdicion" style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">
+              ({{ todasLasRutas.length }} rutas disponibles)
+            </span>
+            <span *ngIf="!modoEdicion" style="color: #dc3545;">*</span>
+          </label>
+          <select 
+            name="id_ruta"
+            [required]="!modoEdicion"
+            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
+            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+            <option value="">Seleccione una ruta</option>
+            <!-- En modo edición: mostrar todas las rutas -->
+            <ng-container *ngIf="modoEdicion">
+              <option *ngFor="let ruta of todasLasRutas" [value]="ruta.id_ruta" [selected]="clienteEditando?.id_ruta == ruta.id_ruta">
+                {{ ruta.nombre_ruta }}
+              </option>
+            </ng-container>
+            <!-- En modo creación: 
+                 - Administrador: puede ver TODAS las rutas sin restricción
+                 - Cobrador: solo puede ver sus rutas asignadas -->
+            <ng-container *ngIf="!modoEdicion">
+              <!-- Administrador: todas las rutas del sistema -->
+              <ng-container *ngIf="rolUsuario === 'admin'">
+                <option *ngFor="let ruta of todasLasRutas" [value]="ruta.id_ruta">
+                  {{ ruta.nombre_ruta }} {{ ruta.activo === 0 ? '(Inactiva)' : '' }}
+                </option>
+              </ng-container>
+              <!-- Cobrador: solo rutas asignadas al usuario -->
+              <ng-container *ngIf="rolUsuario === 'cobrador'">
+                <option *ngFor="let ruta of rutasUsuario" [value]="ruta.id_ruta">
+                  {{ ruta.nombre_ruta }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+          <!-- Mensajes informativos -->
+          <!-- Administrador: puede ver todas las rutas -->
+          <p *ngIf="rolUsuario === 'admin' && !modoEdicion && todasLasRutas.length > 0" style="margin-top: 0.5rem; font-size: 0.75rem; color: #10b981; display: flex; align-items: center; gap: 0.375rem;">
+            <i class="fas fa-check-circle" style="font-size: 0.625rem;"></i>
+            Administrador: Puede seleccionar cualquier ruta del sistema ({{ todasLasRutas.length }} rutas disponibles)
+          </p>
+          <!-- Cobrador: solo sus rutas asignadas -->
+          <p *ngIf="rolUsuario === 'cobrador' && !modoEdicion && rutasUsuario.length > 0" style="margin-top: 0.5rem; font-size: 0.75rem; color: #066699; display: flex; align-items: center; gap: 0.375rem;">
+            <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
+            Cobrador: Solo puede ver sus rutas asignadas ({{ rutasUsuario.length }} ruta{{ rutasUsuario.length !== 1 ? 's' : '' }})
+          </p>
+          <p *ngIf="rolUsuario === 'cobrador' && !modoEdicion && rutasUsuario.length === 0" style="margin-top: 0.5rem; font-size: 0.75rem; color: #f59e0b; display: flex; align-items: center; gap: 0.375rem;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 0.625rem;"></i>
+            No tiene rutas asignadas. Contacte al administrador para que le asigne rutas.
+          </p>
+        </div>
+      </div>
+
+      <!-- ARCHIVOS CLIENTE PROFESIONAL -->
+      <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-images" style="color: #066699;"></i>
+          Documentos del Cliente
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- FOTO PERFIL -->
+          <label style="background-color: #ffffff; border: 2px dashed #e5e7eb; border-radius: 0.75rem; padding: 1rem; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;"
+                 onmouseover="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)';"
+                 onmouseout="this.style.borderColor='#e5e7eb'; this.style.backgroundColor='#ffffff';">
+            <input type="file"
+              name="foto_cliente"
+              accept="image/*"
+              capture="user"
+              (change)="previewImage($event, 'prevFotoCliente')"
+              hidden>
+            <img id="prevFotoCliente"
+              src="assets/dist/img/documentos/foto.jpg"
+              style="width: 100%; max-width: 150px; height: auto; max-height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid #e5e7eb; transition: all 0.3s; opacity: 0.8;">
+            <span style="color: #02416d; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-camera" style="color: #066699;"></i>
+              Foto del Cliente
+            </span>
+          </label>
+
+          <!-- CEDULA FRONTAL -->
+          <label style="background-color: #ffffff; border: 2px dashed #e5e7eb; border-radius: 0.75rem; padding: 1rem; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;"
+                 onmouseover="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)';"
+                 onmouseout="this.style.borderColor='#e5e7eb'; this.style.backgroundColor='#ffffff';">
+            <input type="file"
+              name="cedula_frontal"
+              accept="image/*"
+              capture="environment"
+              (change)="previewImage($event, 'prevCedulaFrontal')"
+              hidden>
+            <img id="prevCedulaFrontal"
+              src="assets/dist/img/documentos/cedulafrontal.png"
+              style="width: 100%; max-width: 150px; height: auto; max-height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid #e5e7eb; transition: all 0.3s; opacity: 0.8;">
+            <span style="color: #02416d; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #066699;"></i>
+              Cédula (Frontal)
+            </span>
+          </label>
+
+          <!-- CEDULA ATRAS -->
+          <label style="background-color: #ffffff; border: 2px dashed #e5e7eb; border-radius: 0.75rem; padding: 1rem; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;"
+                 onmouseover="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)';"
+                 onmouseout="this.style.borderColor='#e5e7eb'; this.style.backgroundColor='#ffffff';">
+            <input type="file"
+              name="cedula_atras"
+              accept="image/*"
+              capture="environment"
+              (change)="previewImage($event, 'prevCedulaAtras')"
+              hidden>
+            <img id="prevCedulaAtras"
+              src="assets/dist/img/documentos/cedulaatras.png"
+              style="width: 100%; max-width: 150px; height: auto; max-height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid #e5e7eb; transition: all 0.3s; opacity: 0.8;">
+            <span style="color: #02416d; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #066699;"></i>
+              Cédula (Posterior)
+            </span>
+          </label>
+        </div>
+      </div>
+
+
+
+      <!-- CHECK FIADOR PROFESIONAL -->
+      <div style="margin-top: 2rem; margin-bottom: 1.5rem; padding: 1rem; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem;">
+        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+          <input type="checkbox" id="checkFiador"
+            (change)="toggleFiador()"
+            style="width: 1.25rem; height: 1.25rem; accent-color: #066699; cursor: pointer;">
+          <span style="font-size: 0.875rem; color: #02416d; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-user-shield" style="color: #066699;"></i>
+            ¿El cliente tiene fiador?
+          </span>
+        </label>
+      </div>
+
+      <!-- FORM FIADOR PROFESIONAL -->
+      <div id="formFiador" class="hidden" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #aedd2b;">
+
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+          <i class="fas fa-user-shield" style="color: #aedd2b;"></i>
+          Datos del Fiador
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #066699;"></i>
+              Documento
+            </label>
+            <input type="text" name="documento_fiador" placeholder="Documento"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-user" style="color: #066699;"></i>
+              Nombres
+            </label>
+            <input type="text" name="nombres_fiador" placeholder="Nombres"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-user" style="color: #066699;"></i>
+              Apellidos
+            </label>
+            <input type="text" name="apellidos_fiador" placeholder="Apellidos"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-map-marker-alt" style="color: #066699;"></i>
+              Dirección
+            </label>
+            <input type="text" name="direccion_fiador" placeholder="Dirección"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-phone" style="color: #066699;"></i>
+              Teléfono
+            </label>
+            <input type="text" name="telefono_fiador" placeholder="Teléfono"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-phone-alt" style="color: #066699;"></i>
+              Teléfono 2
+            </label>
+            <input type="text" name="telefono2_fiador" placeholder="Teléfono 2"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+        </div>
+
+        <!-- DOCUMENTOS FIADOR PROFESIONAL -->
+        <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-images" style="color: #aedd2b;"></i>
+            Documentos del Fiador
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- FOTO PERFIL FIADOR -->
+            <label style="background-color: rgba(174, 221, 43, 0.05); border: 2px dashed #aedd2b; border-radius: 0.75rem; padding: 1rem; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;"
+                   onmouseover="this.style.borderColor='#9bc825'; this.style.backgroundColor='rgba(174, 221, 43, 0.1)';"
+                   onmouseout="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)';">
+              <input type="file"
+                name="foto_fiador"
+                accept="image/*"
+                capture="user"
+                (change)="previewImage($event, 'prevFotoFiador')"
+                hidden>
+              <img id="prevFotoFiador"
+                src="assets/dist/img/documentos/foto.jpg"
+                style="width: 100%; max-width: 150px; height: auto; max-height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid #aedd2b; transition: all 0.3s; opacity: 0.8;">
+              <span style="color: #02416d; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-camera" style="color: #aedd2b;"></i>
+                Foto del Fiador
+              </span>
+            </label>
+
+            <!-- CEDULA FRONTAL FIADOR -->
+            <label style="background-color: rgba(174, 221, 43, 0.05); border: 2px dashed #aedd2b; border-radius: 0.75rem; padding: 1rem; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;"
+                   onmouseover="this.style.borderColor='#9bc825'; this.style.backgroundColor='rgba(174, 221, 43, 0.1)';"
+                   onmouseout="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)';">
+              <input type="file"
+                name="cedula_frontal_fiador"
+                accept="image/*"
+                capture="environment"
+                (change)="previewImage($event, 'prevCedulaFrontalFiador')"
+                hidden>
+              <img id="prevCedulaFrontalFiador"
+                src="assets/dist/img/documentos/cedulafrontal.png"
+                style="width: 100%; max-width: 150px; height: auto; max-height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid #aedd2b; transition: all 0.3s; opacity: 0.8;">
+              <span style="color: #02416d; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-id-card" style="color: #aedd2b;"></i>
+                Cédula Fiador (Frontal)
+              </span>
+            </label>
+
+            <!-- CEDULA ATRAS FIADOR -->
+            <label style="background-color: rgba(174, 221, 43, 0.05); border: 2px dashed #aedd2b; border-radius: 0.75rem; padding: 1rem; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;"
+                   onmouseover="this.style.borderColor='#9bc825'; this.style.backgroundColor='rgba(174, 221, 43, 0.1)';"
+                   onmouseout="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)';">
+              <input type="file"
+                name="cedula_atras_fiador"
+                accept="image/*"
+                capture="environment"
+                (change)="previewImage($event, 'prevCedulaAtrasFiador')"
+                hidden>
+              <img id="prevCedulaAtrasFiador"
+                src="assets/dist/img/documentos/cedulaatras.png"
+                style="width: 100%; max-width: 150px; height: auto; max-height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid #aedd2b; transition: all 0.3s; opacity: 0.8;">
+              <span style="color: #02416d; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-id-card" style="color: #aedd2b;"></i>
+                Cédula Fiador (Posterior)
+              </span>
+            </label>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+    </form>
+    </div>
+
+    <!-- FOOTER CON BOTONES - Mobile First -->
+    <div class="p-3 sm:p-4 md:p-6 bg-white border-t-2 border-[#e5e7eb] flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 md:gap-4 rounded-b-lg sm:rounded-b-xl flex-shrink-0 sticky bottom-0 z-10 shadow-[0_-2px_8px_rgba(0,0,0,0.1)]">
+      <button type="button"
+        (click)="cerrarModalCliente()"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-lg border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 bg-[#6b7280] text-white min-w-[120px] sm:min-w-[140px]">
+        <span>Cancelar</span>
+      </button>
+
+      <button type="submit"
+        form="formCliente"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-lg border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] min-w-[120px] sm:min-w-[140px]">
+        <span>{{ modoEdicion ? 'Actualizar Cliente' : 'Guardar Cliente' }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DOCUMENTOS (CÉDULAS) PROFESIONAL -->
+<div id="modalDocumentos"
+  [class.flex]="modalDocumentosAbierto"
+  [class.hidden]="!modalDocumentosAbierto"
+  class="fixed inset-0 items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
+  (click)="cerrarModalDocumentos()">
+
+  <div class="bg-white w-full max-w-6xl rounded-xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden"
+       style="display: flex; flex-direction: column;"
+       (click)="$event.stopPropagation()">
+
+    <!-- HEADER PROFESIONAL -->
+    <div style="background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; flex-shrink: 0;">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-file-alt" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          </div>
+          <div>
+            <h2 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+              <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
+              Documentos de Identidad
+            </h2>
+            <p style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-info-circle" style="font-size: 0.875rem;"></i>
+              <span *ngIf="!mostrarSoloFiador">
+                {{ clienteSeleccionado?.nombres }} {{ clienteSeleccionado?.apellidos }}
+                <span *ngIf="clienteSeleccionado?.nombre_completo_fiador">
+                  - Fiador: {{ clienteSeleccionado?.nombre_completo_fiador }}
+                </span>
+              </span>
+              <span *ngIf="mostrarSoloFiador">
+                Fiador: {{ clienteSeleccionado?.nombre_completo_fiador }}
+              </span>
+            </p>
+          </div>
+        </div>
+        <button (click)="cerrarModalDocumentos()"
+          style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+          onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
+          onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(90vh - 200px); scrollbar-width: thin; scrollbar-color: #066699 #e5e7eb;">
+      <!-- DOCUMENTOS DEL CLIENTE -->
+      <div class="mb-8" *ngIf="!mostrarSoloFiador" style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #066699;">
+          <i class="fas fa-user" style="color: #066699;"></i>
+          Cliente: {{ clienteSeleccionado?.nombres }} {{ clienteSeleccionado?.apellidos }}
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- CÉDULA FRONTAL CLIENTE -->
+          <div style="background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #066699;"></i>
+              Cédula Frontal
+            </h4>
+            <div style="width: 100%; min-height: 300px; display: flex; align-items: center; justify-content: center; background-color: #f8f8ec; border-radius: 0.5rem; overflow: hidden; border: 2px solid #e5e7eb;">
+              <img *ngIf="clienteSeleccionado?.foto_cedula_frontal" 
+                   [src]="environment.apiUrl + '/' + clienteSeleccionado.foto_cedula_frontal"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;"
+                   onerror="this.src='assets/dist/img/documentos/cedulafrontal.png'">
+              <img *ngIf="!clienteSeleccionado?.foto_cedula_frontal" 
+                   src="assets/dist/img/documentos/cedulafrontal.png"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;">
+            </div>
+          </div>
+
+          <!-- CÉDULA ATRÁS CLIENTE -->
+          <div style="background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #066699;"></i>
+              Cédula Posterior
+            </h4>
+            <div style="width: 100%; min-height: 300px; display: flex; align-items: center; justify-content: center; background-color: #f8f8ec; border-radius: 0.5rem; overflow: hidden; border: 2px solid #e5e7eb;">
+              <img *ngIf="clienteSeleccionado?.foto_cedula_atras" 
+                   [src]="environment.apiUrl + '/' + clienteSeleccionado.foto_cedula_atras"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;"
+                   onerror="this.src='assets/dist/img/documentos/cedulaatras.png'">
+              <img *ngIf="!clienteSeleccionado?.foto_cedula_atras" 
+                   src="assets/dist/img/documentos/cedulaatras.png"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTOS DEL FIADOR -->
+      <div *ngIf="clienteSeleccionado?.id_fiador" style="margin-top: 2rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #aedd2b;">
+          <i class="fas fa-user-shield" style="color: #aedd2b;"></i>
+          Fiador: {{ clienteSeleccionado?.nombre_completo_fiador }}
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- CÉDULA FRONTAL FIADOR -->
+          <div style="background-color: rgba(174, 221, 43, 0.05); border: 2px solid #aedd2b; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #aedd2b;"></i>
+              Cédula Frontal
+            </h4>
+            <div style="width: 100%; min-height: 300px; display: flex; align-items: center; justify-content: center; background-color: #f8f8ec; border-radius: 0.5rem; overflow: hidden; border: 2px solid #aedd2b;">
+              <img *ngIf="clienteSeleccionado?.foto_cedula_frontal_fiador" 
+                   [src]="environment.apiUrl + '/' + clienteSeleccionado.foto_cedula_frontal_fiador"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;"
+                   onerror="this.src='assets/dist/img/documentos/cedulafrontal.png'">
+              <img *ngIf="!clienteSeleccionado?.foto_cedula_frontal_fiador && clienteSeleccionado?.id_fiador" 
+                   src="assets/dist/img/documentos/cedulafrontal.png"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;">
+            </div>
+          </div>
+
+          <!-- CÉDULA ATRÁS FIADOR -->
+          <div style="background-color: rgba(174, 221, 43, 0.05); border: 2px solid #aedd2b; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-id-card" style="color: #aedd2b;"></i>
+              Cédula Posterior
+            </h4>
+            <div style="width: 100%; min-height: 300px; display: flex; align-items: center; justify-content: center; background-color: #f8f8ec; border-radius: 0.5rem; overflow: hidden; border: 2px solid #aedd2b;">
+              <img *ngIf="clienteSeleccionado?.foto_cedula_atras_fiador" 
+                   [src]="environment.apiUrl + '/' + clienteSeleccionado.foto_cedula_atras_fiador"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;"
+                   onerror="this.src='assets/dist/img/documentos/cedulaatras.png'">
+              <img *ngIf="!clienteSeleccionado?.foto_cedula_atras_fiador && clienteSeleccionado?.id_fiador" 
+                   src="assets/dist/img/documentos/cedulaatras.png"
+                   style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 0.5rem;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER CON BOTÓN CERRAR -->
+    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; flex-shrink: 0;">
+      <button
+        (click)="cerrarModalDocumentos()"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff;"
+        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
+        <i class="fas fa-times"></i>
+        Cerrar
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL FOTO AMPLIADA PROFESIONAL -->
+<div id="modalFoto"
+  [class.flex]="modalFotoAbierto"
+  [class.hidden]="!modalFotoAbierto"
+  class="fixed inset-0 items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.85); backdrop-filter: blur(6px);"
+  (click)="cerrarModalFoto()">
+
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all animate-scaleIn"
+       style="display: flex; flex-direction: column;"
+       (click)="$event.stopPropagation()">
+
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div style="background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; flex-shrink: 0;">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-image" style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+              <i class="fas fa-user" [style.color]="esFiador ? '#aedd2b' : '#ffffff'" style="margin-right: 0.5rem;"></i>
+              {{ esFiador ? 'Foto del Fiador' : 'Foto del Cliente' }}
+            </h3>
+            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.95); margin: 0.25rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-info-circle" style="font-size: 0.75rem;"></i>
+              {{ tituloFoto }}
+            </p>
+          </div>
+        </div>
+        <button (click)="cerrarModalFoto()"
+          style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+          onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
+          onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON FOTO AMPLIADA -->
+    <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: auto; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;">
+      <div style="width: 100%; max-width: 100%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border: 2px solid #e5e7eb;">
+        <img [src]="fotoSeleccionada"
+             [alt]="tituloFoto"
+             style="max-width: 100%; max-height: calc(90vh - 250px); width: auto; height: auto; object-fit: contain; border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);"
+             onerror="this.src='assets/dist/img/documentos/foto.jpg'">
+      </div>
+    </div>
+
+    <!-- FOOTER CON BOTÓN CERRAR -->
+    <div style="padding: 1.25rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; flex-shrink: 0;">
+      <button
+        (click)="cerrarModalFoto()"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff;"
+        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
+        <i class="fas fa-times"></i>
+        Cerrar
+      </button>
+    </div>
+
+  </div>
+</div>

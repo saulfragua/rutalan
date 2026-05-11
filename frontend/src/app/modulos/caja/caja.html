@@ -1,0 +1,2727 @@
+<!-- CONTENEDOR CAJA - Mobile First -->
+<div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
+  <div
+    class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 min-h-full"
+  >
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div class="mb-4 sm:mb-6 border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4"
+      >
+        <div class="flex-1 w-full sm:w-auto">
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3"
+          >
+            <div
+              class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0"
+            >
+              <i class="fas fa-cash-register text-white text-lg sm:text-xl md:text-2xl"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h2
+                class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3"
+              >
+                <i class="fas fa-chart-line text-[#aedd2b] text-lg sm:text-xl md:text-2xl"></i>
+                <span class="truncate">Gestión de Cajas</span>
+              </h2>
+              <p
+                class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2"
+              >
+                <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+                Administración y control de cajas abiertas en el sistema
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTONES DE ACCIÓN PROFESIONALES - Mobile First: 2 por bloque -->
+    <div class="mb-4 sm:mb-6">
+      <div
+        class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4"
+      >
+        <!-- Botón Abrir Nueva Caja -->
+        <button (click)="abrirModalAperturaCaja()" class="btn-accion btn-accion-primary">
+          <span>Abrir Nueva Caja</span>
+        </button>
+
+        <!-- Botón Ver Cajas Cerradas -->
+        <button (click)="abrirModalCajasCerradas()" class="btn-accion btn-accion-secondary">
+          <span>Ver Cajas Cerradas</span>
+        </button>
+
+        <!-- Botón Entrada de Dinero -->
+        <button (click)="abrirModalEntradaDinero()" class="btn-accion btn-accion-success">
+          <span>Entrada de Dinero</span>
+        </button>
+
+        <!-- Botón Salida de Dinero -->
+        <button (click)="abrirModalSalidaDinero()" class="btn-accion btn-accion-danger">
+          <span>Salida de Dinero</span>
+        </button>
+
+        <!-- Botón Historial Movimientos -->
+        <button
+          (click)="abrirModalHistorial()"
+          class="btn-accion btn-accion-info col-span-2 md:col-span-1 lg:col-span-1"
+        >
+          <span>Historial Movimientos</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLA CAJAS ABIERTAS PROFESIONAL - Mobile First -->
+    <div class="mb-3 sm:mb-4">
+      <div
+        class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-4"
+      >
+        <h3
+          class="text-lg sm:text-xl md:text-2xl font-bold text-[#02416d] flex items-center gap-2 sm:gap-3"
+        >
+          <i class="fas fa-table text-[#aedd2b] text-base sm:text-lg md:text-xl"></i>
+          <span>Cajas Abiertas</span>
+        </h3>
+        <span
+          class="bg-gradient-to-r from-[#066699] to-[#0a5483] text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md flex items-center gap-2"
+        >
+          <i class="fas fa-cash-register text-xs sm:text-sm"></i>
+          <span
+            >{{ listaCajasAbiertas.length }}
+            {{ listaCajasAbiertas.length === 1 ? 'caja' : 'cajas' }}</span
+          >
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md sm:shadow-lg bg-white -webkit-overflow-scrolling-touch"
+    >
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden">
+          <table class="min-w-full bg-white">
+            <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%)">
+              <tr>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Cobrador
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Ruta Principal
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Rutas Cobradas
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Créditos
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Seguros
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  30% Seguros
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Cobros
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Descuentos
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Gastos
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Entradas
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Salidas
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Saldo Inicial
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Total
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Fecha
+                </th>
+                <th
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap"
+                >
+                  Acción
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+              <!-- CARGANDO -->
+              <tr *ngIf="cargando">
+                <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <div
+                      class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3"
+                      style="border-color: #066699; border-top-color: transparent"
+                    ></div>
+                    <span style="color: #02416d; font-size: 0.875rem; font-weight: 600"
+                      >Cargando cajas...</span
+                    >
+                  </div>
+                </td>
+              </tr>
+
+              <!-- LISTA DE CAJAS -->
+              <tr
+                *ngFor="let caja of listaCajasAbiertas; let i = index"
+                class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]"
+              >
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap"
+                >
+                  <span
+                    class="bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold"
+                    >#{{ caja.id_caja }}</span
+                  >
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap"
+                >
+                  <span
+                    class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm truncate max-w-[100px] sm:max-w-[150px] md:max-w-none"
+                    title="{{ caja.nombre_usuario }}"
+                    >{{ caja.nombre_usuario }}</span
+                  >
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap"
+                >
+                  <span
+                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[#f8f8ec] text-[#02416d] text-[10px] sm:text-xs md:text-sm border border-[#e5e7eb] truncate max-w-[80px] sm:max-w-[120px] md:max-w-none"
+                    title="{{ caja.nombre_ruta || '-' }}"
+                    >{{ caja.nombre_ruta || '-' }}</span
+                  >
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap"
+                >
+                  <span
+                    *ngIf="caja.rutas_cobradas"
+                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)]"
+                  >
+                    {{ caja.rutas_cobradas }}
+                  </span>
+                  <span
+                    *ngIf="!caja.rutas_cobradas"
+                    class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm"
+                  >
+                    -
+                  </span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-center whitespace-nowrap"
+                >
+                  <div class="flex flex-col items-center">
+                    <span class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm">{{
+                      caja.total_creditos || 0
+                    }}</span>
+                    <span
+                      class="text-[#066699] font-semibold text-[9px] sm:text-[10px] md:text-xs"
+                      >{{ formatearMonto(caja.total_monto_creditos || 0) }}</span
+                    >
+                  </div>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span class="text-[#066699] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                    formatearMonto(caja.total_seguros || 0)
+                  }}</span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span class="text-[#aedd2b] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                    formatearMonto(caja.seguros_cobrador || 0)
+                  }}</span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span class="text-[#10b981] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                    formatearMonto(caja.total_cobros)
+                  }}</span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span class="text-[#f59e0b] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                    formatearMonto(caja.total_descuentos || 0)
+                  }}</span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span class="text-[#dc3545] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                    formatearMonto(caja.total_gastos)
+                  }}</span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span
+                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(16,185,129,0.1)] text-[#10b981] font-semibold text-[10px] sm:text-xs md:text-sm border border-[rgba(16,185,129,0.3)]"
+                  >
+                    +{{ formatearMonto(caja.total_entradas || 0) }}
+                  </span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span
+                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(220,53,69,0.1)] text-[#dc3545] font-semibold text-[10px] sm:text-xs md:text-sm border border-[rgba(220,53,69,0.3)]"
+                  >
+                    -{{ formatearMonto(caja.total_salidas || 0) }}
+                  </span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm">{{
+                    formatearMonto(caja.saldo_inicial)
+                  }}</span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap"
+                >
+                  <span
+                    class="inline-flex items-center px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 rounded bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] font-bold text-[10px] sm:text-xs md:text-sm border-2 border-[#aedd2b] shadow-sm"
+                  >
+                    {{ formatearMonto(caja.total_recolectado) }}
+                  </span>
+                </td>
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-left whitespace-nowrap"
+                >
+                  <span class="text-[9px] sm:text-[10px] md:text-xs">{{
+                    formatearFechaHora(caja.fecha_apertura)
+                  }}</span>
+                </td>
+                <!-- ACCIÓN -->
+                <td
+                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap"
+                >
+                  <button
+                    (click)="cerrarCaja(caja)"
+                    class="inline-flex items-center justify-center px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]"
+                  >
+                    Cerrar
+                  </button>
+                </td>
+              </tr>
+
+              <!-- SIN REGISTROS -->
+              <tr *ngIf="!cargando && listaCajasAbiertas.length === 0">
+                <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <i
+                      class="fas fa-inbox"
+                      style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem"
+                    ></i>
+                    <span style="color: #02416d; font-size: 0.9375rem; font-weight: 600"
+                      >No hay cajas abiertas</span
+                    >
+                    <span style="color: #6b7280; font-size: 0.8125rem; margin-top: 0.5rem"
+                      >Haz clic en "Abrir Nueva Caja" para comenzar</span
+                    >
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CIERRE DE CAJA PROFESIONAL - Mobile First -->
+<div
+  *ngIf="modalCierreAbierto"
+  class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-[rgba(2,65,109,0.75)] backdrop-blur-sm"
+  (click)="cerrarModalCierre()"
+>
+  <div
+    class="bg-white rounded-lg sm:rounded-xl shadow-2xl w-full max-w-4xl max-h-[95vh] flex flex-col transform transition-all"
+    (click)="$event.stopPropagation()"
+    style="animation: scaleIn 0.2s ease-out"
+  >
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div
+      class="flex-shrink-0 bg-gradient-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-b-4 border-[#aedd2b] rounded-t-lg sm:rounded-t-xl"
+    >
+      <div class="flex items-center justify-between gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
+          <div
+            class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.15)] rounded-lg sm:rounded-xl flex items-center justify-center border-2 border-[rgba(255,255,255,0.3)] shadow-md flex-shrink-0"
+          >
+            <i class="fas fa-lock text-white text-base sm:text-xl md:text-2xl drop-shadow-md"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3
+              class="text-base sm:text-xl md:text-2xl font-extrabold text-white m-0 drop-shadow-md tracking-wide flex items-center gap-1 sm:gap-2"
+            >
+              <i class="fas fa-cash-register text-[#aedd2b] text-sm sm:text-base md:text-lg"></i>
+              <span class="truncate">Cerrar Caja</span>
+            </h3>
+            <p
+              class="text-xs sm:text-sm md:text-base text-[rgba(255,255,255,0.95)] mt-1 sm:mt-1.5 font-medium hidden sm:flex items-center gap-2"
+            >
+              <i class="fas fa-info-circle text-xs"></i>
+              <span>Resumen completo de la caja #{{ cajaSeleccionada?.id_caja }}</span>
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalCierre()"
+          class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-[rgba(255,255,255,0.15)] border-2 border-[rgba(255,255,255,0.2)] rounded-lg sm:rounded-xl text-white text-lg sm:text-xl md:text-2xl cursor-pointer flex items-center justify-center transition-all duration-200 shadow-md hover:bg-[rgba(255,255,255,0.25)] hover:border-[rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 flex-shrink-0"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL - Mobile First -->
+    <div
+      class="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 bg-[#f8f8ec] -webkit-overflow-scrolling-touch"
+    >
+      <!-- INFORMACIÓN BÁSICA -->
+      <div class="mb-4 sm:mb-6">
+        <h4
+          class="text-sm sm:text-base md:text-lg font-bold text-[#02416d] mb-3 sm:mb-4 flex items-center gap-2"
+        >
+          <i class="fas fa-info-circle text-[#066699] text-xs sm:text-sm"></i>
+          <span>Información de la Caja</span>
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <!-- ID Caja -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-hashtag text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>ID Caja</span>
+            </div>
+            <div class="text-base sm:text-lg md:text-xl font-bold text-[#02416d]">
+              #{{ cajaSeleccionada?.id_caja || 'N/A' }}
+            </div>
+          </div>
+
+          <!-- Cobrador -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-user text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>Cobrador</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-[#02416d] break-words">
+              {{ cajaSeleccionada?.nombre_usuario || 'N/A' }}
+            </div>
+          </div>
+
+          <!-- Ruta Principal -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-route text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>Ruta Principal</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-[#02416d] break-words">
+              {{ cajaSeleccionada?.nombre_ruta || 'Sin ruta' }}
+            </div>
+          </div>
+
+          <!-- Rutas Cobradas -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-map-marked-alt text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>Rutas Cobradas</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-[#02416d]">
+              <span
+                *ngIf="cajaSeleccionada?.rutas_cobradas"
+                class="inline-flex items-center px-2 py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] border border-[rgba(174,221,43,0.3)]"
+              >
+                {{ cajaSeleccionada.rutas_cobradas }}
+              </span>
+              <span *ngIf="!cajaSeleccionada?.rutas_cobradas" class="text-[#9ca3af]">-</span>
+            </div>
+          </div>
+
+          <!-- Saldo Inicial -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-wallet text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>Saldo Inicial</span>
+            </div>
+            <div class="text-sm sm:text-base md:text-lg font-bold text-[#02416d]">
+              {{ formatearMonto(cajaSeleccionada?.saldo_inicial || 0) }}
+            </div>
+          </div>
+
+          <!-- Fecha Apertura -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-calendar-alt text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>Fecha Apertura</span>
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-[#02416d]">
+              {{ formatearFechaHora(cajaSeleccionada?.fecha_apertura) || '-' }}
+            </div>
+          </div>
+
+          <!-- Créditos -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#6b7280] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-file-invoice-dollar text-[#066699] text-[9px] sm:text-xs"></i>
+              <span>Créditos</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm sm:text-base font-bold text-[#02416d]">{{
+                cajaSeleccionada?.total_creditos || 0
+              }}</span>
+              <span class="text-xs sm:text-sm text-[#066699] font-semibold">{{
+                formatearMonto(cajaSeleccionada?.total_monto_creditos || 0)
+              }}</span>
+            </div>
+          </div>
+
+          <!-- Total Recolectado -->
+          <div
+            class="bg-gradient-to-br from-[#aedd2b] to-[#9bc825] border-2 border-[#02416d] rounded-lg p-3 sm:p-4 shadow-lg col-span-1 sm:col-span-2 lg:col-span-1"
+          >
+            <div
+              class="text-[10px] sm:text-xs text-[#02416d] font-semibold uppercase tracking-wide mb-1 sm:mb-2 flex items-center gap-1.5"
+            >
+              <i class="fas fa-money-bill-wave text-[#02416d] text-[9px] sm:text-xs"></i>
+              <span>Total Recolectado</span>
+            </div>
+            <div class="text-lg sm:text-xl md:text-2xl font-extrabold text-[#02416d]">
+              {{ formatearMonto(cajaSeleccionada?.total_recolectado || 0) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESUMEN FINANCIERO -->
+      <div class="mb-4 sm:mb-6">
+        <h4
+          class="text-sm sm:text-base md:text-lg font-bold text-[#02416d] mb-3 sm:mb-4 flex items-center gap-2"
+        >
+          <i class="fas fa-calculator text-[#066699] text-xs sm:text-sm"></i>
+          <span>Resumen Financiero</span>
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4">
+          <!-- Ingresos -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] border-l-4 border-l-[#10b981] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="flex items-center gap-2 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-[#e5e7eb]"
+            >
+              <i class="fas fa-arrow-down text-[#10b981] text-base sm:text-lg"></i>
+              <span class="font-semibold text-[#02416d] text-sm sm:text-base">Ingresos</span>
+            </div>
+            <div class="space-y-2 sm:space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs sm:text-sm text-[#6b7280]">Cobros</span>
+                <span class="text-sm sm:text-base font-bold text-[#10b981]">{{
+                  formatearMonto(cajaSeleccionada?.total_cobros || 0)
+                }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs sm:text-sm text-[#6b7280]">Entradas</span>
+                <span class="text-sm sm:text-base font-bold text-[#10b981]"
+                  >+{{ formatearMonto(cajaSeleccionada?.total_entradas || 0) }}</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Egresos -->
+          <div
+            class="bg-white border-2 border-[#e5e7eb] border-l-4 border-l-[#dc3545] rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="flex items-center gap-2 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-[#e5e7eb]"
+            >
+              <i class="fas fa-arrow-up text-[#dc3545] text-base sm:text-lg"></i>
+              <span class="font-semibold text-[#02416d] text-sm sm:text-base">Egresos</span>
+            </div>
+            <div class="space-y-2 sm:space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs sm:text-sm text-[#6b7280]">Descuentos</span>
+                <span class="text-sm sm:text-base font-bold text-[#dc3545]">{{
+                  formatearMonto(cajaSeleccionada?.total_descuentos || 0)
+                }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs sm:text-sm text-[#6b7280]">Gastos</span>
+                <span class="text-sm sm:text-base font-bold text-[#dc3545]">{{
+                  formatearMonto(cajaSeleccionada?.total_gastos || 0)
+                }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs sm:text-sm text-[#6b7280]">Salidas</span>
+                <span class="text-sm sm:text-base font-bold text-[#dc3545]"
+                  >-{{ formatearMonto(cajaSeleccionada?.total_salidas || 0) }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seguros -->
+        <div
+          class="bg-gradient-to-br from-[rgba(174,221,43,0.1)] to-[rgba(174,221,43,0.05)] border-2 border-[#aedd2b] rounded-lg p-3 sm:p-4 mb-4"
+        >
+          <div class="flex items-center gap-2 mb-3 sm:mb-4">
+            <i class="fas fa-shield-alt text-[#066699] text-base sm:text-lg"></i>
+            <span class="font-semibold text-[#02416d] text-sm sm:text-base">Seguros</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+            <div class="bg-white rounded p-2 sm:p-3 flex justify-between items-center">
+              <span class="text-xs sm:text-sm text-[#02416d] font-medium">Total Seguros</span>
+              <span class="text-sm sm:text-base font-bold text-[#02416d]">{{
+                formatearMonto(cajaSeleccionada?.total_seguros || 0)
+              }}</span>
+            </div>
+            <div
+              class="bg-[rgba(174,221,43,0.2)] rounded p-2 sm:p-3 flex justify-between items-center border-2 border-[#aedd2b]"
+            >
+              <span class="text-xs sm:text-sm text-[#02416d] font-semibold">30% Cobrador</span>
+              <span class="text-base sm:text-lg font-bold text-[#066699]">{{
+                formatearMonto(cajaSeleccionada?.seguros_cobrador || 0)
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OBSERVACIONES -->
+      <div class="mb-4 sm:mb-6">
+        <label
+          class="block text-xs sm:text-sm font-semibold text-[#02416d] mb-2 flex items-center gap-2"
+        >
+          <i class="fas fa-comment-alt text-[#066699] text-xs"></i>
+          <span>Observaciones (opcional)</span>
+        </label>
+        <textarea
+          [(ngModel)]="observacionesCierre"
+          class="w-full p-2 sm:p-3 text-xs sm:text-sm text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg resize-none transition-all duration-200 font-sans focus:outline-none focus:border-[#066699] focus:ring-2 focus:ring-[rgba(6,102,153,0.1)]"
+          rows="3"
+          placeholder="Ingrese observaciones sobre el cierre de caja..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- FOOTER CON BOTONES - Mobile First -->
+    <div
+      class="flex-shrink-0 bg-white p-3 sm:p-4 md:p-6 border-t-2 border-[#e5e7eb] rounded-b-lg sm:rounded-b-xl flex flex-col sm:flex-row justify-end gap-2 sm:gap-3"
+    >
+      <button
+        (click)="cerrarModalCierre()"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold rounded-lg bg-[#6b7280] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 min-h-[44px]"
+      >
+        <span>Cancelar</span>
+      </button>
+      <button
+        (click)="confirmarCierreCaja()"
+        [disabled]="cerrandoCaja"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold rounded-lg bg-gradient-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed min-h-[44px]"
+      >
+        <i *ngIf="cerrandoCaja" class="fas fa-spinner fa-spin text-xs sm:text-sm"></i>
+        <span>{{ cerrandoCaja ? 'Cerrando...' : 'Cerrar Caja' }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAJAS CERRADAS PROFESIONAL -->
+<div
+  *ngIf="modalCajasCerradasAbierto"
+  class="modal-cajas-cerradas-backdrop fixed inset-0 flex items-center justify-center z-50 p-4"
+  (click)="cerrarModalCajasCerradas()"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px)"
+>
+  <div
+    class="modal-cajas-cerradas-container bg-white rounded-xl shadow-2xl max-w-7xl w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    (click)="$event.stopPropagation()"
+    style="display: flex; flex-direction: column; max-height: 95vh"
+  >
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div
+      class="modal-cajas-cerradas-header"
+      style="
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #0a5483 0%, #066699 100%);
+        padding: 1.75rem 2rem;
+        border-bottom: 4px solid #aedd2b;
+        border-radius: 0.75rem 0.75rem 0 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      "
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div
+            style="
+              width: 56px;
+              height: 56px;
+              background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.15) 100%
+              );
+              border-radius: 0.75rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 2px solid rgba(255, 255, 255, 0.3);
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            "
+          >
+            <i
+              class="fas fa-cash-register"
+              style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)"
+            ></i>
+          </div>
+          <div>
+            <h3
+              style="
+                font-size: 1.75rem;
+                font-weight: 800;
+                color: #ffffff;
+                margin: 0;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                letter-spacing: 0.025em;
+              "
+            >
+              <i class="fas fa-folder-closed" style="margin-right: 0.5rem; color: #aedd2b"></i>
+              Cajas Cerradas
+            </h3>
+            <p
+              style="
+                font-size: 0.9375rem;
+                color: rgba(255, 255, 255, 0.95);
+                margin: 0.375rem 0 0 0;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+              "
+            >
+              <i class="fas fa-chart-line" style="font-size: 0.875rem"></i>
+              Historial completo de cajas cerradas del sistema
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalCajasCerradas()"
+          style="
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          "
+          onmouseover="
+            this.style.background = 'rgba(255, 255, 255, 0.25)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+            this.style.transform = 'scale(1.05)';
+          "
+          onmouseout="
+            this.style.background = 'rgba(255, 255, 255, 0.15)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            this.style.transform = 'scale(1)';
+          "
+        ></button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div
+      class="modal-cajas-cerradas-body"
+      style="
+        background-color: #f8f8ec;
+        padding: 1.5rem;
+        overflow-y: scroll !important;
+        overflow-x: auto !important;
+        flex: 1;
+        min-height: 0;
+        max-height: calc(95vh - 120px);
+      "
+    >
+      <!-- CARGANDO -->
+      <div *ngIf="cargandoCajasCerradas" style="text-align: center; padding: 3rem">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-4 mb-4"
+            style="border-color: #066699; border-top-color: transparent"
+          ></div>
+          <span style="color: #02416d; font-size: 0.875rem; font-weight: 600"
+            >Cargando cajas cerradas...</span
+          >
+        </div>
+      </div>
+
+      <!-- TABLA CAJAS CERRADAS -->
+      <div
+        *ngIf="!cargandoCajasCerradas"
+        style="
+          overflow-x: auto;
+          border-radius: 0.5rem;
+          border: 2px solid #e5e7eb;
+          background-color: #ffffff;
+        "
+      >
+        <table class="min-w-full text-xs md:text-sm" style="background-color: #ffffff">
+          <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%)">
+            <tr>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                ID
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Cobrador
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Ruta Principal
+              </th>
+              <th
+                class="hidden lg:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Rutas Cobradas
+              </th>
+              <th
+                class="hidden sm:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: center;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Créditos
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Seguros
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                30% Cobrador
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Cobros
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Descuentos
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Gastos
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Entradas
+              </th>
+              <th
+                class="hidden md:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Salidas
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Saldo Inicial
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Total
+              </th>
+              <th
+                class="hidden xl:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Fecha Apertura
+              </th>
+              <th
+                class="hidden xl:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Fecha Cierre
+              </th>
+              <th
+                class="hidden lg:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Observaciones
+              </th>
+            </tr>
+          </thead>
+
+          <tbody style="background-color: #ffffff; border-top: 2px solid #e5e7eb">
+            <!-- LISTA DE CAJAS CERRADAS -->
+            <tr
+              *ngFor="let caja of listaCajasCerradas"
+              style="border-bottom: 1px solid #e5e7eb; transition: all 0.2s"
+              onmouseover="this.style.backgroundColor = 'rgba(174, 221, 43, 0.05)'"
+              onmouseout="this.style.backgroundColor = '#ffffff'"
+            >
+              <td style="padding: 0.75rem 1rem; font-weight: 700; color: #02416d">
+                <span
+                  style="
+                    background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%);
+                    color: #02416d;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                  "
+                  >#{{ caja.id_caja }}</span
+                >
+              </td>
+              <td style="padding: 0.75rem 1rem; color: #02416d">
+                <div style="display: flex; flex-direction: column">
+                  <span style="font-weight: 600; color: #02416d; font-size: 0.875rem">{{
+                    caja.nombre_usuario
+                  }}</span>
+                  <span
+                    class="sm:hidden"
+                    style="font-size: 0.75rem; color: #6b7280; margin-top: 0.125rem"
+                  >
+                    {{ caja.nombre_ruta || 'Sin ruta' }}
+                  </span>
+                </div>
+              </td>
+              <td class="hidden md:table-cell" style="padding: 0.75rem 1rem; color: #02416d">
+                <span
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: #f8f8ec;
+                    color: #02416d;
+                    font-size: 0.8125rem;
+                    border: 1px solid #e5e7eb;
+                  "
+                >
+                  {{ caja.nombre_ruta || '-' }}
+                </span>
+              </td>
+              <td class="hidden lg:table-cell" style="padding: 0.75rem 1rem; color: #02416d">
+                <span
+                  *ngIf="caja.rutas_cobradas"
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: rgba(174, 221, 43, 0.2);
+                    color: #066699;
+                    font-size: 0.8125rem;
+                    font-weight: 600;
+                    border: 1px solid #aedd2b;
+                  "
+                >
+                  {{ caja.rutas_cobradas }}
+                </span>
+                <span *ngIf="!caja.rutas_cobradas" style="color: #9ca3af; font-size: 0.8125rem">
+                  -
+                </span>
+              </td>
+              <td
+                class="hidden sm:table-cell"
+                style="padding: 0.75rem 1rem; text-align: center; color: #02416d"
+              >
+                <div style="display: flex; flex-direction: column; align-items: center">
+                  <span style="font-weight: 700; color: #02416d; font-size: 0.875rem">{{
+                    caja.total_creditos || 0
+                  }}</span>
+                  <span style="font-size: 0.75rem; color: #066699; font-weight: 600">{{
+                    formatearMonto(caja.total_monto_creditos || 0)
+                  }}</span>
+                </div>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span style="color: #066699; font-weight: 600; font-size: 0.8125rem">{{
+                  formatearMonto(caja.total_seguros || 0)
+                }}</span>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span style="color: #f59e0b; font-weight: 600; font-size: 0.8125rem">{{
+                  formatearMonto(caja.seguros_cobrador || 0)
+                }}</span>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span style="color: #10b981; font-weight: 600; font-size: 0.8125rem">{{
+                  formatearMonto(caja.total_cobros)
+                }}</span>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span style="color: #f97316; font-weight: 600; font-size: 0.8125rem">{{
+                  formatearMonto(caja.total_descuentos || 0)
+                }}</span>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span style="color: #dc3545; font-weight: 600; font-size: 0.8125rem">{{
+                  formatearMonto(caja.total_gastos)
+                }}</span>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: rgba(16, 185, 129, 0.1);
+                    color: #10b981;
+                    font-weight: 600;
+                    font-size: 0.8125rem;
+                    border: 1px solid rgba(16, 185, 129, 0.3);
+                  "
+                >
+                  +{{ formatearMonto(caja.total_entradas || 0) }}
+                </span>
+              </td>
+              <td
+                class="hidden md:table-cell"
+                style="padding: 0.75rem 1rem; text-align: right; color: #02416d"
+              >
+                <span
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: rgba(220, 53, 69, 0.1);
+                    color: #dc3545;
+                    font-weight: 600;
+                    font-size: 0.8125rem;
+                    border: 1px solid rgba(220, 53, 69, 0.3);
+                  "
+                >
+                  -{{ formatearMonto(caja.total_salidas || 0) }}
+                </span>
+              </td>
+              <td style="padding: 0.75rem 1rem; text-align: right; color: #02416d">
+                <span style="font-weight: 600; color: #02416d; font-size: 0.875rem">{{
+                  formatearMonto(caja.saldo_inicial)
+                }}</span>
+              </td>
+              <td style="padding: 0.75rem 1rem; text-align: right">
+                <span
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.5rem 0.75rem;
+                    border-radius: 0.5rem;
+                    background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%);
+                    color: #02416d;
+                    font-weight: 700;
+                    font-size: 0.9375rem;
+                    border: 2px solid #02416d;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                  "
+                >
+                  {{ formatearMonto(caja.total_recolectado) }}
+                </span>
+              </td>
+              <td
+                class="hidden xl:table-cell"
+                style="padding: 0.75rem 1rem; color: #6b7280; font-size: 0.8125rem"
+              >
+                {{ formatearFechaHora(caja.fecha_apertura) }}
+              </td>
+              <td
+                class="hidden xl:table-cell"
+                style="padding: 0.75rem 1rem; color: #6b7280; font-size: 0.8125rem"
+              >
+                {{ formatearFechaHora(caja.fecha_cierre) }}
+              </td>
+              <td
+                class="hidden lg:table-cell"
+                style="
+                  padding: 0.75rem 1rem;
+                  color: #6b7280;
+                  font-size: 0.8125rem;
+                  max-width: 200px;
+                "
+              >
+                <span
+                  *ngIf="caja.observaciones"
+                  style="
+                    display: inline-block;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: #f8f8ec;
+                    color: #02416d;
+                    font-size: 0.75rem;
+                    word-break: break-word;
+                    border: 1px solid #e5e7eb;
+                  "
+                  title="{{ caja.observaciones }}"
+                >
+                  {{
+                    caja.observaciones.length > 50
+                      ? caja.observaciones.substring(0, 50) + '...'
+                      : caja.observaciones
+                  }}
+                </span>
+                <span *ngIf="!caja.observaciones" style="color: #9ca3af; font-size: 0.75rem"
+                  >-</span
+                >
+              </td>
+            </tr>
+
+            <!-- SIN REGISTROS -->
+            <tr *ngIf="!cargandoCajasCerradas && listaCajasCerradas.length === 0">
+              <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <i
+                    class="fas fa-folder-open"
+                    style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem"
+                  ></i>
+                  <span style="color: #6b7280; font-size: 0.875rem; font-weight: 600"
+                    >No hay cajas cerradas</span
+                  >
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FOOTER CON BOTÓN CERRAR -->
+    <div
+      style="
+        padding: 1.5rem 2rem;
+        background: #ffffff;
+        border-top: 2px solid #e5e7eb;
+        display: flex;
+        justify-content: flex-end;
+        border-radius: 0 0 0.75rem 0.75rem;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <button
+        (click)="cerrarModalCajasCerradas()"
+        style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          min-width: 140px;
+          background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%);
+          color: #02416d;
+        "
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL APERTURA DE CAJA PROFESIONAL -->
+<div
+  *ngIf="modalAperturaCajaAbierto"
+  class="modal-apertura-backdrop fixed inset-0 flex items-center justify-center z-50 p-4"
+  (click)="cerrarModalAperturaCaja()"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px)"
+>
+  <div
+    class="modal-apertura-container bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    (click)="$event.stopPropagation()"
+    style="display: flex; flex-direction: column; max-height: 95vh"
+  >
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div
+      class="modal-apertura-header"
+      style="
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #0a5483 0%, #066699 100%);
+        padding: 1.5rem 2rem;
+        border-bottom: 4px solid #aedd2b;
+        border-radius: 0.75rem 0.75rem 0 0;
+      "
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            style="
+              width: 48px;
+              height: 48px;
+              background: rgba(255, 255, 255, 0.2);
+              border-radius: 0.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <i class="fas fa-cash-register" style="font-size: 1.5rem; color: #ffffff"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.5rem; font-weight: 700; color: #ffffff; margin: 0">
+              Abrir Nueva Caja
+            </h3>
+            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.9); margin: 0.25rem 0 0 0">
+              Configure los parámetros iniciales de la caja
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalAperturaCaja()"
+          style="
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+          "
+          onmouseover="this.style.background = 'rgba(255, 255, 255, 0.2)'"
+          onmouseout="this.style.background = 'rgba(255, 255, 255, 0.1)'"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div
+      class="modal-apertura-body"
+      style="
+        background-color: #f8f8ec;
+        padding: 2rem;
+        overflow-y: scroll !important;
+        overflow-x: hidden !important;
+        flex: 1;
+        min-height: 0;
+        max-height: calc(95vh - 200px);
+      "
+    >
+      <form (ngSubmit)="abrirCajaAdmin(); $event.preventDefault()" novalidate>
+        <!-- SALDO INICIAL -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i class="fas fa-wallet" style="color: #066699"></i>
+            Monto Inicial <span style="color: #dc3545">*</span>
+          </label>
+          <div style="position: relative">
+            <span
+              style="
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6b7280;
+                font-size: 1rem;
+                font-weight: 600;
+                pointer-events: none;
+              "
+            ></span>
+            <input
+              type="number"
+              [(ngModel)]="saldoInicial"
+              name="saldoInicial"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              style="
+                width: 100%;
+                padding-left: 2.5rem;
+                padding-right: 1rem;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                font-size: 1rem;
+                color: #02416d;
+                background-color: #ffffff;
+                border: 2px solid #e5e7eb;
+                border-radius: 0.5rem;
+                transition: all 0.2s;
+                outline: none;
+              "
+              onfocus="
+                this.style.borderColor = '#aedd2b';
+                this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+              "
+              onblur="
+                this.style.borderColor = '#e5e7eb';
+                this.style.boxShadow = 'none';
+              "
+            />
+          </div>
+          <p
+            style="
+              margin-top: 0.5rem;
+              font-size: 0.75rem;
+              color: #6b7280;
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
+            "
+          >
+            <i class="fas fa-info-circle" style="color: #066699"></i>
+            Ingrese el monto con el que inicia la caja (puede ser $0.00)
+          </p>
+        </div>
+
+        <!-- SELECCIÓN DE RUTAS -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i class="fas fa-route" style="color: #066699"></i>
+            Seleccione Rutas <span style="color: #6b7280; font-weight: 400">(Opcional)</span>
+          </label>
+          <div
+            style="
+              max-height: 200px;
+              overflow-y: auto;
+              border: 2px solid #e5e7eb;
+              border-radius: 0.5rem;
+              padding: 1rem;
+              background-color: #ffffff;
+            "
+          >
+            <div
+              *ngIf="todasLasRutas.length === 0"
+              style="text-align: center; padding: 2rem; color: #6b7280; font-size: 0.875rem"
+            >
+              <i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem"></i>
+              Cargando rutas...
+            </div>
+            <div *ngFor="let ruta of todasLasRutas" style="margin-bottom: 0.5rem">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  cursor: pointer;
+                  padding: 0.75rem;
+                  border-radius: 0.375rem;
+                  transition: all 0.2s;
+                "
+                onmouseover="this.style.backgroundColor = 'rgba(174, 221, 43, 0.1)'"
+                onmouseout="this.style.backgroundColor = 'transparent'"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="rutaEstaSeleccionada(ruta.id_ruta)"
+                  (change)="toggleRutaSeleccionada(ruta.id_ruta)"
+                  style="
+                    width: 1.25rem;
+                    height: 1.25rem;
+                    margin-right: 0.75rem;
+                    accent-color: #aedd2b;
+                    cursor: pointer;
+                  "
+                />
+                <span style="color: #02416d; font-size: 0.875rem; flex: 1">
+                  {{ ruta.nombre_ruta }}
+                  <span
+                    *ngIf="ruta.activo === 0"
+                    style="color: #dc3545; font-size: 0.75rem; margin-left: 0.5rem"
+                    >(Inactiva)</span
+                  >
+                </span>
+              </label>
+            </div>
+          </div>
+          <p
+            style="
+              margin-top: 0.5rem;
+              font-size: 0.75rem;
+              color: #6b7280;
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
+            "
+          >
+            <i class="fas fa-info-circle" style="color: #066699"></i>
+            Seleccione rutas para asignar a esta caja, o deje vacío para crear una caja general
+          </p>
+        </div>
+
+        <!-- INFO ADICIONAL -->
+        <div
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(174, 221, 43, 0.1) 0%,
+              rgba(174, 221, 43, 0.05) 100%
+            );
+            border: 2px solid #aedd2b;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <div style="display: flex; align-items: start; gap: 0.75rem">
+            <i
+              class="fas fa-lightbulb"
+              style="color: #066699; font-size: 1.25rem; margin-top: 0.125rem"
+            ></i>
+            <div>
+              <p
+                style="font-size: 0.875rem; font-weight: 600; color: #02416d; margin: 0 0 0.25rem 0"
+              >
+                Información importante
+              </p>
+              <p style="font-size: 0.8125rem; color: #6b7280; margin: 0; line-height: 1.5">
+                Una vez abierta la caja, podrás registrar cobros, gastos y movimientos. El saldo
+                inicial puede ser $0.00 si lo deseas. Las rutas son opcionales y puedes asignarlas
+                después.
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
+    <div
+      style="
+        padding: 1.5rem 2rem;
+        background: #ffffff;
+        border-top: 2px solid #e5e7eb;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        border-radius: 0 0 0.75rem 0.75rem;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <button
+        type="button"
+        (click)="cerrarModalAperturaCaja()"
+        style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          min-width: 140px;
+          background-color: #6b7280;
+          color: #ffffff;
+        "
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        (click)="abrirCajaAdmin()"
+        [disabled]="
+          abriendoCaja ||
+          saldoInicial === null ||
+          saldoInicial === undefined ||
+          (typeof saldoInicial === 'number' && saldoInicial < 0)
+        "
+        style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          min-width: 140px;
+          background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%);
+          color: #02416d;
+        "
+        [style.opacity]="
+          abriendoCaja ||
+          saldoInicial === null ||
+          saldoInicial === undefined ||
+          (typeof saldoInicial === 'number' && saldoInicial < 0)
+            ? '0.5'
+            : '1'
+        "
+        [style.cursor]="
+          abriendoCaja ||
+          saldoInicial === null ||
+          saldoInicial === undefined ||
+          (typeof saldoInicial === 'number' && saldoInicial < 0)
+            ? 'not-allowed'
+            : 'pointer'
+        "
+      >
+        <span>{{ abriendoCaja ? 'Abriendo...' : 'Abrir Caja' }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ENTRADA/SALIDA DE DINERO PROFESIONAL -->
+<div
+  *ngIf="modalMovimientoAbierto"
+  class="modal-movimiento-backdrop fixed inset-0 flex items-center justify-center z-50 p-4"
+  (click)="cerrarModalMovimiento()"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px)"
+>
+  <div
+    class="modal-movimiento-container bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    (click)="$event.stopPropagation()"
+    style="display: flex; flex-direction: column; max-height: 95vh"
+  >
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div
+      class="modal-movimiento-header"
+      [style.background]="
+        tipoMovimiento === 'entrada'
+          ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+          : 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)'
+      "
+      style="
+        flex-shrink: 0;
+        padding: 1.75rem 2rem;
+        border-bottom: 4px solid #aedd2b;
+        border-radius: 0.75rem 0.75rem 0 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      "
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div
+            [style.background]="
+              tipoMovimiento === 'entrada'
+                ? 'rgba(255, 255, 255, 0.25)'
+                : 'rgba(255, 255, 255, 0.25)'
+            "
+            style="
+              width: 56px;
+              height: 56px;
+              border-radius: 0.75rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 2px solid rgba(255, 255, 255, 0.3);
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            "
+          >
+            <i
+              [class]="tipoMovimiento === 'entrada' ? 'fas fa-arrow-down' : 'fas fa-arrow-up'"
+              style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)"
+            ></i>
+          </div>
+          <div>
+            <h3
+              style="
+                font-size: 1.75rem;
+                font-weight: 800;
+                color: #ffffff;
+                margin: 0;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                letter-spacing: 0.025em;
+              "
+            >
+              <i
+                [class]="
+                  tipoMovimiento === 'entrada'
+                    ? 'fas fa-money-bill-wave'
+                    : 'fas fa-money-bill-transfer'
+                "
+                style="margin-right: 0.5rem; color: #aedd2b"
+              ></i>
+              {{ tipoMovimiento === 'entrada' ? 'Entrada de Dinero' : 'Salida de Dinero' }}
+            </h3>
+            <p
+              style="
+                font-size: 0.9375rem;
+                color: rgba(255, 255, 255, 0.95);
+                margin: 0.375rem 0 0 0;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+              "
+            >
+              <i class="fas fa-info-circle" style="font-size: 0.875rem"></i>
+              {{
+                tipoMovimiento === 'entrada'
+                  ? 'Registre una entrada de dinero a la caja'
+                  : 'Registre una salida de dinero de la caja'
+              }}
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalMovimiento()"
+          style="
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          "
+          onmouseover="
+            this.style.background = 'rgba(255, 255, 255, 0.25)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+            this.style.transform = 'scale(1.05)';
+          "
+          onmouseout="
+            this.style.background = 'rgba(255, 255, 255, 0.15)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            this.style.transform = 'scale(1)';
+          "
+        ></button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div
+      class="modal-movimiento-body"
+      style="
+        background-color: #f8f8ec;
+        padding: 2rem;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex: 1;
+        min-height: 0;
+        max-height: calc(95vh - 200px);
+      "
+    >
+      <form (ngSubmit)="guardarMovimiento(); $event.preventDefault()" novalidate>
+        <!-- SELECCIÓN DE CAJA -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i class="fas fa-cash-register" style="color: #066699"></i>
+            Caja <span style="color: #dc3545">*</span>
+          </label>
+          <select
+            [(ngModel)]="movimientoForm.id_caja"
+            name="id_caja"
+            required
+            style="
+              width: 100%;
+              padding: 0.75rem 1rem;
+              font-size: 0.875rem;
+              color: #02416d;
+              background-color: #ffffff;
+              border: 2px solid #e5e7eb;
+              border-radius: 0.5rem;
+              transition: all 0.2s;
+              outline: none;
+              cursor: pointer;
+            "
+            onfocus="
+              this.style.borderColor = '#aedd2b';
+              this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+            "
+            onblur="
+              this.style.borderColor = '#e5e7eb';
+              this.style.boxShadow = 'none';
+            "
+          >
+            <option value="">Seleccione una caja</option>
+            <option *ngFor="let caja of obtenerCajasAbiertas()" [value]="caja.id_caja">
+              Caja #{{ caja.id_caja }} - {{ caja.nombre_usuario || 'Sin nombre' }}
+            </option>
+          </select>
+        </div>
+
+        <!-- MONTO -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i
+              [class]="tipoMovimiento === 'entrada' ? 'fas fa-arrow-down' : 'fas fa-arrow-up'"
+              style="color: #066699"
+            ></i>
+            Monto <span style="color: #dc3545">*</span>
+          </label>
+          <div style="position: relative">
+            <span
+              style="
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6b7280;
+                font-size: 1rem;
+                font-weight: 600;
+                pointer-events: none;
+              "
+            ></span>
+            <input
+              type="number"
+              [(ngModel)]="movimientoForm.monto"
+              name="monto"
+              min="0.01"
+              step="0.01"
+              placeholder="0.00"
+              required
+              style="
+                width: 100%;
+                padding-left: 2.5rem;
+                padding-right: 1rem;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                font-size: 1rem;
+                color: #02416d;
+                background-color: #ffffff;
+                border: 2px solid #e5e7eb;
+                border-radius: 0.5rem;
+                transition: all 0.2s;
+                outline: none;
+              "
+              onfocus="
+                this.style.borderColor = '#aedd2b';
+                this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+              "
+              onblur="
+                this.style.borderColor = '#e5e7eb';
+                this.style.boxShadow = 'none';
+              "
+            />
+          </div>
+        </div>
+
+        <!-- CAUSAL -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i class="fas fa-file-invoice" style="color: #066699"></i>
+            Causal <span style="color: #dc3545">*</span>
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="movimientoForm.causal"
+            name="causal"
+            placeholder="Ej: Pago de proveedor, Venta adicional, etc."
+            required
+            style="
+              width: 100%;
+              padding: 0.75rem 1rem;
+              font-size: 0.875rem;
+              color: #02416d;
+              background-color: #ffffff;
+              border: 2px solid #e5e7eb;
+              border-radius: 0.5rem;
+              transition: all 0.2s;
+              outline: none;
+            "
+            onfocus="
+              this.style.borderColor = '#aedd2b';
+              this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+            "
+            onblur="
+              this.style.borderColor = '#e5e7eb';
+              this.style.boxShadow = 'none';
+            "
+          />
+        </div>
+
+        <!-- MÉTODO DE PAGO -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i class="fas fa-credit-card" style="color: #066699"></i>
+            Método de Pago <span style="color: #dc3545">*</span>
+          </label>
+          <select
+            [(ngModel)]="movimientoForm.metodo_pago"
+            name="metodo_pago"
+            required
+            style="
+              width: 100%;
+              padding: 0.75rem 1rem;
+              font-size: 0.875rem;
+              color: #02416d;
+              background-color: #ffffff;
+              border: 2px solid #e5e7eb;
+              border-radius: 0.5rem;
+              transition: all 0.2s;
+              outline: none;
+              cursor: pointer;
+            "
+            onfocus="
+              this.style.borderColor = '#aedd2b';
+              this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+            "
+            onblur="
+              this.style.borderColor = '#e5e7eb';
+              this.style.boxShadow = 'none';
+            "
+          >
+            <option value="efectivo">💵 Efectivo</option>
+            <option value="transferencia">🏦 Transferencia</option>
+            <option value="otro">📄 Otro</option>
+          </select>
+        </div>
+
+        <!-- OBSERVACIÓN -->
+        <div style="margin-bottom: 1.5rem">
+          <label
+            style="
+              display: block;
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: #02416d;
+              margin-bottom: 0.5rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            "
+          >
+            <i class="fas fa-comment-alt" style="color: #066699"></i>
+            Observación <span style="color: #6b7280; font-weight: 400">(Opcional)</span>
+          </label>
+          <textarea
+            [(ngModel)]="movimientoForm.observacion"
+            name="observacion"
+            rows="3"
+            placeholder="Observaciones adicionales (opcional)"
+            style="
+              width: 100%;
+              padding: 0.75rem 1rem;
+              font-size: 0.875rem;
+              color: #02416d;
+              background-color: #ffffff;
+              border: 2px solid #e5e7eb;
+              border-radius: 0.5rem;
+              resize: none;
+              transition: all 0.2s;
+              outline: none;
+              font-family: inherit;
+            "
+            onfocus="
+              this.style.borderColor = '#aedd2b';
+              this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+            "
+            onblur="
+              this.style.borderColor = '#e5e7eb';
+              this.style.boxShadow = 'none';
+            "
+          ></textarea>
+        </div>
+      </form>
+    </div>
+
+    <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
+    <div
+      style="
+        padding: 1.5rem 2rem;
+        background: #ffffff;
+        border-top: 2px solid #e5e7eb;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        border-radius: 0 0 0.75rem 0.75rem;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <button
+        type="button"
+        (click)="cerrarModalMovimiento()"
+        style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          min-width: 140px;
+          background-color: #6b7280;
+          color: #ffffff;
+        "
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        (click)="guardarMovimiento()"
+        [disabled]="
+          guardandoMovimiento ||
+          !movimientoForm.id_caja ||
+          !movimientoForm.monto ||
+          movimientoForm.monto <= 0 ||
+          !movimientoForm.causal
+        "
+        [style.background]="
+          tipoMovimiento === 'entrada'
+            ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+            : 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)'
+        "
+        [style.opacity]="
+          guardandoMovimiento ||
+          !movimientoForm.id_caja ||
+          !movimientoForm.monto ||
+          movimientoForm.monto <= 0 ||
+          !movimientoForm.causal
+            ? '0.5'
+            : '1'
+        "
+        [style.cursor]="
+          guardandoMovimiento ||
+          !movimientoForm.id_caja ||
+          !movimientoForm.monto ||
+          movimientoForm.monto <= 0 ||
+          !movimientoForm.causal
+            ? 'not-allowed'
+            : 'pointer'
+        "
+        style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          border: none;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          min-width: 140px;
+          color: #ffffff;
+        "
+      >
+        <span>{{
+          guardandoMovimiento
+            ? 'Guardando...'
+            : tipoMovimiento === 'entrada'
+              ? 'Registrar Entrada'
+              : 'Registrar Salida'
+        }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HISTORIAL DE MOVIMIENTOS PROFESIONAL -->
+<div
+  *ngIf="modalHistorialAbierto"
+  class="modal-historial-backdrop fixed inset-0 flex items-center justify-center z-50 p-4"
+  (click)="cerrarModalHistorial()"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px)"
+>
+  <div
+    class="modal-historial-container bg-white rounded-xl shadow-2xl max-w-7xl w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    (click)="$event.stopPropagation()"
+    style="display: flex; flex-direction: column; max-height: 95vh"
+  >
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div
+      class="modal-historial-header"
+      style="
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #0a5483 0%, #066699 100%);
+        padding: 1.75rem 2rem;
+        border-bottom: 4px solid #aedd2b;
+        border-radius: 0.75rem 0.75rem 0 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      "
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div
+            style="
+              width: 56px;
+              height: 56px;
+              background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.15) 100%
+              );
+              border-radius: 0.75rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 2px solid rgba(255, 255, 255, 0.3);
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            "
+          >
+            <i
+              class="fas fa-history"
+              style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)"
+            ></i>
+          </div>
+          <div>
+            <h3
+              style="
+                font-size: 1.75rem;
+                font-weight: 800;
+                color: #ffffff;
+                margin: 0;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                letter-spacing: 0.025em;
+              "
+            >
+              <i class="fas fa-chart-line" style="margin-right: 0.5rem; color: #aedd2b"></i>
+              Historial de Movimientos
+            </h3>
+            <p
+              style="
+                font-size: 0.9375rem;
+                color: rgba(255, 255, 255, 0.95);
+                margin: 0.375rem 0 0 0;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+              "
+            >
+              <i class="fas fa-list-ul" style="font-size: 0.875rem"></i>
+              Registro completo de entradas y salidas de dinero
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalHistorial()"
+          style="
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          "
+          onmouseover="
+            this.style.background = 'rgba(255, 255, 255, 0.25)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+            this.style.transform = 'scale(1.05)';
+          "
+          onmouseout="
+            this.style.background = 'rgba(255, 255, 255, 0.15)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            this.style.transform = 'scale(1)';
+          "
+        ></button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div
+      class="modal-historial-body"
+      style="
+        background-color: #f8f8ec;
+        padding: 1.5rem;
+        overflow-y: scroll !important;
+        overflow-x: auto !important;
+        flex: 1;
+        min-height: 0;
+        max-height: calc(95vh - 120px);
+      "
+    >
+      <!-- CARGANDO -->
+      <div *ngIf="cargandoHistorial" style="text-align: center; padding: 3rem">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-4 mb-4"
+            style="border-color: #066699; border-top-color: transparent"
+          ></div>
+          <span style="color: #02416d; font-size: 0.875rem; font-weight: 600"
+            >Cargando historial...</span
+          >
+        </div>
+      </div>
+
+      <!-- TABLA DE MOVIMIENTOS -->
+      <div
+        *ngIf="!cargandoHistorial"
+        style="
+          overflow-x: auto;
+          border-radius: 0.5rem;
+          border: 2px solid #e5e7eb;
+          background-color: #ffffff;
+        "
+      >
+        <table class="min-w-full text-xs md:text-sm" style="background-color: #ffffff">
+          <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%)">
+            <tr>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Fecha
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Caja
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Usuario
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Tipo
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: right;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Monto
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Causal
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Método
+              </th>
+              <th
+                style="
+                  padding: 0.75rem 1rem;
+                  text-align: left;
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  color: #ffffff;
+                "
+              >
+                Observación
+              </th>
+            </tr>
+          </thead>
+          <tbody style="background-color: #ffffff; border-top: 2px solid #e5e7eb">
+            <tr
+              *ngFor="let movimiento of historialMovimientos"
+              style="border-bottom: 1px solid #e5e7eb; transition: all 0.2s"
+              onmouseover="this.style.backgroundColor = 'rgba(174, 221, 43, 0.05)'"
+              onmouseout="this.style.backgroundColor = '#ffffff'"
+            >
+              <td style="padding: 0.75rem 1rem; color: #6b7280; font-size: 0.8125rem">
+                {{ formatearFecha(movimiento.fecha_movimiento) }}
+              </td>
+              <td style="padding: 0.75rem 1rem; color: #02416d">
+                <span
+                  style="
+                    background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%);
+                    color: #02416d;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                  "
+                  >#{{ movimiento.id_caja || 'N/A' }}</span
+                >
+              </td>
+              <td
+                style="
+                  padding: 0.75rem 1rem;
+                  color: #02416d;
+                  font-weight: 600;
+                  font-size: 0.8125rem;
+                "
+              >
+                {{ movimiento.nombre_usuario || 'N/A' }}
+              </td>
+              <td style="padding: 0.75rem 1rem">
+                <span
+                  *ngIf="movimiento.tipo === 'entrada'"
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: rgba(16, 185, 129, 0.1);
+                    color: #10b981;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    border: 1px solid rgba(16, 185, 129, 0.3);
+                  "
+                >
+                  <i
+                    class="fas fa-arrow-down"
+                    style="margin-right: 0.25rem; font-size: 0.625rem"
+                  ></i>
+                  Entrada
+                </span>
+                <span
+                  *ngIf="movimiento.tipo === 'salida'"
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: rgba(220, 53, 69, 0.1);
+                    color: #dc3545;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    border: 1px solid rgba(220, 53, 69, 0.3);
+                  "
+                >
+                  <i class="fas fa-arrow-up" style="margin-right: 0.25rem; font-size: 0.625rem"></i>
+                  Salida
+                </span>
+              </td>
+              <td style="padding: 0.75rem 1rem; text-align: right; font-weight: 600">
+                <span
+                  [style.color]="movimiento.tipo === 'entrada' ? '#10b981' : '#dc3545'"
+                  style="font-size: 0.875rem"
+                >
+                  {{ movimiento.tipo === 'entrada' ? '+' : '-'
+                  }}{{ formatearMoneda(movimiento.monto) }}
+                </span>
+              </td>
+              <td style="padding: 0.75rem 1rem; color: #02416d; font-size: 0.8125rem">
+                {{ movimiento.causal }}
+              </td>
+              <td style="padding: 0.75rem 1rem; color: #02416d">
+                <span
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    background-color: #f8f8ec;
+                    color: #02416d;
+                    font-size: 0.75rem;
+                    border: 1px solid #e5e7eb;
+                  "
+                >
+                  {{
+                    movimiento.metodo_pago === 'efectivo'
+                      ? '💵'
+                      : movimiento.metodo_pago === 'transferencia'
+                        ? '🏦'
+                        : '📄'
+                  }}
+                  <span style="margin-left: 0.25rem; text-transform: capitalize">{{
+                    movimiento.metodo_pago
+                  }}</span>
+                </span>
+              </td>
+              <td
+                style="
+                  padding: 0.75rem 1rem;
+                  color: #6b7280;
+                  font-size: 0.75rem;
+                  max-width: 200px;
+                  word-break: break-word;
+                "
+              >
+                {{ movimiento.observacion || '-' }}
+              </td>
+            </tr>
+            <tr *ngIf="!cargandoHistorial && historialMovimientos.length === 0">
+              <td [attr.colspan]="8" style="padding: 3rem; text-align: center">
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <i
+                    class="fas fa-inbox"
+                    style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem"
+                  ></i>
+                  <span style="color: #6b7280; font-size: 0.875rem; font-weight: 600"
+                    >No hay movimientos registrados</span
+                  >
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FOOTER CON BOTÓN CERRAR -->
+    <div
+      style="
+        padding: 1.5rem 2rem;
+        background: #ffffff;
+        border-top: 2px solid #e5e7eb;
+        display: flex;
+        justify-content: flex-end;
+        border-radius: 0 0 0.75rem 0.75rem;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <button
+        (click)="cerrarModalHistorial()"
+        style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          min-width: 140px;
+          background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%);
+          color: #02416d;
+        "
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>

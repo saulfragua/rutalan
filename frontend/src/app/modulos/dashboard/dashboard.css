@@ -1,0 +1,95 @@
+.container-fluid {
+  max-width: 100%;
+}
+
+canvas {
+  max-width: 100%;
+}
+
+/* Responsive para móviles - Mobile First */
+@media (max-width: 639px) {
+  /* Las tarjetas del dashboard se muestran en 2 columnas en móvil */
+  /* Esto se controla con las clases Tailwind grid-cols-2 */
+  
+  table {
+    font-size: 0.75rem;
+  }
+  
+  th, td {
+    padding: 0.375rem 0.5rem !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.5rem !important;
+  }
+}
+
+/* Estilos para las tarjetas del Dashboard - Mobile First */
+.bg-white {
+  transition: box-shadow 0.3s ease;
+  min-width: 0; /* Permite que las tarjetas se ajusten al grid */
+}
+
+.bg-white:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Asegurar que las tarjetas en móvil tengan buen tamaño con 2 columnas */
+@media (max-width: 639px) {
+  .grid > .bg-white {
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .grid > .bg-white p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Estilos para la tabla */
+table {
+  border-collapse: collapse;
+}
+
+thead th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+tfoot {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+/* Estilos para los gráficos */
+.chart-container {
+  position: relative;
+  height: 400px;
+}
+
+/* Estilos para el indicador de carga */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}

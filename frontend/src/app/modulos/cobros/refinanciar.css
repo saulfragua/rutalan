@@ -1,0 +1,58 @@
+/* Estilos para el módulo de Refinanciar */
+
+/* Contenedor principal */
+.w-full.h-full.overflow-auto {
+  background-color: #f8f8ec;
+  padding: 1.5rem;
+}
+
+/* Estilos para inputs y selects */
+input[type="text"],
+input[type="number"],
+select {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+  border-color: #e5e7eb !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #aedd2b !important;
+  box-shadow: 0 0 0 3px rgba(174, 221, 43, 0.1) !important;
+}
+
+input[type="text"][readonly] {
+  background-color: #f8f8ec !important;
+}
+
+/* Estilos para radio buttons y checkboxes */
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: #066699;
+  cursor: pointer;
+}
+
+/* Estilos para botones */
+button,
+a[routerLink] {
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover:not(:disabled),
+a[routerLink]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .w-full.h-full.overflow-auto {
+    padding: 1rem;
+  }
+}

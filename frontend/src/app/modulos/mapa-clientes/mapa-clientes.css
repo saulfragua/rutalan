@@ -1,0 +1,14 @@
+/* Estilos para el componente de mapa de clientes */
+
+#mapa {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  #mapa {
+    height: 400px !important;
+    min-height: 400px !important;
+  }
+}

@@ -1,0 +1,488 @@
+/* Estilos para el módulo de Clientes */
+
+/* Contenedor principal */
+.w-full.h-full.overflow-auto {
+  background-color: #f8f8ec;
+  padding: 1.5rem;
+}
+
+/* Tabla de clientes - Asegurar fondo blanco */
+table {
+  background-color: #ffffff !important;
+}
+
+table tbody {
+  background-color: #ffffff !important;
+}
+
+table tbody tr {
+  background-color: #ffffff !important;
+}
+
+table tbody tr:hover {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+table tbody td {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+}
+
+table tbody tr:hover td {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+  .input-dark {
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
+    color: #02416d;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+  }
+
+  .input-dark:focus {
+    outline: none;
+    border-color: #aedd2b;
+    box-shadow: 0 0 0 3px rgba(174, 221, 43, 0.1);
+  }
+
+  /* Responsive para móviles */
+  @media (max-width: 640px) {
+    .input-dark {
+      padding: 10px;
+      font-size: 16px; /* Evita zoom en iOS */
+    }
+
+    .upload-card {
+      padding: 8px;
+      max-width: 100%;
+    }
+
+    .preview-img {
+      max-width: 120px;
+      max-height: 120px;
+    }
+
+    .upload-text {
+      font-size: 0.75rem;
+    }
+
+    label {
+      font-size: 0.875rem !important;
+    }
+  }
+
+  .upload-card {
+    background-color: #ffffff;
+    border: 2px dashed #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .upload-card:hover {
+    border-color: #aedd2b;
+    background-color: rgba(174, 221, 43, 0.05);
+  }
+
+.preview-img {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+  border: 2px solid #e5e7eb;
+}
+
+.preview-img:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+  .upload-text {
+    color: #02416d;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    display: block;
+    margin-top: 0.25rem;
+  }
+  
+  /* Aumentar tamaño de fuente en labels y textos de formularios */
+  label {
+    font-size: 1rem !important;
+  }
+  
+  /* Aumentar tamaño de fuente en placeholders */
+  .input-dark::placeholder {
+    font-size: 1rem;
+  }
+  
+  /* Aumentar tamaño de fuente en selects */
+  select.input-dark {
+    font-size: 1rem;
+  }
+
+/* Ajustes para ocupar todo el espacio */
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  min-height: 100%;
+}
+
+/* ============================================
+   RESPONSIVE STYLES - MOBILE FIRST APPROACH
+   ============================================ */
+
+/* Base styles (móvil) ya están aplicados con Tailwind */
+
+/* Tablet y superior (md: 768px+) */
+@media (min-width: 768px) {
+  /* Mejoras para tablets */
+  .modal-cliente-container {
+    max-width: 90%;
+  }
+  
+  table {
+    font-size: 0.875rem;
+  }
+  
+  table th,
+  table td {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Desktop pequeño (lg: 1024px+) */
+@media (min-width: 1024px) {
+  .modal-cliente-container {
+    max-width: 80%;
+  }
+  
+  table {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Desktop grande (xl: 1280px+) */
+@media (min-width: 1280px) {
+  .modal-cliente-container {
+    max-width: 70%;
+  }
+  
+  table {
+    font-size: 1rem;
+  }
+}
+
+/* Mejoras de scroll suave en móviles */
+@media (max-width: 767px) {
+  /* Scroll horizontal optimizado para tablas en móvil */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #066699 #e5e7eb;
+  }
+  
+  /* Estilos para scrollbar en Chrome/Safari móvil */
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #066699;
+    border-radius: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #0a5483;
+  }
+  
+  /* Tabla sin ancho mínimo - se ajusta al contenido */
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+  
+  /* Padding muy reducido en móvil para aprovechar espacio */
+  table th,
+  table td {
+    padding: 0.25rem 0.25rem;
+  }
+  
+  /* Asegurar que el texto no se corte */
+  table th,
+  table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Botones más compactos en móvil - solo iconos */
+  table button {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  /* Ajustar tamaño de fuente en móvil */
+  table {
+    font-size: 0.625rem;
+  }
+  
+  /* Fotos más pequeñas en móvil */
+  table img {
+    max-width: 32px;
+    max-height: 32px;
+  }
+  
+  /* Asegurar que los modales ocupen todo el ancho en móvil */
+  .modal-cliente-container {
+    max-width: 100% !important;
+    margin: 0.5rem;
+  }
+  
+  /* Mejorar el padding en móviles muy pequeños */
+  @media (max-width: 375px) {
+    .modal-cliente-body {
+      padding: 1rem !important;
+    }
+    
+    .modal-cliente-header {
+      padding: 1rem !important;
+    }
+    
+    table th,
+    table td {
+      padding: 0.4rem 0.5rem;
+    }
+  }
+}
+
+/* ============================================
+   MODAL CLIENTE PROFESIONAL
+   ============================================ */
+
+/* Backdrop del modal */
+.modal-cliente-backdrop {
+  background: rgba(2, 65, 109, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+}
+
+/* Contenedor del modal */
+.modal-cliente-container {
+  background: #ffffff;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: visible;
+}
+
+/* Header del modal */
+.modal-cliente-header {
+  background: linear-gradient(135deg, #066699 0%, #0a5483 100%);
+  padding: 1.75rem 2rem;
+  border-bottom: 4px solid #aedd2b;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-cliente-header h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.025em;
+}
+
+.modal-cliente-header p {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+/* Body del modal */
+.modal-cliente-body {
+  padding: 2rem;
+  background: #f8f8ec;
+  overflow-y: scroll !important;
+  overflow-x: auto !important;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(95vh - 200px);
+  scrollbar-width: thin;
+  scrollbar-color: #066699 #e5e7eb;
+  -ms-overflow-style: scrollbar;
+}
+
+/* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
+.modal-cliente-body::-webkit-scrollbar {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.modal-cliente-body::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 8px !important;
+  border: 2px solid #d1d5db !important;
+  margin: 4px 0 !important;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.modal-cliente-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #066699 0%, #0a5483 100%) !important;
+  border-radius: 8px !important;
+  border: 2px solid #e5e7eb !important;
+  min-height: 50px !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer !important;
+}
+
+.modal-cliente-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0a5483 0%, #02416d 100%) !important;
+  border-color: #d1d5db !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.modal-cliente-body::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #02416d 0%, #066699 100%) !important;
+}
+
+.modal-cliente-body::-webkit-scrollbar-corner {
+  background: #e5e7eb !important;
+}
+
+/* Forzar visibilidad del scrollbar incluso cuando no hay scroll */
+.modal-cliente-body {
+  scrollbar-gutter: stable;
+}
+
+/* Animación para el modal */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Animación para el modal de foto */
+@keyframes animate-scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleIn {
+  animation: animate-scaleIn 0.3s ease-out;
+}
+
+/* Mejoras adicionales para inputs en móvil */
+@media (max-width: 640px) {
+  /* Evitar zoom automático en iOS al enfocar inputs */
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Mejorar el tamaño de los botones en móvil */
+  button {
+    min-height: 44px; /* Tamaño mínimo recomendado para touch */
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Mejorar espaciado en formularios móviles */
+  .grid > div {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Estilos para fotos cuadradas en la tabla */
+.foto-cuadrada {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 2px solid #4b5563;
+  background-color: #1f2428;
+}
+
+.foto-perfil-tabla {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Estilos para el modal de documentos */
+.documento-imagen {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0f1418;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imagen-documento {
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Responsive para fotos en tabla */
+@media (max-width: 768px) {
+  .foto-cuadrada {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .documento-imagen {
+    min-height: 200px;
+  }
+  
+  .imagen-documento {
+    max-height: 300px;
+  }
+}

@@ -1,0 +1,820 @@
+<!-- CONTENEDOR CRÉDITOS - Mobile First -->
+<div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
+
+  <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 h-full">
+
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div class="mb-4 sm:mb-6 border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+        <div class="flex-1 w-full">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
+            <!-- Icono - Responsive -->
+            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md">
+              <i class="fas fa-file-invoice-dollar text-white text-lg sm:text-xl md:text-2xl"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <!-- Título - Responsive -->
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+                <i class="fas fa-chart-line text-[#aedd2b] text-lg sm:text-xl md:text-2xl"></i>
+                <span class="truncate">Gestión de Créditos</span>
+              </h2>
+              <!-- Descripción - Ocultar en móvil muy pequeño -->
+              <p class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2">
+                <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+                <span>Administración de créditos activos en el sistema</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Botón - Lado a lado -->
+        <div class="flex flex-row w-full sm:w-auto gap-2">
+          <button
+            (click)="abrirModalCredito()"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+            <i class="fas fa-plus-circle"></i>
+            <span>Nuevo Crédito</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DE BÚSQUEDA - Mobile First -->
+    <div class="mb-4 sm:mb-6">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-search text-[#066699] text-sm sm:text-base"></i>
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="terminoBusqueda"
+          (input)="buscarCreditos()"
+          placeholder="Buscar por nombre, documento o ID de crédito..."
+          class="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg focus:outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)] transition-all duration-200">
+        <button
+          *ngIf="terminoBusqueda"
+          (click)="limpiarBusqueda()"
+          class="absolute inset-y-0 right-0 pr-3 flex items-center text-[#6b7280] hover:text-[#dc3545] transition-colors duration-200">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+      <p *ngIf="terminoBusqueda && listaCreditos.length > 0" class="mt-2 text-xs sm:text-sm text-[#6b7280]">
+        <i class="fas fa-info-circle text-[#066699] mr-1"></i>
+        Mostrando {{ listaCreditos.length }} crédito(s)
+      </p>
+      <p *ngIf="terminoBusqueda && listaCreditos.length === 0" class="mt-2 text-xs sm:text-sm text-red-600">
+        <i class="fas fa-exclamation-circle mr-1"></i>
+        No se encontraron créditos que coincidan con "{{ terminoBusqueda }}"
+      </p>
+    </div>
+
+    <!-- TABLA CRÉDITOS - Mobile First (Solo Tabla) -->
+    <div class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white -webkit-overflow-scrolling-touch">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden">
+          <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
+            <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+              <tr>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">ID</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Cliente</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Tipo</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Monto</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Cuotas</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Tasa</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Frecuencia</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Seguro</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Saldo</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Inicio</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Fin</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+
+              <!-- CARGANDO -->
+              <tr *ngIf="cargando">
+                <td [attr.colspan]="12" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3"></div>
+                    <span class="text-[#02416d] text-sm sm:text-base font-semibold">Cargando créditos...</span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- LISTA DE CRÉDITOS -->
+              <tr *ngFor="let credito of listaCreditos" 
+                  [class.bg-[rgba(220,53,69,0.05)]]="credito.estado_credito === 'cancelado'"
+                  class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)]">
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
+                  <span class="bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{ credito.id_credito }}</span>
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">
+                  {{ credito.nombres_cliente }} {{ credito.apellidos_cliente }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+                  <span *ngIf="credito.tipo_credito === 'comun' || !credito.tipo_credito || credito.tipo_credito === ''" 
+                        class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(16,185,129,0.1)] text-green-600 text-[10px] sm:text-xs font-semibold border border-[rgba(16,185,129,0.3)] whitespace-nowrap">
+                    Común
+                  </span>
+                  <span *ngIf="credito.tipo_credito === 'refinanciado'" 
+                        class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(245,158,11,0.1)] text-yellow-600 text-[10px] sm:text-xs font-semibold border border-[rgba(245,158,11,0.3)] whitespace-nowrap">
+                    Refinanciado
+                  </span>
+                  <span *ngIf="credito.tipo_credito === 'refinanciado_por_sistema'" 
+                        class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(220,53,69,0.1)] text-red-600 text-[10px] sm:text-xs font-bold border border-[rgba(220,53,69,0.3)] whitespace-nowrap">
+                    Refinanciado por Sistema
+                  </span>
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                  ${{ formatearMoneda(credito.monto_credito) }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ credito.cuotas }} días</td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ credito.tasa_interes }}%</td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm capitalize whitespace-nowrap">
+                  {{ credito.frecuencia_pago }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                  {{ credito.seguro > 0 ? ('$' + formatearMoneda(credito.seguro)) : 'No' }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+                  <span class="font-bold text-[#066699] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">${{ formatearMoneda(credito.saldo_actual) }}</span>
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+                  {{ credito.fecha_toma_credito }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+                  {{ credito.fecha_finaliza_credito }}
+                </td>
+                <!-- ACCIONES -->
+                <td class="px-0.5 sm:px-1 md:px-2 lg:px-3 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+                  <div class="flex flex-col gap-0.5 sm:gap-1 md:gap-1.5">
+                    <button
+                      (click)="verPlanPagos(credito.id_credito)"
+                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                      Ver Plan
+                    </button>
+                    <button
+                      *ngIf="credito.estado_credito !== 'cancelado'"
+                      (click)="editarCredito(credito.id_credito)"
+                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                      Editar
+                    </button>
+                    <button
+                      *ngIf="credito.estado_credito !== 'cancelado' && rolUsuario === 'admin'"
+                      (click)="cancelarCredito(credito.id_credito)"
+                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#dc3545] to-[#c82333] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                      Cancelar
+                    </button>
+                    <span *ngIf="credito.estado_credito === 'cancelado'" 
+                          class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#9ca3af] text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gray-300 text-white whitespace-nowrap">
+                      Cancelado
+                    </span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- SIN REGISTROS -->
+              <tr *ngIf="!cargando && listaCreditos.length === 0">
+                <td [attr.colspan]="12" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
+                    <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay créditos registrados</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR/EDITAR CRÉDITO PROFESIONAL -->
+<div id="modalCredito"
+  class="modal-credito-backdrop fixed inset-0 hidden items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
+  (click)="cerrarModalCredito()">
+
+  <div class="modal-credito-container bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+       style="display: flex; flex-direction: column; max-height: 95vh;"
+       (click)="$event.stopPropagation()">
+
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div class="modal-credito-header" style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-file-invoice-dollar" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+              <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
+              {{ modoEdicion ? 'Editar' : 'Nuevo' }} Crédito
+            </h3>
+            <p style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-info-circle" style="font-size: 0.875rem;"></i>
+              Registro de créditos del sistema
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalCredito()"
+          style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+          onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
+          onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div class="modal-credito-body" style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
+
+    <!-- ALERTA: CRÉDITOS ACTIVOS DEL CLIENTE PROFESIONAL -->
+    <div *ngIf="clienteTieneCreditoPendiente && !modoEdicion && creditosPendientesCliente.length > 0" 
+         style="margin-bottom: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      <div style="display: flex; align-items: start; gap: 0.75rem;">
+        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fas fa-exclamation-triangle" style="font-size: 1.25rem; color: #ffffff;"></i>
+        </div>
+        <div style="flex: 1;">
+          <h3 style="color: #f59e0b; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem;">
+            ⚠️ Cliente con Créditos Activos
+          </h3>
+          <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem; line-height: 1.5;">
+            El cliente seleccionado tiene <strong style="color: #02416d;">{{ creditosPendientesCliente.length }}</strong> crédito(s) activo(s) con saldo pendiente. Puede crear un nuevo crédito si lo desea.
+          </p>
+          
+          <!-- TABLA DE CRÉDITOS PENDIENTES - Mobile First -->
+          <div class="overflow-x-auto mt-3 rounded-lg border-2 border-[rgba(245,158,11,0.2)] bg-white -webkit-overflow-scrolling-touch">
+            <table class="min-w-full text-xs sm:text-sm bg-white">
+              <thead class="bg-gradient-to-r from-[#f59e0b] to-[#d97706]">
+                <tr>
+                  <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">N° Crédito</th>
+                  <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">Tipo</th>
+                  <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">Saldo Actual</th>
+                  <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">Monto Crédito</th>
+                  <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Inicio</th>
+                  <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Finaliza</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+                <tr *ngFor="let credito of creditosPendientesCliente" 
+                    class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(245,158,11,0.05)]">
+                  <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d] font-bold">
+                    <span class="bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-bold whitespace-nowrap">#{{ credito.id_credito }}</span>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d]">
+                    <span *ngIf="credito.tipo_credito === 'comun' || !credito.tipo_credito" 
+                          class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(16,185,129,0.1)] text-green-600 text-[10px] sm:text-xs font-semibold border border-[rgba(16,185,129,0.3)] whitespace-nowrap">
+                      Común
+                    </span>
+                    <span *ngIf="credito.tipo_credito === 'refinanciado'" 
+                          class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(245,158,11,0.1)] text-yellow-600 text-[10px] sm:text-xs font-semibold border border-[rgba(245,158,11,0.3)] whitespace-nowrap">
+                      Refinanciado
+                    </span>
+                    <span *ngIf="credito.tipo_credito === 'refinanciado_por_sistema'" 
+                          class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(220,53,69,0.1)] text-red-600 text-[10px] sm:text-xs font-bold border border-[rgba(220,53,69,0.3)] whitespace-nowrap">
+                      Refinanciado por Sistema
+                    </span>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d] font-bold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">${{ formatearMoneda(credito.saldo_actual) }}</td>
+                  <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">${{ formatearMoneda(credito.monto_credito) }}</td>
+                  <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">{{ formatearFechaCorta(credito.fecha_toma_credito) }}</td>
+                  <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">{{ formatearFechaCorta(credito.fecha_finaliza_credito) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAJE SI TIENE PAGOS PROFESIONAL (solo en edición) -->
+    <div *ngIf="tienePagos" style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 0.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <i class="fas fa-exclamation-triangle" style="color: #f59e0b; font-size: 1.25rem;"></i>
+        <p style="color: #6b7280; font-size: 0.875rem; font-weight: 500; margin: 0;">
+          Este crédito no puede ser modificado ni eliminado porque ya tiene pagos registrados.
+        </p>
+      </div>
+    </div>
+
+    <!-- FORM CRÉDITO PROFESIONAL -->
+    <form (ngSubmit)="guardarCredito($event)" novalidate>
+
+      <!-- BUSCADOR DE CLIENTES PROFESIONAL (solo en creación) -->
+      <div *ngIf="!modoEdicion" style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-search" style="color: #066699;"></i>
+          Buscar Cliente
+        </label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 1rem; pointer-events: none;">
+            <i class=""></i>
+          </span>
+          <input 
+            type="text" 
+            [(ngModel)]="terminoBusquedaCliente"
+            (input)="filtrarClientes()"
+            name="buscarCliente"
+            placeholder="Buscar por nombre o apellido..."
+            style="width: 100%; padding-left: 2.75rem; padding-right: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+        </div>
+      </div>
+
+      <!-- CLIENTE PROFESIONAL -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-user" style="color: #066699;"></i>
+          Cliente <span style="color: #dc3545;">*</span>
+        </label>
+        <select 
+          [(ngModel)]="formularioCredito.id_cliente"
+          (change)="validarCliente()"
+          name="id_cliente"
+          [disabled]="tienePagos || modoEdicion"
+          required
+          style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
+          onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+          onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          <option value="">Seleccione un cliente</option>
+          <option *ngFor="let cliente of listaClientesFiltrados" [value]="cliente.id_cliente">
+            {{ cliente.nombres }} {{ cliente.apellidos }} - {{ cliente.documento }}
+          </option>
+        </select>
+      </div>
+
+      <!-- FECHA DE CREACIÓN PROFESIONAL (solo en edición) -->
+      <div *ngIf="modoEdicion && creditoEditando" style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-calendar-alt" style="color: #066699;"></i>
+          Fecha de Creación
+          <span *ngIf="!tienePagos" style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">(Editable - Solo si no tiene pagos)</span>
+          <span *ngIf="tienePagos" style="font-size: 0.75rem; color: #f59e0b; font-weight: 400;">(No editable - Tiene pagos registrados)</span>
+        </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <input 
+              type="date" 
+              [(ngModel)]="formularioCredito.fecha_toma_credito"
+              (change)="calcularResumen()"
+              name="fecha_toma_credito"
+              [disabled]="tienePagos"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
+              [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
+              onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+          <div>
+            <input 
+              type="time" 
+              [(ngModel)]="formularioCredito.hora_toma_credito"
+              name="hora_toma_credito"
+              [disabled]="tienePagos"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
+              [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
+              onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+        </div>
+        <p *ngIf="tienePagos" style="margin-top: 0.5rem; font-size: 0.75rem; color: #f59e0b; display: flex; align-items: center; gap: 0.375rem;">
+          <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
+          La fecha no puede modificarse porque este crédito ya tiene pagos registrados
+        </p>
+        <p *ngIf="!tienePagos" style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
+          <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
+          Al cambiar la fecha, el plan de pagos se recalculará automáticamente
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- MONTO DEL CRÉDITO PROFESIONAL -->
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-dollar-sign" style="color: #066699;"></i>
+            Monto del Crédito <span style="color: #dc3545;">*</span>
+          </label>
+          <div style="position: relative;">
+            <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 1rem; font-weight: 600; pointer-events: none;"></span>
+            <input 
+              type="number" 
+              [(ngModel)]="formularioCredito.monto_credito"
+              (input)="calcularResumen()"
+              name="monto_credito"
+              step="0.01"
+              min="0.01"
+              [value]="formularioCredito.monto_credito || 0.01"
+              [disabled]="tienePagos"
+              required
+              style="width: 100%; padding-left: 2.5rem; padding-right: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem; font-size: 1rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
+              [style.cursor]="tienePagos ? 'not-allowed' : 'text'"
+              onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+        </div>
+
+        <!-- PLAZO (DÍAS) PROFESIONAL -->
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-calendar-day" style="color: #066699;"></i>
+            Plazo (Días) <span style="color: #dc3545;">*</span>
+          </label>
+          <select 
+            [(ngModel)]="formularioCredito.cuotas"
+            (change)="calcularResumen()"
+            name="cuotas"
+            [disabled]="tienePagos"
+            required
+            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
+            [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
+            [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
+            onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+            <option value="31">31 días</option>
+            <option value="40">40 días</option>
+            <option value="70">70 días</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- FRECUENCIA DE PAGO PROFESIONAL -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-sync-alt" style="color: #066699;"></i>
+          Frecuencia de Pago <span style="color: #dc3545;">*</span>
+        </label>
+        <select 
+          [(ngModel)]="formularioCredito.frecuencia_pago"
+          (change)="calcularResumen()"
+          name="frecuencia_pago"
+          [disabled]="tienePagos"
+          required
+          style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
+          [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
+          [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
+          onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+          onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          <option value="diario">Diario</option>
+          <option value="semanal">Semanal</option>
+          <option value="quincenal">Quincenal</option>
+          <option value="mensual">Mensual</option>
+        </select>
+      </div>
+
+      <!-- CHECKBOX SEGURO PROFESIONAL -->
+      <div style="margin-bottom: 1.5rem; padding: 1rem; background-color: #f8f8ec; border: 2px solid #e5e7eb; border-radius: 0.5rem;">
+        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="formularioCredito.incluir_seguro"
+            (change)="calcularResumen()"
+            name="incluir_seguro"
+            [checked]="formularioCredito.incluir_seguro"
+            [disabled]="tienePagos"
+            style="width: 1.25rem; height: 1.25rem; accent-color: #066699; cursor: pointer;">
+          <span style="font-size: 0.875rem; color: #02416d; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-shield-alt" style="color: #066699;"></i>
+            Incluir seguro ($5 por cada $100)
+          </span>
+        </label>
+      </div>
+
+      <!-- RESUMEN DEL CRÉDITO PROFESIONAL -->
+      <div style="background: linear-gradient(135deg, #f8f8ec 0%, #ffffff 100%); border: 2px solid #aedd2b; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-clipboard-check" style="color: #aedd2b;"></i>
+          Resumen del Crédito
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #ffffff; border-radius: 0.375rem; border: 1px solid #e5e7eb;">
+            <span style="font-size: 0.875rem; color: #6b7280; font-weight: 500;">Monto del crédito:</span>
+            <span style="font-size: 0.875rem; color: #02416d; font-weight: 700;">${{ formatearMoneda(resumen.monto_credito) }}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #ffffff; border-radius: 0.375rem; border: 1px solid #e5e7eb;">
+            <span style="font-size: 0.875rem; color: #6b7280; font-weight: 500;">Seguro:</span>
+            <span style="font-size: 0.875rem; color: #02416d; font-weight: 700;">${{ formatearMoneda(resumen.seguro) }}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: rgba(16, 185, 129, 0.1); border-radius: 0.375rem; border: 1px solid rgba(16, 185, 129, 0.3);">
+            <span style="font-size: 0.875rem; color: #10b981; font-weight: 600;">Monto a entregar al cliente:</span>
+            <span style="font-size: 0.875rem; color: #10b981; font-weight: 700;">${{ formatearMoneda(resumen.monto_entregar) }}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #ffffff; border-radius: 0.375rem; border: 1px solid #e5e7eb;">
+            <span style="font-size: 0.875rem; color: #6b7280; font-weight: 500;">Intereses:</span>
+            <span style="font-size: 0.875rem; color: #02416d; font-weight: 700;">${{ formatearMoneda(resumen.intereses) }}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); border-radius: 0.5rem; border: 2px solid #aedd2b; margin-top: 0.5rem;">
+            <span style="font-size: 1rem; color: #02416d; font-weight: 800;">Total a pagar:</span>
+            <span style="font-size: 1.125rem; color: #02416d; font-weight: 800;">${{ formatearMoneda(resumen.total_pagar) }}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #ffffff; border-radius: 0.375rem; border: 1px solid #e5e7eb;">
+            <span style="font-size: 0.875rem; color: #6b7280; font-weight: 500;">Fecha de finalización:</span>
+            <span style="font-size: 0.875rem; color: #02416d; font-weight: 700;">{{ resumen.fecha_finalizacion }}</span>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+
+    <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
+    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
+      <button 
+        type="button"
+        (click)="cerrarModalCredito()"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
+        Cancelar
+      </button>
+
+      <button 
+        type="button"
+        (click)="guardarCredito($event)"
+        [disabled]="tienePagos"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
+        [style.opacity]="tienePagos ? '0.5' : '1'"
+        [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
+        onmouseover="if(!tienePagos) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
+        {{ modoEdicion ? 'Actualizar Crédito' : 'Crear Crédito' }}
+      </button>
+
+      <button 
+        *ngIf="modoEdicion && !tienePagos"
+        type="button"
+        (click)="eliminarCredito()"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: #ffffff;"
+        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
+        Eliminar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PLAN DE PAGOS -->
+<!-- MODAL PLAN DE PAGOS PROFESIONAL -->
+<div id="modalPlanPagos"
+  class="modal-plan-pagos-backdrop fixed inset-0 hidden items-center justify-center z-50 p-0"
+  style="background: transparent; backdrop-filter: none;"
+  (click)="cerrarModalPlanPagos()">
+
+  <div class="modal-plan-pagos-container bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+       style="display: flex; flex-direction: column;"
+       (click)="$event.stopPropagation()">
+
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div class="modal-plan-pagos-header" style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-calendar-check" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+              <i class="fas fa-chart-line" style="margin-right: 0.5rem; color: #aedd2b;"></i>
+              Plan de Pagos
+            </h3>
+            <p *ngIf="planPagosInfo" style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-user" style="font-size: 0.875rem;"></i>
+              Cliente: {{ planPagosInfo.nombres_cliente }} {{ planPagosInfo.apellidos_cliente }}
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalPlanPagos()"
+          style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+          onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
+          onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div class="modal-plan-pagos-body" style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
+
+      <!-- INFORMACIÓN DEL CRÉDITO PROFESIONAL -->
+      <div *ngIf="planPagosInfo" style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #066699;">
+          <i class="fas fa-info-circle" style="color: #066699;"></i>
+          Información del Crédito
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-hashtag" style="color: #066699; font-size: 0.625rem;"></i>
+              Número de Crédito
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
+              #{{ planPagosInfo.id_credito }}
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-dollar-sign" style="color: #066699; font-size: 0.625rem;"></i>
+              Monto Total
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
+              ${{ formatearMoneda(planPagosInfo.saldo_actual) }}
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-calendar-alt" style="color: #066699; font-size: 0.625rem;"></i>
+              Plazo
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
+              {{ planPagosInfo.cuotas }} días
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-play-circle" style="color: #10b981; font-size: 0.625rem;"></i>
+              Fecha de Inicio
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
+              {{ formatearFechaCorta(planPagosInfo.fecha_toma_credito) }}
+            </div>
+          </div>
+          <div *ngIf="planPagosInfo.tipo_credito !== 'refinanciado_por_sistema'" style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-stop-circle" style="color: #dc3545; font-size: 0.625rem;"></i>
+              Fecha de Fin
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
+              {{ formatearFechaCorta(planPagosInfo.fecha_finaliza_credito) }}
+            </div>
+          </div>
+          <div *ngIf="planPagosInfo.tipo_credito === 'refinanciado_por_sistema'" class="md:col-span-2" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #92400e; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-exclamation-triangle" style="color: #f59e0b; font-size: 0.625rem;"></i>
+              Advertencia
+            </div>
+            <div style="font-size: 0.9375rem; color: #92400e; font-weight: 700;">
+              ⚠️ Esta refinación se debe hacer el mes
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-sync-alt" style="color: #066699; font-size: 0.625rem;"></i>
+              Frecuencia
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700; text-transform: capitalize;">
+              <span *ngIf="planPagosInfo.tipo_credito === 'refinanciado_por_sistema'" style="color: #dc3545;">Pago Urgente</span>
+              <span *ngIf="planPagosInfo.tipo_credito !== 'refinanciado_por_sistema'">{{ planPagosInfo.frecuencia_pago }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MENSAJE ESPECIAL PARA REFINANCIADOS POR SISTEMA PROFESIONAL -->
+      <div *ngIf="planPagosInfo && planPagosInfo.tipo_credito === 'refinanciado_por_sistema'" 
+           style="margin-bottom: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-radius: 0.75rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: start; gap: 1rem;">
+          <div style="flex-shrink: 0; width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #ffffff;"></i>
+          </div>
+          <div style="flex: 1;">
+            <h4 style="font-size: 1.125rem; font-weight: 800; color: #92400e; margin: 0 0 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+              ⚠️ Crédito Refinanciado por Sistema
+            </h4>
+            <p style="font-size: 0.875rem; color: #78350f; margin: 0 0 0.5rem 0; font-weight: 500; line-height: 1.6;">
+              Este crédito fue refinanciado automáticamente. <strong style="color: #92400e;">Esta refinación se debe hacer el mes.</strong>
+            </p>
+            <p style="font-size: 0.875rem; color: #78350f; margin: 0; font-weight: 500; line-height: 1.6;">
+              Si no se paga en el mes, el ciclo vuelve a repetir donde la fecha finaliza crédito será la fecha de corte.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESUMEN DE CUOTAS PARA REFINANCIADOS PROFESIONAL -->
+      <div *ngIf="planPagosInfo && planPagosInfo.tipo_credito === 'refinanciado_por_sistema'" 
+           style="margin-bottom: 1.5rem;" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%); border: 2px solid #10b981; border-radius: 0.75rem; padding: 1.25rem; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+          <div style="font-size: 2rem; font-weight: 800; color: #10b981; margin-bottom: 0.5rem;">{{ planPagosInfo.cuotas_pagadas || 0 }}</div>
+          <div style="font-size: 0.875rem; color: #02416d; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
+            <i class="fas fa-check-circle" style="font-size: 0.75rem;"></i>
+            Cuotas Pagadas
+          </div>
+        </div>
+        <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-radius: 0.75rem; padding: 1.25rem; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+          <div style="font-size: 2rem; font-weight: 800; color: #f59e0b; margin-bottom: 0.5rem;">{{ planPagosInfo.cuotas_pendientes || 0 }}</div>
+          <div style="font-size: 0.875rem; color: #02416d; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
+            <i class="fas fa-clock" style="font-size: 0.75rem;"></i>
+            Cuotas Pendientes
+          </div>
+        </div>
+        <div style="background: linear-gradient(135deg, rgba(220, 53, 69, 0.15) 0%, rgba(220, 53, 69, 0.05) 100%); border: 2px solid #dc3545; border-radius: 0.75rem; padding: 1.25rem; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+          <div style="font-size: 2rem; font-weight: 800; color: #dc3545; margin-bottom: 0.5rem;">{{ planPagosInfo.cuotas_vencidas || 0 }}</div>
+          <div style="font-size: 0.875rem; color: #02416d; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
+            <i class="fas fa-exclamation-circle" style="font-size: 0.75rem;"></i>
+            Cuotas Vencidas
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLA DE PLAN DE PAGOS PROFESIONAL -->
+      <div *ngIf="planPagosInfo && planPagosInfo.tipo_credito !== 'refinanciado_por_sistema'" 
+           style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #066699;">
+          <i class="fas fa-list-alt" style="color: #066699;"></i>
+          Cuotas del Plan de Pagos
+        </h3>
+        <div class="overflow-x-auto rounded-xl border-2 border-[#e5e7eb] shadow-lg" style="background-color: #ffffff;">
+          <div class="inline-block min-w-full align-middle">
+            <div class="overflow-hidden">
+              <table class="min-w-full text-xs sm:text-sm" style="background-color: #ffffff;">
+                <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%);">
+                  <tr>
+                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;">#</th>
+                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;">Fecha</th>
+                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;" class="hidden sm:table-cell">Monto Cuota</th>
+                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;" class="hidden md:table-cell">Monto Restante</th>
+                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;">Estado</th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #ffffff; border-top: 2px solid #e5e7eb;">
+                  <!-- CARGANDO -->
+                  <tr *ngIf="cargandoPlanPagos">
+                    <td [attr.colspan]="5" style="padding: 3rem; text-align: center;">
+                      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3" style="border-color: #066699; border-top-color: transparent;"></div>
+                        <span style="color: #02416d; font-size: 0.875rem; font-weight: 600;">Cargando plan de pagos...</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- LISTA DE CUOTAS -->
+                  <tr *ngFor="let cuota of listaPlanPagos" 
+                      style="border-bottom: 1px solid #e5e7eb; transition: all 0.2s; background-color: #ffffff;"
+                      onmouseover="this.style.backgroundColor='rgba(174, 221, 43, 0.05)'"
+                      onmouseout="this.style.backgroundColor='#ffffff'">
+                    <td style="padding: 0.875rem 1rem; color: #02416d; font-weight: 700;">
+                      <span style="background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 700;">#{{ cuota.numero_cuota }}</span>
+                    </td>
+                    <td style="padding: 0.875rem 1rem; color: #02416d; font-size: 0.8125rem;">
+                      <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 600;">{{ formatearFechaCorta(cuota.fecha_pago) }}</span>
+                        <span class="sm:hidden" style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">
+                          ${{ formatearMoneda(cuota.monto_cuota) }}
+                        </span>
+                      </div>
+                    </td>
+                    <td style="padding: 0.875rem 1rem; color: #02416d; font-size: 0.8125rem; font-weight: 600;" class="hidden sm:table-cell">${{ formatearMoneda(cuota.monto_cuota) }}</td>
+                    <td style="padding: 0.875rem 1rem; color: #02416d; font-size: 0.8125rem; font-weight: 600;" class="hidden md:table-cell">${{ formatearMoneda(cuota.monto_restante) }}</td>
+                    <td style="padding: 0.875rem 1rem;">
+                      <span *ngIf="cuota.estado === 'pagada'" 
+                            style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; white-space: nowrap;">
+                        <i class="fas fa-check-circle" style="font-size: 0.625rem;"></i>
+                        Pagada
+                      </span>
+                      <span *ngIf="cuota.estado === 'vencida'" 
+                            style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: #ffffff; white-space: nowrap;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 0.625rem;"></i>
+                        Vencida
+                      </span>
+                      <span *ngIf="cuota.estado === 'pendiente'" 
+                            style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; white-space: nowrap;">
+                        <i class="fas fa-clock" style="font-size: 0.625rem;"></i>
+                        Pendiente
+                      </span>
+                    </td>
+                  </tr>
+
+                  <!-- SIN REGISTROS -->
+                  <tr *ngIf="!cargandoPlanPagos && listaPlanPagos.length === 0">
+                    <td [attr.colspan]="5" style="padding: 3rem; text-align: center;">
+                      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <i class="fas fa-inbox" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
+                        <span style="color: #02416d; font-size: 0.9375rem; font-weight: 600;">No hay cuotas registradas para este crédito.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER CON BOTÓN CERRAR - SIEMPRE VISIBLE -->
+    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); border-radius: 0 0 0.75rem 0.75rem;">
+      <button 
+        (click)="cerrarModalPlanPagos()"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff;"
+        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
+        <i class="fas fa-times"></i>
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>

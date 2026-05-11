@@ -1,0 +1,110 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="index3.html" class="brand-link">
+    <img src="assets/dist/img/iconorutalan.png" alt="AdminLTE Logo" class="brand-image" />
+    <span class="brand-text font-weight-light" style="color: #0172b8; font-weight: bold"
+      >RUTALAN</span
+    >
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="info">
+        <span class="block font-semibold">
+          {{ usuario?.nombre }}
+        </span>
+
+        <span class="block text-xs text-gray-400 capitalize"> Rol: {{ usuario?.rol }} </span>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+        <!-- DASHBOARD (Solo Administradores) -->
+        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
+          <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active" class="nav-link">
+            <i class="nav-icon fas fa-chart-pie"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a [routerLink]="['/clientes']" routerLinkActive="router-link-active" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Clientes</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a [routerLink]="['/creditos']" routerLinkActive="router-link-active" class="nav-link">
+            <i class="nav-icon fas fa-hand-holding-usd"></i>
+            <p>creditos</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a [routerLink]="['/cobros']" routerLinkActive="router-link-active" class="nav-link">
+            <i class="nav-icon fas fa-money-bill-wave"></i>
+            <p>Cobros</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a [routerLink]="['/gastos']" routerLinkActive="router-link-active" class="nav-link">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <p>Gastos</p>
+          </a>
+        </li>
+
+        <!-- CAJA (Solo Administradores) -->
+        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
+          <a [routerLink]="['/caja']" routerLinkActive="router-link-active" class="nav-link">
+            <i class="nav-icon fas fa-cash-register"></i>
+            <p>Caja</p>
+          </a>
+        </li>
+
+        <!-- ADMINISTRADOR (Solo Administradores) -->
+        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
+          <a
+            [routerLink]="['/administrador']"
+            routerLinkActive="router-link-active"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-user-shield"></i>
+            <p>Administrador</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
+          <a
+            [routerLink]="['/informes']"
+            routerLinkActive="router-link-active"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-chart-bar"></i>
+            <p>Informes</p>
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+            <a href="pages/widgets.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Widgets
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li> -->
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

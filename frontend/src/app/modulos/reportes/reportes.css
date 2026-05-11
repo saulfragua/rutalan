@@ -1,0 +1,52 @@
+/* Estilos para el módulo de reportes */
+.registro-item {
+  font-size: 0.8rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.registro-item:last-child {
+  border-bottom: none;
+}
+
+.registros-container {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 10px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.registro-monto {
+  font-weight: bold;
+}
+
+.registro-fecha {
+  color: #6c757d;
+  font-size: 0.75rem;
+}
+
+.registro-desc {
+  color: #495057;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cierre-desglose {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.cierre-actual {
+  font-size: 1.2rem;
+  color: rgb(255, 0, 0);
+}
+
+.usuario-caja-anterior {
+  font-size: 0.8rem;
+  color: #495057;
+  font-weight: bold;
+}

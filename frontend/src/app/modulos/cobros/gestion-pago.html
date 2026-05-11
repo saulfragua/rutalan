@@ -1,0 +1,913 @@
+<!-- CONTENEDOR GESTIÓN DE PAGO -->
+<div
+  class="w-full h-full overflow-auto gestion-pago-container"
+  style="background-color: #f8f8ec; padding: 0.5rem"
+>
+  <div
+    class="bg-white rounded-xl shadow-xl border-2 border-[#e5e7eb] p-2 md:p-6 min-h-full max-w-6xl mx-auto"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)"
+  >
+    <!-- ENCABEZADO COMPACTO -->
+    <div
+      class="mb-2 md:mb-6"
+      style="border-bottom: 2px solid #aedd2b; padding-bottom: 0.5rem; md:padding-bottom: 1.5rem;"
+    >
+      <div class="flex items-center gap-2 md:gap-4 mb-1 md:mb-3">
+        <div
+          class="hidden md:flex"
+          style="width: 48px; height: 48px; md:width: 64px; md:height: 64px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 0.5rem; md:border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);"
+        >
+          <i
+            class="fas fa-hand-holding-usd"
+            style="font-size: 1.25rem; md:font-size: 2rem; color: #ffffff;"
+          ></i>
+        </div>
+        <div style="flex: 1">
+          <h2
+            style="font-size: 1rem; md:font-size: 2rem; font-weight: 700; md:font-weight: 800; color: #02416d; margin-bottom: 0.25rem; md:margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; md:gap: 0.75rem;"
+          >
+            <i
+              class="fas fa-chart-line"
+              style="color: #aedd2b; font-size: 0.875rem; md:font-size: 1.75rem;"
+            ></i>
+            <span class="truncate">{{ nombreRuta }}</span>
+          </h2>
+          <p
+            class="hidden md:flex"
+            style="color: #6b7280; font-size: 0.75rem; md:font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;"
+          >
+            <i
+              class="fas fa-info-circle"
+              style="color: #066699; font-size: 0.75rem; md:font-size: 0.875rem;"
+            ></i>
+            Gestión de pagos y cobranza por cliente
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL CON SWIPE -->
+    <div
+      *ngIf="clienteActual"
+      class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 swipe-container"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)"
+      style="touch-action: pan-y"
+    >
+      <!-- COLUMNA IZQUIERDA: Información del Cliente -->
+      <div class="md:col-span-2">
+        <!-- Indicador de Estado COMPACTO -->
+        <div
+          class="mb-2 md:mb-4 p-2 md:p-4 rounded-lg font-bold text-center"
+          [style]="colorFondo"
+          style="
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+          "
+        >
+          <div
+            style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; md:gap: 0.75rem;"
+          >
+            <i class="fas fa-info-circle" style="font-size: 0.875rem; md:font-size: 1.25rem;"></i>
+            <span style="font-size: 0.75rem; md:font-size: 1rem;">{{ leyenda }}</span>
+          </div>
+        </div>
+
+        <!-- Información del Cliente COMPACTO -->
+        <div
+          class="bg-white rounded-lg p-2 md:p-5 mb-2 md:mb-4 border-2 border-[#e5e7eb] shadow-md"
+          style="background-color: #ffffff"
+        >
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-3 mb-2 md:mb-4">
+            <div class="flex-1 relative">
+              <span
+                class="absolute left-2 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 text-[#066699] font-bold text-xs sm:text-sm pointer-events-none"
+                >#</span
+              >
+              <input
+                type="text"
+                class="w-full pl-6 sm:pl-8 md:pl-10 pr-2 sm:pr-3 md:pr-4 py-2 sm:py-2.5 md:py-3 bg-[#f8f8ec] border-2 border-[#e5e7eb] rounded-lg text-[#02416d] text-xs sm:text-sm md:text-base font-semibold"
+                readonly
+                [value]="
+                  clienteActual.orden_cobranza +
+                  '. ' +
+                  clienteActual.nombres +
+                  ' ' +
+                  clienteActual.apellidos
+                "
+              />
+            </div>
+            <div class="flex items-center gap-2">
+              <span
+                *ngIf="mostrarCheck"
+                class="text-green-600 text-xl sm:text-2xl md:text-3xl flex-shrink-0"
+                >✅</span
+              >
+              <!-- Botón Ver Foto del Cliente - Visible en todos los tamaños -->
+              <button
+                *ngIf="clienteActual.foto_cliente"
+                (click)="abrirModalFoto()"
+                type="button"
+                class="flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap flex-shrink-0"
+                title="Ver foto del cliente">
+              <span class="hidden sm:inline">Ver Foto</span>
+              </button>
+            </div>
+          </div>
+
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); md:grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.5rem; md:gap: 1rem; margin-top: 0.5rem; md:margin-top: 1rem;"
+          >
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: #f8f8ec; border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid #e5e7eb;"
+            >
+              <i
+                class="fas fa-map-marker-alt"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div style="min-width: 0; flex: 1">
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Dirección
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #02416d; font-weight: 500; word-break: break-word;"
+                >
+                  {{ clienteActual.direccion }}
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: #f8f8ec; border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid #e5e7eb;"
+            >
+              <i
+                class="fas fa-phone"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Teléfono
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #02416d; font-weight: 500;"
+                >
+                  {{ clienteActual.telefono }}
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: #f8f8ec; border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid #e5e7eb;"
+            >
+              <i
+                class="fas fa-calendar-alt"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Fecha Crédito
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #02416d; font-weight: 500;"
+                >
+                  {{ clienteActual.fecha_toma_credito }}
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: #f8f8ec; border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid #e5e7eb;"
+            >
+              <i
+                class="fas fa-sync-alt"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Frecuencia
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #02416d; font-weight: 500;"
+                >
+                  <span
+                    *ngIf="clienteActual.tipo_credito === 'refinanciado_por_sistema'"
+                    style="color: #dc3545; font-weight: 700"
+                    >RECLAMO</span
+                  >
+                  <span
+                    *ngIf="clienteActual.tipo_credito !== 'refinanciado_por_sistema'"
+                    class="capitalize"
+                    >{{ clienteActual.frecuencia_pago || '-' }}</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: #f8f8ec; border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid #e5e7eb;"
+            >
+              <i
+                class="fas fa-credit-card"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Tipo Crédito
+                </div>
+                <div style="font-size: 0.6875rem; md:font-size: 0.875rem; font-weight: 600;">
+                  <span
+                    *ngIf="clienteActual.tipo_credito === 'refinanciado_por_sistema'"
+                    style="color: #dc3545"
+                    >Refinanciado por Sistema</span
+                  >
+                  <span *ngIf="clienteActual.tipo_credito === 'refinanciado'" style="color: #f59e0b"
+                    >Refinanciado</span
+                  >
+                  <span
+                    *ngIf="clienteActual.tipo_credito === 'comun' || !clienteActual.tipo_credito"
+                    style="color: #10b981"
+                    >Común</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: rgba(16, 185, 129, 0.1); border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid rgba(16, 185, 129, 0.3);"
+            >
+              <i
+                class="fas fa-check-circle"
+                style="color: #10b981; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #10b981; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Cuotas Pagadas
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #10b981; font-weight: 700;"
+                >
+                  {{ clienteActual.cuotas_pagadas || 0 }}
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: rgba(245, 158, 11, 0.1); border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid rgba(245, 158, 11, 0.3);"
+            >
+              <i
+                class="fas fa-clock"
+                style="color: #f59e0b; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+              ></i>
+              <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #f59e0b; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Cuotas Pendientes
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #f59e0b; font-weight: 700;"
+                >
+                  {{ clienteActual.cuotas_pendientes || 0 }}
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; align-items: start; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem; md:padding: 0.75rem; background-color: rgba(220, 53, 69, 0.1); border-radius: 0.375rem; md:border-radius: 0.5rem; border: 1px solid rgba(220, 53, 69, 0.3);"
+            >
+              <i
+                class="fas fa-exclamation-circle"
+                style="color: #dc3545; font-size: 0.75rem; md:font-size: 1rem; margin-top: 0.125rem;"
+                ></i>
+                <div>
+                <div
+                  style="font-size: 0.625rem; md:font-size: 0.75rem; color: #dc3545; font-weight: 600; text-transform: uppercase; margin-bottom: 0.125rem; md:margin-bottom: 0.25rem;"
+                >
+                  Cuotas Vencidas
+                </div>
+                <div
+                  style="font-size: 0.6875rem; md:font-size: 0.875rem; color: #dc3545; font-weight: 700;"
+                >
+                  {{ clienteActual.cuotas_vencidas || 0 }}
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="clienteActual.tipo_credito !== 'refinanciado_por_sistema'"
+              style="
+                display: flex;
+                align-items: start;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                background-color: #f8f8ec;
+                border-radius: 0.5rem;
+                border: 1px solid #e5e7eb;
+              "
+            >
+              <i
+                class="fas fa-calendar-check"
+                style="color: #066699; font-size: 1rem; margin-top: 0.125rem"
+              ></i>
+              <div>
+                <div
+                  style="
+                    font-size: 0.75rem;
+                    color: #6b7280;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    margin-bottom: 0.25rem;
+                  "
+                >
+                  Fecha Finaliza
+                </div>
+                <div style="font-size: 0.875rem; color: #02416d; font-weight: 500">
+                  {{ clienteActual.fecha_finaliza_credito }}
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="clienteActual.tipo_credito === 'refinanciado_por_sistema'"
+              style="
+                grid-column: 1 / -1;
+                padding: 1rem;
+                background: linear-gradient(
+                  135deg,
+                  rgba(220, 53, 69, 0.1) 0%,
+                  rgba(220, 53, 69, 0.05) 100%
+                );
+                border-radius: 0.5rem;
+                border: 2px solid rgba(220, 53, 69, 0.3);
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 0.75rem">
+                <i
+                  class="fas fa-exclamation-triangle"
+                  style="color: #dc3545; font-size: 1.5rem"
+                ></i>
+                <div>
+                  <div
+                    style="
+                      font-size: 0.875rem;
+                      color: #dc3545;
+                      font-weight: 700;
+                      margin-bottom: 0.25rem;
+                    "
+                  >
+                    ⚠️ Pago Urgente
+                  </div>
+                  <div style="font-size: 0.8125rem; color: #6b7280">
+                    Contactar al cliente para acordar nuevo plan de pagos.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saldo Actual COMPACTO -->
+        <div class="mb-2 md:mb-4">
+          <label
+            style="display: block; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.375rem; md:margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem; md:gap: 0.5rem;"
+          >
+            <i
+              class="fas fa-wallet"
+              style="color: #066699; font-size: 0.75rem; md:font-size: 1rem;"
+            ></i>
+            Saldo Actual
+          </label>
+          <div style="position: relative">
+            <span
+              style="position: absolute; left: 0.75rem; md:left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.875rem; md:font-size: 1rem; font-weight: 600; pointer-events: none;"
+              ></span
+            >
+            <input
+              type="text"
+              style="width: 100%; padding-left: 2rem; md:padding-left: 2.5rem; padding-right: 0.75rem; md:padding-right: 1rem; padding-top: 0.5rem; md:padding-top: 0.75rem; padding-bottom: 0.5rem; md:padding-bottom: 0.75rem; background-color: #f8f8ec; border: 2px solid #e5e7eb; border-radius: 0.5rem; color: #02416d; font-size: 0.9375rem; md:font-size: 1.125rem; font-weight: 700;"
+              readonly
+              [value]="formatearMonto(clienteActual.saldo_actual)"
+            />
+          </div>
+        </div>
+
+        <!-- Formulario de Pago COMPACTO -->
+        <form (ngSubmit)="registrarPago()" class="space-y-2 md:space-y-4">
+          <div>
+            <label
+              style="display: block; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.375rem; md:margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem; md:gap: 0.5rem;"
+            >
+              <i
+                class="fas fa-dollar-sign"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem;"
+              ></i>
+              Monto a Pagar <span style="color: #dc3545">*</span>
+            </label>
+            <div style="position: relative">
+              <span
+                style="position: absolute; left: 0.75rem; md:left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.875rem; md:font-size: 1rem; font-weight: 600; pointer-events: none;"
+                ></span
+              >
+              <input
+                type="number"
+                [(ngModel)]="montoPago"
+                name="monto"
+                style="width: 100%; padding-left: 2rem; md:padding-left: 2.5rem; padding-right: 0.75rem; md:padding-right: 1rem; padding-top: 0.5rem; md:padding-top: 0.75rem; padding-bottom: 0.5rem; md:padding-bottom: 0.75rem; font-size: 0.875rem; md:font-size: 1rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+                step="0.01"
+                min="0"
+                [max]="clienteActual.saldo_actual"
+                value="0"
+                required
+                onfocus="
+                  this.style.borderColor = '#aedd2b';
+                  this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+                "
+                onblur="
+                  this.style.borderColor = '#e5e7eb';
+                  this.style.boxShadow = 'none';
+                "
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              style="display: block; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.375rem; md:margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem; md:gap: 0.5rem;"
+            >
+              <i
+                class="fas fa-percent"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem;"
+              ></i>
+              Descuento
+              <span
+                style="color: #6b7280; font-weight: 400; font-size: 0.6875rem; md:font-size: 0.875rem;"
+                >(Opcional)</span
+              >
+            </label>
+            <div style="position: relative">
+              <span
+                style="position: absolute; left: 0.75rem; md:left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.875rem; md:font-size: 1rem; font-weight: 600; pointer-events: none;"
+                ></span
+              >
+              <input
+                type="number"
+                [(ngModel)]="descuento"
+                name="descuento"
+                style="width: 100%; padding-left: 2rem; md:padding-left: 2.5rem; padding-right: 0.75rem; md:padding-right: 1rem; padding-top: 0.5rem; md:padding-top: 0.75rem; padding-bottom: 0.5rem; md:padding-bottom: 0.75rem; font-size: 0.875rem; md:font-size: 1rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+                step="0.01"
+                min="0"
+                value="0"
+                required
+                onfocus="
+                  this.style.borderColor = '#aedd2b';
+                  this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+                "
+                onblur="
+                  this.style.borderColor = '#e5e7eb';
+                  this.style.boxShadow = 'none';
+                "
+              />
+            </div>
+          </div>
+
+          <!-- Botones de Navegación y Acción (OCULTOS EN MÓVIL) -->
+          <div class="hidden md:grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              (click)="clienteAnterior()"
+              [disabled]="indiceActual === 0"
+              style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                border-radius: 0.5rem;
+                background-color: #6b7280;
+                color: #ffffff;
+                border: 2px solid #6b7280;
+                cursor: pointer;
+                transition: all 0.2s;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              "
+              [style.opacity]="indiceActual === 0 ? '0.5' : '1'"
+              [style.cursor]="indiceActual === 0 ? 'not-allowed' : 'pointer'"
+              onmouseover="
+                if (indiceActual !== 0) {
+                  this.style.transform = 'translateY(-2px)';
+                  this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                }
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              <i class="fas fa-arrow-left"></i>
+              Anterior
+            </button>
+            <button
+              type="button"
+              (click)="clienteSiguiente()"
+              [disabled]="indiceActual === listaClientes.length - 1"
+              style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                border-radius: 0.5rem;
+                background-color: #6b7280;
+                color: #ffffff;
+                border: 2px solid #6b7280;
+                cursor: pointer;
+                transition: all 0.2s;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              "
+              [style.opacity]="indiceActual === listaClientes.length - 1 ? '0.5' : '1'"
+              [style.cursor]="indiceActual === listaClientes.length - 1 ? 'not-allowed' : 'pointer'"
+              onmouseover="
+                if (indiceActual !== listaClientes.length - 1) {
+                  this.style.transform = 'translateY(-2px)';
+                  this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                }
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              Siguiente
+              <i class="fas fa-arrow-right"></i>
+            </button>
+            <button
+              type="submit"
+              [disabled]="procesandoPago"
+              style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.625rem 1rem; md:padding: 0.875rem 1.5rem; font-size: 0.8125rem; md:font-size: 0.9375rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: 2px solid #10b981; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+              [style.opacity]="procesandoPago ? '0.5' : '1'"
+              [style.cursor]="procesandoPago ? 'not-allowed' : 'pointer'"
+              onmouseover="
+                if (!procesandoPago) {
+                  this.style.transform = 'translateY(-2px)';
+                  this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                }
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              <span>{{ procesandoPago ? 'Procesando...' : 'Pagar' }}</span>
+            </button>
+            <button
+              *ngIf="tieneUbicacionGPS()"
+              type="button"
+              (click)="abrirRutaGPS()"
+              style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.625rem 1rem; md:padding: 0.875rem 1.5rem; font-size: 0.8125rem; md:font-size: 0.9375rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: 2px solid #066699; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+              onmouseover="
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              <span>GPS</span>
+            </button>
+          </div>
+
+          <!-- Indicador de swipe en móvil -->
+          <div class="md:hidden text-center py-2" style="color: #6b7280; font-size: 0.75rem">
+            <i class="fas fa-hand-pointer" style="margin-right: 0.5rem"></i>
+            Desliza izquierda/derecha para cambiar cliente
+          </div>
+
+          <!-- Botones de Acción (VISIBLES SOLO EN MÓVIL) -->
+          <div class="md:hidden space-y-2">
+            <!-- Primera fila: Pagar y GPS -->
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                type="submit"
+                [disabled]="procesandoPago"
+                style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: 2px solid #10b981; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+                [style.opacity]="procesandoPago ? '0.5' : '1'"
+                [style.cursor]="procesandoPago ? 'not-allowed' : 'pointer'"
+              >
+                <span>{{ procesandoPago ? 'Procesando...' : 'Pagar' }}</span>
+              </button>
+              <button
+                *ngIf="tieneUbicacionGPS()"
+                type="button"
+                (click)="abrirRutaGPS()"
+                style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: 2px solid #066699; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+              >
+                <span>GPS</span>
+              </button>
+              <button
+                *ngIf="!tieneUbicacionGPS()"
+                type="button"
+                disabled
+                style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background-color: #9ca3af; color: #ffffff; border: 2px solid #9ca3af; cursor: not-allowed; opacity: 0.5;"
+              >
+                <i class="fas fa-map-marker-alt"></i>
+                <span>GPS</span>
+              </button>
+            </div>
+            <!-- Segunda fila: Ver Foto (si tiene foto) -->
+            <button
+              *ngIf="clienteActual?.foto_cliente"
+              type="button"
+              (click)="abrirModalFoto()"
+              class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
+            >
+              <span>Ver Foto del Cliente</span>
+            </button>
+          </div>
+
+          <!-- Botón Refinanciar COMPACTO -->
+          <div>
+            <a
+              [routerLink]="['/refinanciar']"
+              [queryParams]="{
+                id_cliente: clienteActual.id_cliente,
+                id_credito: clienteActual.id_credito,
+                saldo: clienteActual.saldo_actual,
+                ruta: idRuta,
+                indice: indiceActual,
+              }"
+              style="display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; md:gap: 0.5rem; width: 100%; padding: 0.5rem 1rem; md:padding: 0.75rem 1.5rem; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #facc15 0%, #eab308 100%); color: #000000; border: 2px solid #facc15; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-decoration: none;"
+              onmouseover="
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              Refinanciar
+            </a>
+          </div>
+
+          <!-- Filtro de Clientes No Cobrados Hoy COMPACTO -->
+          <div>
+            <label
+              style="display: block; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.375rem; md:margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem; md:gap: 0.5rem;"
+            >
+              <i
+                class="fas fa-filter"
+                style="color: #066699; font-size: 0.75rem; md:font-size: 1rem;"
+              ></i>
+              Clientes no cobrados hoy
+            </label>
+            <select
+              (change)="filtrarClientesNoCobradosHoy($event)"
+              style="width: 100%; padding: 0.5rem 0.75rem; md:padding: 0.75rem 1rem; font-size: 0.75rem; md:font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
+              onfocus="
+                this.style.borderColor = '#aedd2b';
+                this.style.boxShadow = '0 0 0 3px rgba(174, 221, 43, 0.1)';
+              "
+              onblur="
+                this.style.borderColor = '#e5e7eb';
+                this.style.boxShadow = 'none';
+              "
+            >
+              <option value="">Todos los clientes</option>
+              <option
+                *ngFor="let cliente of obtenerClientesNoCobradosHoy()"
+                [value]="obtenerIndiceCliente(cliente.id_cliente)"
+              >
+                {{ cliente.nombres }} {{ cliente.apellidos }} ({{ cliente.orden_cobranza }})
+              </option>
+            </select>
+          </div>
+
+          <!-- Botón Volver COMPACTO -->
+          <div>
+            <a
+              [routerLink]="['/cobros']"
+              [queryParams]="{ ruta: idRuta }"
+              style="display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; md:gap: 0.5rem; width: 100%; padding: 0.5rem 1rem; md:padding: 0.75rem 1.5rem; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background-color: #6b7280; color: #ffffff; border: 2px solid #6b7280; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-decoration: none;"
+              onmouseover="
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              Volver a Cobranza
+            </a>
+          </div>
+        </form>
+      </div>
+
+      <!-- COLUMNA DERECHA: Foto del Cliente COMPACTO -->
+      <div class="text-center hidden md:block">
+        <div
+          class="bg-white rounded-lg p-2 md:p-4 min-h-[150px] md:min-h-[200px] flex flex-col justify-center border-2 border-[#e5e7eb] shadow-md"
+          style="background-color: #ffffff"
+        >
+          <!-- Foto visible -->
+          <div *ngIf="mostrarFoto && clienteActual.foto_cliente" class="animate-fadeIn">
+            <div class="mb-2 md:mb-3">
+              <img
+                [src]="obtenerRutaFoto(clienteActual.foto_cliente)"
+                alt="Foto del Cliente"
+                style="width: 100%; border-radius: 0.5rem; margin-bottom: 0.5rem; max-height: 12rem; md:max-height: 16rem; object-fit: contain; margin-left: auto; margin-right: auto; border: 2px solid #e5e7eb; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+                (error)="manejarErrorImagen($event)"
+                loading="lazy"
+              />
+            </div>
+            <button
+              (click)="ocultarFoto()"
+              style="display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem 1rem; md:padding: 0.625rem 1.25rem; font-size: 0.75rem; md:font-size: 0.8125rem; font-weight: 600; border-radius: 0.5rem; background-color: #6b7280; color: #ffffff; border: 2px solid #6b7280; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+              onmouseover="
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              Ocultar Foto
+            </button>
+          </div>
+
+          <!-- Botón para cargar foto -->
+          <div *ngIf="!mostrarFoto && clienteActual.foto_cliente" class="animate-fadeIn">
+            <div class="mb-2 md:mb-3">
+              <i
+                class="fas fa-image"
+                style="font-size: 2rem; md:font-size: 3rem; color: #9ca3af; margin-bottom: 0.5rem;"
+              ></i>
+            </div>
+            <button
+              (click)="cargarFoto()"
+              style="display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; md:gap: 0.5rem; padding: 0.5rem 1rem; md:padding: 0.75rem 1.5rem; font-size: 0.75rem; md:font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: 2px solid #066699; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+              onmouseover="
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+              "
+            >
+              Ver Foto del Cliente
+            </button>
+          </div>
+
+          <!-- Sin foto disponible -->
+          <div *ngIf="!clienteActual.foto_cliente" class="animate-fadeIn">
+            <i
+              class="fas fa-image"
+              style="font-size: 2rem; md:font-size: 3rem; color: #9ca3af; margin-bottom: 0.5rem;"
+            ></i>
+            <p
+              style="color: #6b7280; font-size: 0.75rem; md:font-size: 0.8125rem; display: flex; align-items: center; justify-content: center; gap: 0.375rem;"
+            >
+              <i class="fas fa-info-circle" style="font-size: 0.625rem; md:font-size: 0.75rem;"></i>
+              No hay foto disponible
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAJE SI NO HAY CLIENTE PROFESIONAL -->
+    <div
+      *ngIf="!clienteActual && !cargando"
+      style="
+        text-align: center;
+        padding: 3rem;
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        border: 2px dashed #e5e7eb;
+      "
+    >
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center"
+      >
+        <i class="fas fa-inbox" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem"></i>
+        <p style="color: #02416d; font-size: 0.9375rem; font-weight: 600; margin-bottom: 1rem">
+          No hay clientes con saldo pendiente en esta ruta
+        </p>
+        <a
+          [routerLink]="['/cobros']"
+          style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, #066699 0%, #0a5483 100%);
+            color: #ffffff;
+            border: 2px solid #066699;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+          "
+          onmouseover="
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+          "
+          onmouseout="
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+          "
+        >
+          Volver a Cobranza
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOTO DEL CLIENTE -->
+<div
+  *ngIf="mostrarModalFoto"
+  class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-[rgba(2,65,109,0.75)] backdrop-blur-sm"
+  (click)="cerrarModalFoto()"
+  style="animation: fadeIn 0.2s ease-in-out;"
+>
+  <div
+    class="bg-white rounded-lg sm:rounded-xl shadow-2xl w-full max-w-4xl max-h-[95vh] flex flex-col transform transition-all"
+    (click)="$event.stopPropagation()"
+    style="animation: scaleIn 0.2s ease-in-out;"
+  >
+    <!-- ENCABEZADO DEL MODAL -->
+    <div class="flex-shrink-0 bg-gradient-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-b-4 border-[#aedd2b] rounded-t-lg sm:rounded-t-xl">
+      <div class="flex items-center justify-between gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.15)] rounded-lg sm:rounded-xl flex items-center justify-center border-2 border-[rgba(255,255,255,0.3)] shadow-md flex-shrink-0">
+            <i class="fas fa-user text-white text-base sm:text-xl md:text-2xl drop-shadow-md"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-base sm:text-xl md:text-2xl font-extrabold text-white m-0 drop-shadow-md tracking-wide flex items-center gap-1 sm:gap-2">
+              <i class="fas fa-image text-[#aedd2b] text-sm sm:text-base md:text-lg"></i>
+              <span class="truncate">Foto del Cliente</span>
+            </h3>
+            <p class="text-xs sm:text-sm md:text-base text-[rgba(255,255,255,0.95)] mt-1 sm:mt-1.5 font-medium hidden sm:flex items-center gap-2">
+              <i class="fas fa-info-circle text-xs"></i>
+              <span>{{ clienteActual?.nombres }} {{ clienteActual?.apellidos }}</span>
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalFoto()"
+          type="button"
+          class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-[rgba(255,255,255,0.15)] border-2 border-[rgba(255,255,255,0.2)] rounded-lg sm:rounded-xl text-white text-lg sm:text-xl md:text-2xl cursor-pointer flex items-center justify-center transition-all duration-200 shadow-md hover:bg-[rgba(255,255,255,0.25)] hover:border-[rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 flex-shrink-0"
+          title="Cerrar"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO DEL MODAL CON SCROLL -->
+    <div class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 bg-[#f8f8ec]">
+      <div class="flex flex-col items-center justify-center min-h-full">
+        <img
+          *ngIf="clienteActual?.foto_cliente"
+          [src]="obtenerRutaFoto(clienteActual.foto_cliente)"
+          alt="Foto del Cliente"
+          class="w-full max-w-2xl rounded-lg sm:rounded-xl shadow-xl border-4 border-white"
+          style="object-fit: contain; max-height: calc(95vh - 200px);"
+          (error)="manejarErrorImagen($event)"
+          loading="lazy"
+        />
+        <p *ngIf="!clienteActual?.foto_cliente" class="text-[#6b7280] text-sm sm:text-base font-medium">
+          No hay foto disponible para este cliente
+        </p>
+      </div>
+    </div>
+
+    <!-- PIE DEL MODAL -->
+    <div class="flex-shrink-0 bg-gradient-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-t-4 border-[#aedd2b] rounded-b-lg sm:rounded-b-xl">
+      <div class="flex justify-end gap-2 sm:gap-3">
+        <button
+          (click)="cerrarModalFoto()"
+          type="button"
+          class="inline-flex items-center justify-center gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold rounded-lg bg-white text-[#066699] border-2 border-white cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+        >
+          <span>Cerrar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

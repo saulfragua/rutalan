@@ -1,0 +1,197 @@
+/* ============================================
+   SOBRESCRITURAS DE TAILWIND CON NUEVA PALETA
+   Aplica automáticamente los nuevos colores
+   ============================================ */
+
+/* Fondo oscuro -> Nueva paleta */
+[class*="bg-[#343a40]"],
+[class*="bg-[#2f353a]"],
+[class*="bg-[#2a2a2a]"],
+[class*="bg-[#1f2428]"] {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+}
+
+/* Headers y títulos */
+.text-white:not(.nav-link):not(.brand-text):not(.modal-title):not(.card-title) {
+  color: #02416d !important;
+}
+
+.text-gray-300,
+.text-gray-400 {
+  color: #6b7280 !important;
+}
+
+/* Botones amarillos/dorados -> Verde lima */
+[class*="bg-[#c8982e]"],
+.bg-yellow-500,
+.bg-yellow-600,
+.bg-yellow-400 {
+  background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%) !important;
+  color: #02416d !important;
+  border-color: #aedd2b !important;
+}
+
+[class*="bg-[#c8982e]"]:hover,
+.bg-yellow-500:hover,
+.bg-yellow-600:hover,
+.bg-yellow-400:hover {
+  background: linear-gradient(135deg, #9bc825 0%, #8ab820 100%) !important;
+}
+
+/* Botones azules -> Nueva paleta azul */
+.bg-blue-500,
+.bg-blue-600,
+.bg-indigo-500,
+.bg-indigo-600 {
+  background: linear-gradient(135deg, #066699 0%, #0a5483 100%) !important;
+  color: #ffffff !important;
+  border-color: #066699 !important;
+}
+
+.bg-blue-500:hover,
+.bg-blue-600:hover,
+.bg-indigo-500:hover,
+.bg-indigo-600:hover {
+  background: linear-gradient(135deg, #055580 0%, #094a72 100%) !important;
+}
+
+/* Bordes */
+[class*="border-[#2a2a2a]"],
+.border-gray-600,
+.border-gray-700 {
+  border-color: #e5e7eb !important;
+}
+
+/* Tablas - Headers */
+[class*="bg-[#2f353a]"],
+.bg-gray-800,
+.bg-gray-700 {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Tablas - Fondo blanco forzado */
+table,
+table tbody,
+table tbody tr,
+table tbody td {
+  background-color: #ffffff !important;
+}
+
+table tbody tr:hover {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+/* Tablas con clases específicas de Tailwind */
+[class*="bg-[#343a40]"] tbody,
+.bg-gray-800 tbody,
+.bg-gray-700 tbody {
+  background-color: #ffffff !important;
+}
+
+[class*="bg-[#343a40]"] tbody tr,
+.bg-gray-800 tbody tr,
+.bg-gray-700 tbody tr {
+  background-color: #ffffff !important;
+}
+
+[class*="bg-[#343a40]"] tbody td,
+.bg-gray-800 tbody td,
+.bg-gray-700 tbody td {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+}
+
+/* Cards y contenedores */
+[class*="bg-[#343a40]"],
+.bg-gray-800 {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Inputs */
+input[class*="bg-[#1f2428]"],
+input.bg-gray-800,
+input.bg-gray-700 {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+  border-color: #e5e7eb !important;
+}
+
+input[class*="bg-[#1f2428]"]:focus,
+input.bg-gray-800:focus,
+input.bg-gray-700:focus {
+  border-color: #066699 !important;
+  box-shadow: 0 0 0 3px rgba(6, 102, 153, 0.1) !important;
+}
+
+/* Modales */
+[class*="bg-[#2f353a]"] > div:first-child,
+.modal-header {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  color: #ffffff !important;
+  border-bottom: 3px solid #aedd2b !important;
+}
+
+/* Badges verdes -> Verde lima */
+.bg-green-100,
+.bg-green-500 {
+  background-color: rgba(174, 221, 43, 0.2) !important;
+  color: #02416d !important;
+  border: 1px solid #aedd2b !important;
+}
+
+/* Badges amarillos -> Mantener pero con mejor contraste */
+.bg-yellow-100 {
+  background-color: rgba(255, 193, 7, 0.2) !important;
+  color: #92400e !important;
+  border: 1px solid #ffc107 !important;
+}
+
+/* Badges rojos */
+.bg-red-600,
+.bg-red-500 {
+  background-color: #dc3545 !important;
+  color: #ffffff !important;
+}
+
+/* Links */
+a.text-blue-500,
+a.text-indigo-500 {
+  color: #066699 !important;
+}
+
+a.text-blue-500:hover,
+a.text-indigo-500:hover {
+  color: #0a5483 !important;
+}
+
+/* Focus rings */
+[class*="focus:ring-[#c8982e]"]:focus,
+.focus\:ring-yellow-500:focus {
+  --tw-ring-color: #066699 !important;
+}
+
+/* Hover effects mejorados */
+[class*="hover:bg-[#e0b84f]"]:hover {
+  background: linear-gradient(135deg, #9bc825 0%, #8ab820 100%) !important;
+}
+
+.hover\:bg-blue-600:hover {
+  background: linear-gradient(135deg, #055580 0%, #094a72 100%) !important;
+}
+
+/* Sombras mejoradas */
+.shadow-lg,
+.shadow-xl {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Responsive - Asegurar que los textos sean legibles */
+@media (max-width: 640px) {
+  .text-white:not(.nav-link):not(.brand-text):not(.modal-title):not(.card-title) {
+    color: #02416d !important;
+  }
+}

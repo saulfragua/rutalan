@@ -1,0 +1,111 @@
+/* ============================================
+   SOBRESCRITURA GLOBAL PARA FONDO BLANCO EN TABLAS
+   Asegura que todas las tablas tengan fondo blanco
+   ============================================ */
+
+/* Todas las tablas deben tener fondo blanco */
+table,
+table * {
+  background-color: #ffffff !important;
+}
+
+/* Sobrescribir específicamente el tbody */
+table tbody {
+  background-color: #ffffff !important;
+}
+
+/* Sobrescribir filas de tabla */
+table tbody tr {
+  background-color: #ffffff !important;
+}
+
+/* Sobrescribir celdas de tabla */
+table tbody td {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+}
+
+/* Hover en filas - mantener efecto sutil */
+table tbody tr:hover {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+table tbody tr:hover td {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+/* Headers de tabla - mantener gradiente azul */
+table thead {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+}
+
+table thead th {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Tablas con clases específicas de Tailwind */
+[class*="bg-[#343a40]"] table,
+.bg-gray-800 table,
+.bg-gray-700 table,
+[class*="bg-[#2f353a]"] table {
+  background-color: #ffffff !important;
+}
+
+[class*="bg-[#343a40]"] table tbody,
+.bg-gray-800 table tbody,
+.bg-gray-700 table tbody,
+[class*="bg-[#2f353a]"] table tbody {
+  background-color: #ffffff !important;
+}
+
+[class*="bg-[#343a40]"] table tbody tr,
+.bg-gray-800 table tbody tr,
+.bg-gray-700 table tbody tr,
+[class*="bg-[#2f353a]"] table tbody tr {
+  background-color: #ffffff !important;
+}
+
+[class*="bg-[#343a40]"] table tbody td,
+.bg-gray-800 table tbody td,
+.bg-gray-700 table tbody td,
+[class*="bg-[#2f353a]"] table tbody td {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+}
+
+/* Contenedores de tabla también con fondo blanco */
+.table-container,
+div[class*="overflow-x-auto"] table,
+div[class*="overflow-x-auto"] table tbody,
+div[class*="overflow-x-auto"] table tbody tr,
+div[class*="overflow-x-auto"] table tbody td {
+  background-color: #ffffff !important;
+}
+
+/* Asegurar que los textos sean legibles */
+table tbody td,
+table tbody th {
+  color: #02416d !important;
+}
+
+/* Excepciones para headers - mantener blanco */
+table thead th {
+  color: #ffffff !important;
+}
+
+/* Tablas dentro de modales */
+.modal table,
+.modal table tbody,
+.modal table tbody tr,
+.modal table tbody td {
+  background-color: #ffffff !important;
+}
+
+/* Tablas dentro de cards */
+.card table,
+.card table tbody,
+.card table tbody tr,
+.card table tbody td {
+  background-color: #ffffff !important;
+}

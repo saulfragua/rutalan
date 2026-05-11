@@ -1,0 +1,130 @@
+/* Sidebar profesional con nueva paleta de colores */
+
+.main-sidebar {
+  background: linear-gradient(180deg, #02416d 0%, #0a5483 50%, #066699 100%) !important;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand Logo */
+.brand-link {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  border-bottom: 4px solid #aedd2b !important;
+  padding: 1rem !important;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.brand-link:hover {
+  background: linear-gradient(135deg, #066699 0%, #0a5483 100%) !important;
+}
+
+.brand-image {
+  width: 40px !important;
+  height: auto !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.brand-text {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* User Panel */
+.user-panel {
+  padding: 1.25rem 1rem !important;
+  border-bottom: 1px solid rgba(174, 221, 43, 0.2) !important;
+  margin-bottom: 1rem !important;
+}
+
+.user-panel .info {
+  color: #ffffff;
+}
+
+.user-panel .info span:first-child {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.user-panel .info span:last-child {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: capitalize;
+}
+
+/* Navigation Links */
+.nav-sidebar .nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.nav-sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  margin: 0 0.5rem !important;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-sidebar .nav-link:hover {
+  background-color: rgba(174, 221, 43, 0.15) !important;
+  color: #ffffff !important;
+  transform: translateX(4px);
+}
+
+.nav-sidebar .nav-link.router-link-active,
+.nav-sidebar .nav-link.active {
+  background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%) !important;
+  color: #02416d !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.nav-sidebar .nav-link.router-link-active .nav-icon,
+.nav-sidebar .nav-link.active .nav-icon {
+  color: #02416d !important;
+}
+
+.nav-sidebar .nav-icon {
+  width: 1.25rem;
+  text-align: center;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-sidebar .nav-link:hover .nav-icon {
+  color: #aedd2b;
+}
+
+.nav-sidebar .nav-link p {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .main-sidebar {
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .brand-link {
+    padding: 0.875rem !important;
+  }
+  
+  .brand-text {
+    font-size: 1.125rem !important;
+  }
+}

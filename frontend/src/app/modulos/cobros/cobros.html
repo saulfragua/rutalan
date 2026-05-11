@@ -1,0 +1,205 @@
+<!-- CONTENEDOR COBROS - Mobile First -->
+<div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
+
+  <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 min-h-full">
+
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div class="mb-4 sm:mb-6 border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
+        <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#10b981] to-[#059669] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+          <i class="fas fa-hand-holding-usd text-white text-lg sm:text-xl md:text-2xl"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+            <i class="fas fa-chart-line text-[#aedd2b] text-lg sm:text-xl md:text-2xl"></i>
+            <span class="truncate">Gestión de Cobranza</span>
+          </h2>
+          <p class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2">
+            <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+            <span>Administración de cobros por ruta</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECTOR DE RUTA Y BOTÓN COBRAR - Mobile First -->
+    <div class="mb-4 sm:mb-6 flex flex-col md:flex-row gap-3 items-start md:items-end">
+      <!-- Selector de Ruta -->
+      <div class="flex-1 w-full md:w-auto">
+        <label class="block text-sm sm:text-base font-semibold text-[#02416d] mb-1.5 sm:mb-2 flex items-center gap-2">
+          <i class="fas fa-route text-[#066699] text-xs sm:text-sm"></i>
+          <span>Seleccionar Ruta</span>
+        </label>
+        <select 
+          [(ngModel)]="rutaSeleccionada"
+          (change)="seleccionarRuta(rutaSeleccionada!)"
+          [disabled]="rolUsuario === 'cobrador' && rutasUsuario.length === 1"
+          class="w-full min-w-[280px] px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg transition-all duration-200 outline-none cursor-pointer focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)] disabled:opacity-60 disabled:cursor-not-allowed">
+          <option [value]="null">Seleccionar Ruta</option>
+          <option *ngFor="let ruta of (rolUsuario === 'admin' ? rutas : rutasUsuario)" 
+                  [value]="ruta.id_ruta">
+            {{ ruta.nombre_ruta || ruta.nombre || 'Sin nombre' }}
+          </option>
+        </select>
+        <!-- Info de rutas -->
+        <div class="text-xs sm:text-sm text-[#6b7280] mt-1.5 sm:mt-2 flex items-center gap-1.5" *ngIf="rolUsuario === 'admin'">
+          <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+          <span>Rutas disponibles: {{ rutas.length }}</span>
+        </div>
+        <div class="text-xs sm:text-sm text-[#6b7280] mt-1.5 sm:mt-2 flex items-center gap-1.5" *ngIf="rolUsuario === 'cobrador'">
+          <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+          <span>Rutas asignadas: {{ rutasUsuario.length }}</span>
+        </div>
+      </div>
+
+      <!-- Botón Cobrar Ruta -->
+      <div class="flex flex-row w-full md:w-auto gap-2">
+        <button
+          *ngIf="rutaSeleccionada && tieneCajaAbierta"
+          (click)="irAGestionPago(0)"
+          class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#10b981] to-[#059669] text-white border-2 border-[#10b981] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
+          <span>Cobrar Ruta</span>
+        </button>
+        <button
+          *ngIf="!tieneCajaAbierta && rolUsuario === 'cobrador'"
+          disabled
+          class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-[#9ca3af] text-white border-2 border-[#9ca3af] cursor-not-allowed opacity-60 whitespace-nowrap">
+          <span>Debe abrir caja primero</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLA DE CLIENTES PROFESIONAL -->
+    <div *ngIf="rutaSeleccionada" class="mt-4">
+      <!-- Botón Guardar Orden -->
+      <div class="mb-4">
+        <button
+          (click)="guardarOrden()"
+          class="inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+          <span>Guardar Orden</span>
+        </button>
+      </div>
+
+      <!-- Tabla - Mobile First -->
+      <div class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white -webkit-overflow-scrolling-touch">
+        <div class="inline-block min-w-full align-middle">
+          <div class="overflow-hidden">
+            <table class="min-w-full text-xs sm:text-sm md:text-base bg-white" id="tablaClientes">
+              <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+                <tr>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Orden</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Cliente</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Dirección</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Teléfono</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Saldo</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Días</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Crédito</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Frecuencia</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Pagadas</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Pendientes</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Vencidas</th>
+                  <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha Fin</th>
+                </tr>
+              </thead>
+
+              <tbody class="bg-white border-t-2 border-[#e5e7eb]" id="tbodyClientes" #tbodyClientes>
+                <!-- CARGANDO -->
+                <tr *ngIf="cargando">
+                  <td [attr.colspan]="12" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3"></div>
+                      <span class="text-[#02416d] text-sm sm:text-base font-semibold">Cargando clientes...</span>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- LISTA DE CLIENTES -->
+                <tr *ngFor="let cliente of listaClientes; let i = index; trackBy: trackByCreditoId" 
+                    [attr.data-id]="cliente.id_credito"
+                    [class]="obtenerClaseFila(cliente)"
+                    class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)] cursor-move">
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
+                    <div class="flex items-center gap-1 sm:gap-2">
+                      <i class="fas fa-arrows-alt-v text-[#066699] cursor-move text-[10px] sm:text-xs"></i>
+                      <input 
+                        type="number" 
+                        [(ngModel)]="cliente.orden_cobranza"
+                        (blur)="actualizarOrdenManual(cliente)"
+                        min="1"
+                        class="min-w-[60px] sm:min-w-[80px] w-auto max-w-[120px] px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 bg-white border-2 border-[#e5e7eb] rounded text-[10px] sm:text-xs md:text-sm text-[#02416d] text-center font-semibold transition-all duration-200 outline-none appearance-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)]">
+                    </div>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+                    <div class="flex items-center gap-1 sm:gap-2">
+                      <span class="font-semibold text-[#02416d] text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">{{ cliente.nombres }} {{ cliente.apellidos }}</span>
+                      <span *ngIf="ultimoPagoHoy(cliente.ultimo_pago)" class="text-green-600 text-sm sm:text-base">✅</span>
+                    </div>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[80px] sm:max-w-[120px] md:max-w-none" title="{{ cliente.direccion || '-' }}">{{ cliente.direccion || '-' }}</td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.telefono || '-' }}</td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right font-bold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ formatearMonto(cliente.saldo_actual) }}</td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-center text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                    {{ calcularDiasSinPagar(cliente.ultimo_pago) }} días
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+                    {{ cliente.fecha_toma_credito }}
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+                    <span *ngIf="cliente.tipo_credito === 'refinanciado_por_sistema'" 
+                          class="text-red-600 font-bold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                      RECLAMO
+                    </span>
+                    <span *ngIf="cliente.tipo_credito !== 'refinanciado_por_sistema'" 
+                          class="text-[#02416d] capitalize text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                      {{ cliente.frecuencia_pago || '-' }}
+                    </span>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+                    <span class="text-green-600 font-semibold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.cuotas_pagadas || 0 }}</span>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+                    <span class="text-yellow-600 font-semibold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.cuotas_pendientes || 0 }}</span>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+                    <span class="text-red-600 font-semibold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ cliente.cuotas_vencidas || 0 }}</span>
+                  </td>
+                  <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+                    {{ cliente.fecha_finaliza_credito }}
+                  </td>
+                </tr>
+
+                <!-- SIN REGISTROS -->
+                <tr *ngIf="!cargando && listaClientes.length === 0">
+                  <td [attr.colspan]="12" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+                    <div class="flex flex-col items-center justify-center">
+                      <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
+                      <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay clientes con saldo pendiente en esta ruta</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Guardar Orden al final -->
+      <div class="mt-4">
+        <button
+          (click)="guardarOrden()"
+          class="inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+          <span>Guardar Orden</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MENSAJE SI NO HAY RUTA SELECCIONADA - Mobile First -->
+    <div *ngIf="!rutaSeleccionada" class="text-center p-6 sm:p-8 md:p-12 bg-white rounded-lg sm:rounded-xl border-2 border-dashed border-[#e5e7eb]">
+      <div class="flex flex-col items-center justify-center">
+        <i class="fas fa-route text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
+        <p class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">Seleccione una ruta para ver los clientes con saldo pendiente</p>
+      </div>
+    </div>
+
+  </div>
+</div>

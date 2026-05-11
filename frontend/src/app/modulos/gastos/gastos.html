@@ -1,0 +1,356 @@
+<!-- CONTENEDOR GASTOS - Mobile First -->
+<div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
+
+  <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 min-h-full">
+
+    <!-- ENCABEZADO PROFESIONAL - Mobile First -->
+    <div class="mb-4 sm:mb-6 border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+        <div class="flex-1 w-full sm:w-auto">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#dc3545] to-[#c82333] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+              <i class="fas fa-money-bill-wave text-white text-lg sm:text-xl md:text-2xl"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+                <i class="fas fa-chart-line text-[#aedd2b] text-lg sm:text-xl md:text-2xl"></i>
+                <span class="truncate">Gestión de Gastos</span>
+              </h2>
+              <p class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2">
+                <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+                <span *ngIf="rolUsuario === 'admin'">Registro y administración de gastos del sistema</span>
+                <span *ngIf="rolUsuario === 'cobrador'">Registro de gastos</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex flex-row w-full sm:w-auto gap-2">
+          <button
+            (click)="abrirModalGasto()"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
+            <span>Nuevo Gasto</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAJE PARA COBRADORES PROFESIONAL - Mobile First -->
+    <div *ngIf="rolUsuario === 'cobrador'" class="mb-3 sm:mb-4 md:mb-6 p-3 sm:p-4 md:p-5 bg-gradient-to-r from-[rgba(6,102,153,0.1)] to-[rgba(10,84,131,0.1)] border-2 border-[rgba(6,102,153,0.3)] rounded-lg sm:rounded-xl">
+      <div class="flex items-start gap-2 sm:gap-3 md:gap-4">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-info-circle text-white text-sm sm:text-base md:text-lg"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-[#02416d] font-bold mb-1 sm:mb-2 text-sm sm:text-base md:text-lg">Modo Cobrador</p>
+          <p class="text-[#6b7280] text-xs sm:text-sm md:text-base leading-relaxed">Solo puede agregar nuevos gastos. Para ver el historial completo, contacte al administrador.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DE BÚSQUEDA - Mobile First -->
+    <div *ngIf="rolUsuario === 'admin'" class="mb-3 sm:mb-4 md:mb-6">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
+          <i class="fas fa-search text-[#066699] text-sm sm:text-base"></i>
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="terminoBusqueda"
+          (input)="buscarGastos()"
+          placeholder="Buscar por descripción, ruta o usuario..."
+          class="w-full pl-9 sm:pl-11 md:pl-12 pr-10 sm:pr-12 md:pr-14 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base text-[#02416d] bg-white border-2 border-[#e5e7eb] rounded-lg sm:rounded-xl transition-all duration-200 outline-none focus:border-[#aedd2b] focus:ring-2 focus:ring-[rgba(174,221,43,0.1)]"
+        />
+        <button
+          *ngIf="terminoBusqueda"
+          (click)="limpiarBusqueda()"
+          type="button"
+          class="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center text-[#6b7280] hover:text-[#dc3545] transition-colors duration-200"
+          title="Limpiar búsqueda">
+          <i class="fas fa-times-circle text-sm sm:text-base"></i>
+        </button>
+      </div>
+      <p *ngIf="terminoBusqueda && gastosFiltrados.length === 0" class="mt-2 text-sm sm:text-base text-[#6b7280] text-center">
+        No se encontraron gastos que coincidan con "{{ terminoBusqueda }}"
+      </p>
+      <p *ngIf="terminoBusqueda && gastosFiltrados.length > 0" class="mt-2 text-xs sm:text-sm text-[#066699] text-center">
+        Mostrando {{ gastosFiltrados.length }} de {{ listaGastos.length }} gastos
+      </p>
+    </div>
+
+    <!-- TABLA GASTOS PROFESIONAL - Mobile First (SOLO PARA ADMINISTRADORES) -->
+    <div *ngIf="rolUsuario === 'admin'" class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white -webkit-overflow-scrolling-touch">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden">
+          <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
+            <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+              <tr>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">ID</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Fecha</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Hora</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Descripción</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Ruta</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Usuario</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Caja</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Monto</th>
+                <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+              <!-- CARGANDO -->
+              <tr *ngIf="cargando">
+                <td [attr.colspan]="9" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3"></div>
+                    <span class="text-[#02416d] text-sm sm:text-base font-semibold">Cargando gastos...</span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- LISTA DE GASTOS -->
+              <tr *ngFor="let gasto of (terminoBusqueda ? gastosFiltrados : listaGastos)" 
+                  class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)]">
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
+                  <span class="bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{ gasto.id_gasto }}</span>
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                  {{ formatearFecha(gasto.fecha_gasto) }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                  {{ gasto.hora_gasto || '-' }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[100px] sm:max-w-[150px] md:max-w-none" title="{{ gasto.descripcion || 'Sin descripción' }}">
+                  {{ gasto.descripcion || 'Sin descripción' }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                  <span class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[#f8f8ec] text-[#02416d] border border-[#e5e7eb]">
+                    {{ gasto.nombre_ruta || '-' }}
+                  </span>
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[80px] sm:max-w-[120px] md:max-w-none" title="{{ gasto.nombre_usuario || '-' }}">
+                  {{ gasto.nombre_usuario || '-' }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[80px] sm:max-w-[120px] md:max-w-none" title="{{ gasto.nombre_caja || '-' }}">
+                  {{ gasto.nombre_caja || '-' }}
+                </td>
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-red-600 text-right font-bold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                  {{ formatearMonto(gasto.monto) }}
+                </td>
+                <!-- ACCIONES -->
+                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+                  <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                    <button
+                      (click)="editarGasto(gasto)"
+                      class="inline-flex items-center justify-center px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
+                      Editar
+                    </button>
+                    <button
+                      (click)="eliminarGasto(gasto)"
+                      class="inline-flex items-center justify-center px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- SIN REGISTROS -->
+              <tr *ngIf="!cargando && (terminoBusqueda ? gastosFiltrados.length === 0 : listaGastos.length === 0)">
+                <td [attr.colspan]="9" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
+                    <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">
+                      {{ terminoBusqueda ? 'No se encontraron gastos' : 'No hay gastos registrados' }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL GASTO PROFESIONAL -->
+<div id="modalGasto"
+  class="modal-gasto-backdrop fixed inset-0 hidden items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
+  (click)="cerrarModalGasto()">
+
+  <div class="modal-gasto-container bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+       style="display: flex; flex-direction: column; max-height: 95vh;"
+       (click)="$event.stopPropagation()">
+
+    <!-- ENCABEZADO PROFESIONAL -->
+    <div class="modal-gasto-header" style="flex-shrink: 0; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-money-bill-wave" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+              <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
+              {{ modoEdicion ? 'Editar Gasto' : 'Nuevo Gasto' }}
+            </h3>
+            <p style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-info-circle" style="font-size: 0.875rem;"></i>
+              {{ modoEdicion ? 'Modificar datos del gasto' : 'Registro de gastos del sistema' }}
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="cerrarModalGasto()"
+          style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+          onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
+          onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO CON SCROLL -->
+    <div class="modal-gasto-body" style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
+      <form (ngSubmit)="guardarGasto($event)" novalidate>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- RUTA -->
+          <div class="md:col-span-2">
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-route" style="color: #066699;"></i>
+              Ruta <span style="color: #dc3545;">*</span>
+            </label>
+            <select 
+              name="id_ruta"
+              [(ngModel)]="gastoForm.id_ruta"
+              [required]="!modoEdicion"
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+              <option value="">Seleccione una ruta</option>
+              <!-- Administrador: todas las rutas activas del sistema -->
+              <ng-container *ngIf="rolUsuario === 'admin'">
+                <option *ngFor="let ruta of todasLasRutas" [value]="ruta.id_ruta">
+                  {{ ruta.nombre_ruta || ruta.nombre || 'Sin nombre' }}
+                </option>
+              </ng-container>
+              <!-- Cobrador: solo rutas asignadas al usuario -->
+              <ng-container *ngIf="rolUsuario === 'cobrador'">
+                <option *ngFor="let ruta of rutasUsuario" [value]="ruta.id_ruta">
+                  {{ ruta.nombre_ruta || ruta.nombre || 'Sin nombre' }}
+                </option>
+              </ng-container>
+            </select>
+            <!-- Mensajes informativos -->
+            <!-- Administrador: puede ver todas las rutas activas -->
+            <p *ngIf="rolUsuario === 'admin' && todasLasRutas.length > 0" style="margin-top: 0.5rem; font-size: 0.75rem; color: #10b981; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-check-circle" style="font-size: 0.625rem;"></i>
+              Administrador: Puede seleccionar cualquier ruta activa del sistema ({{ todasLasRutas.length }} ruta{{ todasLasRutas.length !== 1 ? 's' : '' }} disponible{{ todasLasRutas.length !== 1 ? 's' : '' }})
+            </p>
+            <!-- Cobrador: solo sus rutas asignadas -->
+            <p *ngIf="rolUsuario === 'cobrador' && rutasUsuario.length > 0" style="margin-top: 0.5rem; font-size: 0.75rem; color: #066699; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
+              Cobrador: Solo puede ver sus rutas asignadas ({{ rutasUsuario.length }} ruta{{ rutasUsuario.length !== 1 ? 's' : '' }})
+            </p>
+            <p *ngIf="rolUsuario === 'cobrador' && rutasUsuario.length === 0" style="color: #f59e0b; font-size: 0.8125rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-exclamation-triangle" style="font-size: 0.75rem;"></i>
+              No tiene rutas asignadas. Contacte al administrador.
+            </p>
+            <p *ngIf="rolUsuario === 'admin' && todasLasRutas.length === 0" style="color: #f59e0b; font-size: 0.8125rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-exclamation-triangle" style="font-size: 0.75rem;"></i>
+              No hay rutas activas en el sistema. Cree una ruta desde el módulo de Administrador.
+            </p>
+          </div>
+
+          <!-- DESCRIPCIÓN -->
+          <div class="md:col-span-2">
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-file-invoice" style="color: #066699;"></i>
+              Descripción <span style="color: #dc3545;">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="descripcion"
+              [(ngModel)]="gastoForm.descripcion"
+              placeholder="Descripción del gasto"
+              required
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <!-- MONTO -->
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-dollar-sign" style="color: #066699;"></i>
+              Monto <span style="color: #dc3545;">*</span>
+            </label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 1rem; font-weight: 600; pointer-events: none;"></span>
+              <input 
+                type="number" 
+                name="monto"
+                [(ngModel)]="gastoForm.monto"
+                placeholder="0.00"
+                step="0.01"
+                min="0.01"
+                required
+                style="width: 100%; padding-left: 2.5rem; padding-right: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem; font-size: 1rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+                onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+                onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+            </div>
+          </div>
+
+          <!-- FECHA -->
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-calendar-alt" style="color: #066699;"></i>
+              Fecha <span style="color: #dc3545;">*</span>
+            </label>
+            <input 
+              type="date" 
+              name="fecha_gasto"
+              [(ngModel)]="gastoForm.fecha_gasto"
+              [readonly]="modoEdicion"
+              required
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+          </div>
+
+          <!-- HORA (solo lectura si está editando) -->
+          <div *ngIf="modoEdicion && gastoEditando?.hora_gasto" class="md:col-span-2">
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-clock" style="color: #066699;"></i>
+              Hora del Gasto
+            </label>
+            <input 
+              type="text" 
+              [value]="gastoEditando.hora_gasto"
+              readonly
+              style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #6b7280; background-color: #e5e7eb; border: 2px solid #d1d5db; border-radius: 0.5rem; cursor: not-allowed;">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
+    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
+      <button 
+        type="button"
+        (click)="cerrarModalGasto()"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
+        Cancelar
+      </button>
+
+      <button 
+        type="button"
+        (click)="guardarGasto($event)"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;">
+        {{ modoEdicion ? 'Actualizar Gasto' : 'Guardar Gasto' }}
+      </button>
+    </div>
+  </div>
+</div>

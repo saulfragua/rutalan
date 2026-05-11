@@ -1,0 +1,235 @@
+/* ============================================
+   ESTILOS GLOBALES PARA TODA LA APLICACIÓN
+   Aplicación automática de la nueva paleta
+   ============================================ */
+
+/* Botones - Aplicación global */
+button:not(.btn):not(.login-btn):not(.modal-apertura-content button),
+a[class*="btn"]:not(.btn),
+input[type="submit"]:not(.btn),
+input[type="button"]:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Botones primarios (verde lima) */
+button[class*="bg-yellow"]:not(.btn),
+button[class*="bg-green"]:not(.btn),
+a[class*="bg-yellow"]:not(.btn),
+a[class*="bg-green"]:not(.btn) {
+  background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%) !important;
+  color: #02416d !important;
+  border-color: #aedd2b !important;
+}
+
+button[class*="bg-yellow"]:not(.btn):hover:not(:disabled),
+button[class*="bg-green"]:not(.btn):hover:not(:disabled),
+a[class*="bg-yellow"]:not(.btn):hover,
+a[class*="bg-green"]:not(.btn):hover {
+  background: linear-gradient(135deg, #9bc825 0%, #8ab820 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones secundarios (azul) */
+button[class*="bg-blue"]:not(.btn),
+a[class*="bg-blue"]:not(.btn),
+button[class*="bg-indigo"]:not(.btn),
+a[class*="bg-indigo"]:not(.btn) {
+  background: linear-gradient(135deg, #066699 0%, #0a5483 100%) !important;
+  color: #ffffff !important;
+  border-color: #066699 !important;
+}
+
+button[class*="bg-blue"]:not(.btn):hover:not(:disabled),
+a[class*="bg-blue"]:not(.btn):hover,
+button[class*="bg-indigo"]:not(.btn):hover:not(:disabled),
+a[class*="bg-indigo"]:not(.btn):hover {
+  background: linear-gradient(135deg, #055580 0%, #094a72 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones danger (rojo) */
+button[class*="bg-red"]:not(.btn),
+a[class*="bg-red"]:not(.btn) {
+  background-color: #dc3545 !important;
+  color: #ffffff !important;
+  border-color: #dc3545 !important;
+}
+
+button[class*="bg-red"]:not(.btn):hover:not(:disabled),
+a[class*="bg-red"]:not(.btn):hover {
+  background-color: #c82333 !important;
+  border-color: #bd2130 !important;
+  transform: translateY(-1px);
+}
+
+/* Tablas - Estilos globales mejorados con fondo blanco */
+table:not(.table),
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff !important;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+table:not(.table) thead,
+table thead {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%);
+  color: #ffffff;
+}
+
+table:not(.table) thead th,
+table thead th {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #02416d;
+  color: #ffffff !important;
+}
+
+table:not(.table) tbody,
+table tbody {
+  background-color: #ffffff !important;
+}
+
+table:not(.table) tbody tr,
+table tbody tr {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.15s ease-in-out;
+}
+
+table:not(.table) tbody tr:hover,
+table tbody tr:hover {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+table:not(.table) tbody tr:last-child,
+table tbody tr:last-child {
+  border-bottom: none;
+}
+
+table:not(.table) tbody td,
+table tbody td {
+  padding: 0.875rem 0.75rem;
+  color: #02416d !important;
+  background-color: #ffffff !important;
+  vertical-align: middle;
+}
+
+/* Modales - Estilos globales */
+div[id*="modal"]:not(.modal):not(.modal-backdrop),
+div[class*="modal"]:not(.modal):not(.modal-backdrop) {
+  background-color: #ffffff !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+div[id*="modal"]:not(.modal):not(.modal-backdrop) > div:first-child,
+div[class*="modal"]:not(.modal):not(.modal-backdrop) > div:first-child {
+  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  color: #ffffff !important;
+  padding: 1.5rem !important;
+  border-bottom: 3px solid #aedd2b !important;
+}
+
+/* Cards - Estilos globales */
+.card:not(.card),
+div[class*="card"]:not(.card) {
+  background-color: #ffffff !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e5e7eb !important;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs y Formularios */
+input[type="text"]:not(.form-control):not(.login-input),
+input[type="email"]:not(.form-control):not(.login-input),
+input[type="password"]:not(.form-control):not(.login-input),
+input[type="number"]:not(.form-control):not(.login-input),
+input[type="date"]:not(.form-control):not(.login-input),
+input[type="time"]:not(.form-control):not(.login-input),
+select:not(.form-control),
+textarea:not(.form-control) {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #02416d;
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:not(.form-control):not(.login-input):focus,
+input[type="email"]:not(.form-control):not(.login-input):focus,
+input[type="password"]:not(.form-control):not(.login-input):focus,
+input[type="number"]:not(.form-control):not(.login-input):focus,
+input[type="date"]:not(.form-control):not(.login-input):focus,
+input[type="time"]:not(.form-control):not(.login-input):focus,
+select:not(.form-control):focus,
+textarea:not(.form-control):focus {
+  outline: none;
+  border-color: #066699;
+  box-shadow: 0 0 0 3px rgba(6, 102, 153, 0.1);
+}
+
+/* Badges y etiquetas */
+span[class*="badge"],
+span[class*="bg-green"],
+span[class*="bg-yellow"],
+span[class*="bg-red"],
+span[class*="bg-blue"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+}
+
+/* Fondo de la aplicación */
+body {
+  background-color: #f8f8ec !important;
+}
+
+/* Responsive para tablas */
+@media (max-width: 768px) {
+  table:not(.table) {
+    font-size: 0.75rem;
+  }
+  
+  table:not(.table) thead th,
+  table:not(.table) tbody td {
+    padding: 0.5rem 0.375rem;
+  }
+  
+  button:not(.btn):not(.login-btn) {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+}

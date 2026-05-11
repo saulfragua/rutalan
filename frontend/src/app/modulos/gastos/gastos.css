@@ -1,0 +1,281 @@
+/* Estilos específicos para el módulo de Gastos */
+
+/* ============================================
+   RESPONSIVE STYLES - MOBILE FIRST APPROACH
+   ============================================ */
+
+/* Base styles (móvil) ya están aplicados con Tailwind */
+
+/* Mejoras de scroll suave en móviles */
+@media (max-width: 767px) {
+  /* Scroll horizontal optimizado para tablas en móvil */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #066699 #e5e7eb;
+  }
+  
+  /* Estilos para scrollbar en Chrome/Safari móvil */
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #066699;
+    border-radius: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #0a5483;
+  }
+  
+  /* Tabla sin ancho mínimo - se ajusta al contenido */
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+  
+  /* Padding muy reducido en móvil para aprovechar espacio */
+  table th,
+  table td {
+    padding: 0.25rem 0.25rem;
+  }
+  
+  /* Asegurar que el texto no se corte */
+  table th,
+  table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Ajustar tamaño de fuente en móvil */
+  table {
+    font-size: 0.625rem;
+  }
+  
+  /* Mejorar el padding en móviles muy pequeños */
+  @media (max-width: 375px) {
+    table th,
+    table td {
+      padding: 0.2rem 0.2rem;
+    }
+  }
+}
+
+/* Tablet y superior (md: 768px+) */
+@media (min-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+  
+  table th,
+  table td {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Desktop pequeño (lg: 1024px+) */
+@media (min-width: 1024px) {
+  table {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Desktop grande (xl: 1280px+) */
+@media (min-width: 1280px) {
+  table {
+    font-size: 1rem;
+  }
+}
+
+/* Mejoras adicionales para inputs en móvil */
+@media (max-width: 640px) {
+  /* Evitar zoom automático en iOS al enfocar inputs */
+  input[type="text"],
+  input[type="number"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Mejorar el tamaño de los botones en móvil */
+  button {
+    min-height: 44px; /* Tamaño mínimo recomendado para touch */
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Mejorar espaciado en formularios móviles */
+  .grid > div {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Tabla de gastos - Asegurar fondo blanco */
+table {
+  background-color: #ffffff !important;
+}
+
+table tbody {
+  background-color: #ffffff !important;
+}
+
+table tbody tr {
+  background-color: #ffffff !important;
+}
+
+table tbody tr:hover {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+table tbody td {
+  background-color: #ffffff !important;
+  color: #02416d !important;
+}
+
+table tbody tr:hover td {
+  background-color: rgba(174, 221, 43, 0.05) !important;
+}
+
+/* ============================================
+   MODAL GASTO PROFESIONAL
+   ============================================ */
+
+/* Backdrop del modal */
+.modal-gasto-backdrop {
+  background: rgba(2, 65, 109, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+}
+
+/* Contenedor del modal */
+.modal-gasto-container {
+  background: #ffffff;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: visible;
+}
+
+/* Header del modal */
+.modal-gasto-header {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  padding: 1.75rem 2rem;
+  border-bottom: 4px solid #aedd2b;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-gasto-header h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.025em;
+}
+
+.modal-gasto-header p {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+/* Body del modal */
+.modal-gasto-body {
+  padding: 2rem;
+  background: #f8f8ec;
+  overflow-y: scroll !important;
+  overflow-x: auto !important;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(95vh - 200px);
+  scrollbar-width: thin;
+  scrollbar-color: #066699 #e5e7eb;
+  -ms-overflow-style: scrollbar;
+}
+
+/* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
+.modal-gasto-body::-webkit-scrollbar {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.modal-gasto-body::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 8px !important;
+  border: 2px solid #d1d5db !important;
+  margin: 4px 0 !important;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.modal-gasto-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #066699 0%, #0a5483 100%) !important;
+  border-radius: 8px !important;
+  border: 2px solid #e5e7eb !important;
+  min-height: 50px !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer !important;
+}
+
+.modal-gasto-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0a5483 0%, #02416d 100%) !important;
+  border-color: #d1d5db !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.modal-gasto-body::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #02416d 0%, #066699 100%) !important;
+}
+
+.modal-gasto-body::-webkit-scrollbar-corner {
+  background: #e5e7eb !important;
+}
+
+/* Forzar visibilidad del scrollbar incluso cuando no hay scroll */
+.modal-gasto-body {
+  scrollbar-gutter: stable;
+}
+
+/* Animación para el modal */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive para modal gasto */
+@media (max-width: 768px) {
+  .modal-gasto-container {
+    max-width: 95%;
+    margin: 1rem;
+  }
+  
+  .modal-gasto-header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .modal-gasto-header h3 {
+    font-size: 1.25rem !important;
+  }
+  
+  .modal-gasto-body {
+    padding: 1.5rem;
+  }
+}
