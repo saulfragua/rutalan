@@ -5,10 +5,10 @@
   <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] h-full">
 
     <!-- PESTAÑAS PROFESIONALES - Mobile First -->
-    <div class="flex border-b-2 border-[#e5e7eb] overflow-x-auto bg-gradient-to-r from-[#f8f8ec] to-white -webkit-overflow-scrolling-touch">
-      <button
-        (click)="abrirTab('usuarios')"
-        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap flex-shrink-0 min-h-[44px]"
+    <div
+      class="flex border-b-2 border-[#e5e7eb] overflow-x-auto bg-linear-to-r from-[#f8f8ec] to-white -webkit-overflow-scrolling-touch">
+      <button (click)="abrirTab('usuarios')"
+        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap shrink-0 min-h-11"
         [style.background]="tabActiva === 'usuarios' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'transparent'"
         [style.color]="tabActiva === 'usuarios' ? '#ffffff' : '#02416d'"
         [style.borderBottom]="tabActiva === 'usuarios' ? '4px solid #aedd2b' : 'none'">
@@ -16,9 +16,8 @@
         <span class="hidden sm:inline">Usuarios</span>
       </button>
 
-      <button
-        (click)="abrirTab('rutas')"
-        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap flex-shrink-0 min-h-[44px]"
+      <button (click)="abrirTab('rutas')"
+        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap shrink-0 min-h-11"
         [style.background]="tabActiva === 'rutas' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'transparent'"
         [style.color]="tabActiva === 'rutas' ? '#ffffff' : '#02416d'"
         [style.borderBottom]="tabActiva === 'rutas' ? '4px solid #aedd2b' : 'none'">
@@ -26,9 +25,8 @@
         <span class="hidden sm:inline">Rutas</span>
       </button>
 
-      <button
-        (click)="abrirTab('whatsapp')"
-        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap flex-shrink-0 min-h-[44px]"
+      <button (click)="abrirTab('whatsapp')"
+        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap shrink-0 min-h-11"
         [style.background]="tabActiva === 'whatsapp' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'transparent'"
         [style.color]="tabActiva === 'whatsapp' ? '#ffffff' : '#02416d'"
         [style.borderBottom]="tabActiva === 'whatsapp' ? '4px solid #aedd2b' : 'none'">
@@ -36,9 +34,8 @@
         <span class="hidden sm:inline">WhatsApp</span>
       </button>
 
-      <button
-        (click)="abrirTab('errores')"
-        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap flex-shrink-0 min-h-[44px]"
+      <button (click)="abrirTab('errores')"
+        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold border-r-2 border-[#e5e7eb] transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap shrink-0 min-h-11"
         [style.background]="tabActiva === 'errores' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'transparent'"
         [style.color]="tabActiva === 'errores' ? '#ffffff' : '#02416d'"
         [style.borderBottom]="tabActiva === 'errores' ? '4px solid #aedd2b' : 'none'">
@@ -46,9 +43,8 @@
         <span class="hidden sm:inline">Errores</span>
       </button>
 
-      <button
-        (click)="abrirTab('otros')"
-        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap flex-shrink-0 min-h-[44px]"
+      <button (click)="abrirTab('otros')"
+        class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1 sm:gap-2 tab-button whitespace-nowrap shrink-0 min-h-11"
         [style.background]="tabActiva === 'otros' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'transparent'"
         [style.color]="tabActiva === 'otros' ? '#ffffff' : '#02416d'"
         [style.borderBottom]="tabActiva === 'otros' ? '4px solid #aedd2b' : 'none'">
@@ -61,15 +57,18 @@
     <div class="p-3 sm:p-4 md:p-6 bg-[#f8f8ec] min-h-full">
 
       <!-- USUARIOS PROFESIONAL - Mobile First -->
-      <div *ngIf="tabActiva === 'usuarios'" class="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-md sm:shadow-lg">
+      <div *ngIf="tabActiva === 'usuarios'"
+        class="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-md sm:shadow-lg">
         <div class="border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6 mb-3 sm:mb-4 md:mb-6">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
             <div class="flex items-center gap-2 sm:gap-4 flex-1 w-full sm:w-auto">
-              <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+              <div
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-linear-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md shrink-0">
                 <i class="fas fa-users-cog text-white text-lg sm:text-xl md:text-2xl"></i>
               </div>
               <div class="flex-1 min-w-0">
-                <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+                <h2
+                  class="text-lg sm:text-xl md:text-2xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
                   <i class="fas fa-chart-line text-[#aedd2b] text-base sm:text-lg md:text-xl"></i>
                   <span class="truncate">Gestión de Usuarios</span>
                 </h2>
@@ -80,9 +79,8 @@
               </div>
             </div>
             <div class="w-full sm:w-auto">
-              <button
-                (click)="mostrarFormulario()"
-                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[44px]">
+              <button (click)="mostrarFormulario()"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-11">
                 <span>Nuevo Usuario</span>
               </button>
             </div>
@@ -92,39 +90,66 @@
 
       <!-- TABLA USUARIOS PROFESIONAL - Mobile First -->
       <div *ngIf="tabActiva === 'usuarios'" class="mt-3 sm:mt-4 md:mt-6">
-        <div class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md sm:shadow-lg bg-white -webkit-overflow-scrolling-touch">
+        <div
+          class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md sm:shadow-lg bg-white -webkit-overflow-scrolling-touch">
           <div class="inline-block min-w-full align-middle">
             <div class="overflow-hidden">
               <table class="min-w-full bg-white">
-                <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+                <thead class="bg-linear-to-r from-[#0a5483] to-[#066699]">
                   <tr>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">ID</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Nombre Completo</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Usuario</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Rol</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Rutas Asignadas</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Email</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Acciones</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      ID</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Nombre Completo</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Usuario</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Rol</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Rutas Asignadas</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Email</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Acciones</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white border-t-2 border-[#e5e7eb]">
                   <tr *ngFor="let u of usuarios"
-                      class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]">
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
-                      <span class="bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{ u.id_usuario }}</span>
+                    class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]">
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
+                      <span
+                        class="bg-linear-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{
+                        u.id_usuario }}</span>
                     </td>
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm font-semibold whitespace-nowrap truncate max-w-[120px] sm:max-w-[180px] md:max-w-none" title="{{ u.nombre_completo }}">{{ u.nombre_completo }}</td>
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">{{ u.nombre_usuario }}</td>
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm font-semibold whitespace-nowrap truncate max-w-30 sm:max-w-45 md:max-w-none"
+                      title="{{ u.nombre_completo }}">{{ u.nombre_completo }}</td>
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                      {{ u.nombre_usuario }}</td>
                     <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 whitespace-nowrap">
-                      <span class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] md:text-xs font-semibold"
-                            [ngClass]="u.rol === 'admin' ? 'bg-gradient-to-br from-[#066699] to-[#0a5483] text-white' : 'bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d]'">
-                        <i class="fas mr-1" [class.fa-user-shield]="u.rol === 'admin'" [class.fa-user]="u.rol === 'cobrador'" class="text-[8px] sm:text-[9px]"></i>
+                      <span
+                        class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] md:text-xs font-semibold"
+                        [ngClass]="u.rol === 'admin' ? 'bg-linear-to-br from-[#066699] to-[#0a5483] text-white' : 'bg-linear-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d]'">
+                        <i class="fas mr-1" [class.fa-user-shield]="u.rol === 'admin'"
+                          [class.fa-user]="u.rol === 'cobrador'" class="text-[8px] sm:text-[9px]"></i>
                         {{ u.rol === 'admin' ? 'Admin' : 'Cobrador' }}
                       </span>
                     </td>
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
                       <ng-container *ngIf="rutasPorUsuario[u.id_usuario]?.length; else sinRutas">
-                        <span class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[9px] sm:text-[10px] md:text-xs font-semibold border border-[rgba(174,221,43,0.3)] truncate max-w-[100px] sm:max-w-[150px] md:max-w-none" title="{{ rutasPorUsuario[u.id_usuario].join(', ') }}">
+                        <span
+                          class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[9px] sm:text-[10px] md:text-xs font-semibold border border-[rgba(174,221,43,0.3)] truncate max-w-25 sm:max-w-37.5 md:max-w-none"
+                          title="{{ rutasPorUsuario[u.id_usuario].join(', ') }}">
                           <i class="fas fa-route mr-1 text-[8px] sm:text-[9px]"></i>
                           {{ rutasPorUsuario[u.id_usuario].join(', ') }}
                         </span>
@@ -133,35 +158,32 @@
                         <span class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm">—</span>
                       </ng-template>
                     </td>
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-[100px] sm:max-w-[150px] md:max-w-none" title="{{ u.email || '—' }}">{{ u.email || '—' }}</td>
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-25 sm:max-w-37.5 md:max-w-none"
+                      title="{{ u.email || '—' }}">{{ u.email || '—' }}</td>
                     <!-- ACCIONES PROFESIONALES -->
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
                       <div class="flex flex-wrap gap-1 sm:gap-1.5 md:gap-2 justify-center">
-                        <button
-                          (click)="abrirModalAsignarRuta(u)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#f59e0b] to-[#d97706] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
+                        <button (click)="abrirModalAsignarRuta(u)"
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-linear-to-br from-[#f59e0b] to-[#d97706] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10">
                           Ruta
                         </button>
-                        <button
-                          *ngIf="u.rol === 'cobrador'"
-                          (click)="abrirModalClaveDinamica(u)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#9333ea] to-[#7e22ce] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]"
+                        <button *ngIf="u.rol === 'cobrador'" (click)="abrirModalClaveDinamica(u)"
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-linear-to-br from-[#9333ea] to-[#7e22ce] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10"
                           title="Generar clave de acceso temporal">
                           Clave
                         </button>
-                        <button
-                          (click)="cambiarEstadoUsuario(u.id_usuario, u.estado)"
+                        <button (click)="cambiarEstadoUsuario(u.id_usuario, u.estado)"
                           class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]"
-                          [ngClass]="u.estado === 1 ? 'bg-gradient-to-br from-[#facc15] to-[#eab308] text-black' : 'bg-gradient-to-br from-[#10b981] to-[#059669] text-white'">
+                          [ngClass]="u.estado === 1 ? 'bg-linear-to-br from-[#facc15] to-[#eab308] text-black' : 'bg-linear-to-br from-[#10b981] to-[#059669] text-white'">
                           {{ u.estado === 1 ? 'Inactivar' : 'Activar' }}
                         </button>
-                        <button
-                          (click)="abrirModalEditarUsuario(u)"
+                        <button (click)="abrirModalEditarUsuario(u)"
                           class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
                           Editar
                         </button>
-                        <button
-                          (click)="eliminarUsuario(u.id_usuario)"
+                        <button (click)="eliminarUsuario(u.id_usuario)"
                           class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
                           Eliminar
                         </button>
@@ -173,7 +195,8 @@
                     <td colspan="7" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 text-center">
                       <div class="flex flex-col items-center justify-center">
                         <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-3 sm:mb-4"></i>
-                        <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay usuarios registrados</span>
+                        <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay usuarios
+                          registrados</span>
                       </div>
                     </td>
                   </tr>
@@ -191,15 +214,18 @@
 
 
       <!-- RUTAS PROFESIONAL - Mobile First -->
-      <div *ngIf="tabActiva === 'rutas'" class="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-md sm:shadow-lg">
+      <div *ngIf="tabActiva === 'rutas'"
+        class="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-md sm:shadow-lg">
         <div class="border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6 mb-3 sm:mb-4 md:mb-6">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
             <div class="flex items-center gap-2 sm:gap-4 flex-1 w-full sm:w-auto">
-              <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+              <div
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
                 <i class="fas fa-route text-white text-lg sm:text-xl md:text-2xl"></i>
               </div>
               <div class="flex-1 min-w-0">
-                <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+                <h2
+                  class="text-lg sm:text-xl md:text-2xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
                   <i class="fas fa-chart-line text-[#aedd2b] text-base sm:text-lg md:text-xl"></i>
                   <span class="truncate">Gestión de Rutas</span>
                 </h2>
@@ -210,8 +236,7 @@
               </div>
             </div>
             <div class="w-full sm:w-auto">
-              <button
-                (click)="abrirModalRuta()"
+              <button (click)="abrirModalRuta()"
                 class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[44px]">
                 <span>Nueva Ruta</span>
               </button>
@@ -219,39 +244,49 @@
           </div>
         </div>
         <!-- TABLA DE RUTAS PROFESIONAL - Mobile First -->
-        <div class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md sm:shadow-lg bg-white -webkit-overflow-scrolling-touch">
+        <div
+          class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md sm:shadow-lg bg-white -webkit-overflow-scrolling-touch">
           <div class="inline-block min-w-full align-middle">
             <div class="overflow-hidden">
               <table class="min-w-full bg-white">
                 <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
                   <tr>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">ID</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Nombre Ruta</th>
-                    <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">Acciones</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      ID</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Nombre Ruta</th>
+                    <th
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+                      Acciones</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white border-t-2 border-[#e5e7eb]">
-                  <tr *ngFor="let ruta of rutas" 
-                      class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]">
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
-                      <span class="bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{ ruta.id_ruta }}</span>
+                  <tr *ngFor="let ruta of rutas"
+                    class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]">
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
+                      <span
+                        class="bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{
+                        ruta.id_ruta }}</span>
                     </td>
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm font-semibold whitespace-nowrap truncate max-w-[150px] sm:max-w-[250px] md:max-w-none" title="{{ ruta.nombre_ruta }}">{{ ruta.nombre_ruta }}</td>
-                    <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm font-semibold whitespace-nowrap truncate max-w-[150px] sm:max-w-[250px] md:max-w-none"
+                      title="{{ ruta.nombre_ruta }}">{{ ruta.nombre_ruta }}</td>
+                    <td
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
                       <div class="flex flex-wrap gap-1 sm:gap-1.5 md:gap-2 justify-center">
-                        <button
-                          (click)="cambiarEstadoRuta(ruta.id_ruta, ruta.activo)"
+                        <button (click)="cambiarEstadoRuta(ruta.id_ruta, ruta.activo)"
                           class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]"
                           [ngClass]="ruta.activo == 1 ? 'bg-gradient-to-br from-[#10b981] to-[#059669] text-white' : 'bg-gradient-to-br from-[#facc15] to-[#eab308] text-black'">
                           {{ ruta.activo == 1 ? 'Inactivar' : 'Activar' }}
                         </button>
-                        <button
-                          (click)="abrirModalEditar(ruta)"
+                        <button (click)="abrirModalEditar(ruta)"
                           class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
                           Editar
                         </button>
-                        <button
-                          (click)="eliminarRuta(ruta.id_ruta)"
+                        <button (click)="eliminarRuta(ruta.id_ruta)"
                           class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
                           Eliminar
                         </button>
@@ -262,7 +297,8 @@
                     <td colspan="3" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 text-center">
                       <div class="flex flex-col items-center justify-center">
                         <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-3 sm:mb-4"></i>
-                        <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay rutas registradas</span>
+                        <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay rutas
+                          registradas</span>
                       </div>
                     </td>
                   </tr>
@@ -273,21 +309,25 @@
         </div>
       </div>
 
-      
+
 
       <!-- WHATSAPP PROFESIONAL -->
-      <div *ngIf="tabActiva === 'whatsapp'" style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+      <div *ngIf="tabActiva === 'whatsapp'"
+        style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
         <div style="border-bottom: 3px solid #aedd2b; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
           <div class="flex items-center gap-4 mb-3">
-            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
+            <div
+              style="width: 64px; height: 64px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
               <i class="fab fa-whatsapp" style="font-size: 2rem; color: #ffffff;"></i>
             </div>
             <div>
-              <h2 style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+              <h2
+                style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-line" style="color: #aedd2b; font-size: 1.75rem;"></i>
                 Configuración de WhatsApp
               </h2>
-              <p style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <p
+                style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fas fa-info-circle" style="color: #066699; font-size: 0.875rem;"></i>
                 Escanea el código QR para habilitar el envío de notificaciones automáticas
               </p>
@@ -296,18 +336,21 @@
         </div>
 
         <!-- ESTADO DE CONEXIÓN -->
-        <div class="mb-6 p-4 rounded-lg border-2" 
-             [style.background]="whatsappConectado ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%)' : 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%)'"
-             [style.borderColor]="whatsappConectado ? '#10b981' : '#f59e0b'"
-             style="border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <div class="mb-6 p-4 rounded-lg border-2"
+          [style.background]="whatsappConectado ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%)' : 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%)'"
+          [style.borderColor]="whatsappConectado ? '#10b981' : '#f59e0b'"
+          style="border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <div class="flex items-center gap-3">
-            <div style="width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;"
-                 [style.background]="whatsappConectado ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'">
-              <i class="fas" [class.fa-check-circle]="whatsappConectado" [class.fa-exclamation-triangle]="!whatsappConectado" style="font-size: 1.5rem; color: #ffffff;"></i>
+            <div
+              style="width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;"
+              [style.background]="whatsappConectado ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'">
+              <i class="fas" [class.fa-check-circle]="whatsappConectado"
+                [class.fa-exclamation-triangle]="!whatsappConectado" style="font-size: 1.5rem; color: #ffffff;"></i>
             </div>
             <div>
               <p style="font-size: 1rem; font-weight: 700; color: #02416d; margin: 0;">
-                Estado: <span [style.color]="whatsappConectado ? '#10b981' : '#f59e0b'">{{ whatsappConectado ? 'Conectado' : 'No conectado' }}</span>
+                Estado: <span [style.color]="whatsappConectado ? '#10b981' : '#f59e0b'">{{ whatsappConectado ?
+                  'Conectado' : 'No conectado' }}</span>
               </p>
               <p style="font-size: 0.875rem; color: #6b7280; margin: 0.25rem 0 0 0;" *ngIf="!whatsappConectado">
                 Escanea el código QR para conectar WhatsApp
@@ -318,20 +361,15 @@
 
         <!-- BOTONES DE ACCIÓN -->
         <div class="mb-6 flex gap-3 flex-wrap">
-          <button
-            (click)="obtenerQRWhatsApp()"
-            [disabled]="cargandoQR"
+          <button (click)="obtenerQRWhatsApp()" [disabled]="cargandoQR"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
-            [style.opacity]="cargandoQR ? '0.5' : '1'"
-            [style.cursor]="cargandoQR ? 'not-allowed' : 'pointer'"
+            [style.opacity]="cargandoQR ? '0.5' : '1'" [style.cursor]="cargandoQR ? 'not-allowed' : 'pointer'"
             onmouseover="if (!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
             onmouseout="if (!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; }">
             <i class="fas fa-sync-alt" [class.fa-spin]="cargandoQR"></i>
             {{ cargandoQR ? 'Cargando...' : 'Actualizar Código QR' }}
           </button>
-          <button
-            (click)="reiniciarSesionWhatsApp()"
-            [disabled]="reiniciandoServicio"
+          <button (click)="reiniciarSesionWhatsApp()" [disabled]="reiniciandoServicio"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
             [style.opacity]="reiniciandoServicio ? '0.5' : '1'"
             [style.cursor]="reiniciandoServicio ? 'not-allowed' : 'pointer'"
@@ -340,9 +378,7 @@
             <i class="fas fa-redo" [class.fa-spin]="reiniciandoServicio"></i>
             Reiniciar sesión WhatsApp
           </button>
-          <button
-            (click)="reiniciarServiciosAPI()"
-            [disabled]="reiniciandoServicio"
+          <button (click)="reiniciarServiciosAPI()" [disabled]="reiniciandoServicio"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
             [style.opacity]="reiniciandoServicio ? '0.5' : '1'"
             [style.cursor]="reiniciandoServicio ? 'not-allowed' : 'pointer'"
@@ -354,11 +390,14 @@
         </div>
 
         <!-- CONTENEDOR QR -->
-        <div style="background-color: #ffffff; border: 2px dashed #e5e7eb; border-radius: 0.75rem; padding: 2rem; text-align: center; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <div
+          style="background-color: #ffffff; border: 2px dashed #e5e7eb; border-radius: 0.75rem; padding: 2rem; text-align: center; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <!-- Mostrar QR solo si no está conectado -->
           <div *ngIf="qrCodeDataUrl && !whatsappConectado" class="mb-4">
-            <img [src]="qrCodeDataUrl" alt="Código QR WhatsApp" style="max-width: 300px; border: 4px solid #ffffff; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-            <p style="font-size: 0.75rem; color: #f59e0b; margin-top: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <img [src]="qrCodeDataUrl" alt="Código QR WhatsApp"
+              style="max-width: 300px; border: 4px solid #ffffff; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+            <p
+              style="font-size: 0.75rem; color: #f59e0b; margin-top: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
               <i class="fas fa-exclamation-triangle"></i>
               Escanea este código con WhatsApp antes de continuar
             </p>
@@ -377,7 +416,8 @@
 
           <!-- Mostrar carga -->
           <div *ngIf="cargandoQR && !qrCodeDataUrl && !whatsappConectado" style="color: #6b7280;">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3 mx-auto" style="border-color: #066699; border-top-color: transparent;"></div>
+            <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3 mx-auto"
+              style="border-color: #066699; border-top-color: transparent;"></div>
             <p style="font-weight: 600; color: #02416d;">Conectando con WhatsApp...</p>
             <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">Esto puede tardar unos segundos</p>
           </div>
@@ -394,12 +434,15 @@
           </div>
 
           <!-- Instrucciones solo cuando hay QR -->
-          <div *ngIf="qrCodeDataUrl && !whatsappConectado" style="margin-top: 1.5rem; text-align: left; width: 100%; max-width: 500px;">
-            <p style="font-size: 0.875rem; color: #02416d; margin-bottom: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+          <div *ngIf="qrCodeDataUrl && !whatsappConectado"
+            style="margin-top: 1.5rem; text-align: left; width: 100%; max-width: 500px;">
+            <p
+              style="font-size: 0.875rem; color: #02416d; margin-bottom: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fas fa-list-ol" style="color: #066699;"></i>
               Instrucciones:
             </p>
-            <ol style="font-size: 0.8125rem; color: #6b7280; line-height: 1.8; padding-left: 1.5rem; list-style-type: decimal;">
+            <ol
+              style="font-size: 0.8125rem; color: #6b7280; line-height: 1.8; padding-left: 1.5rem; list-style-type: decimal;">
               <li>Abre WhatsApp en tu teléfono</li>
               <li>Ve a Configuración → Dispositivos vinculados</li>
               <li>Selecciona "Vincular un dispositivo"</li>
@@ -410,12 +453,15 @@
         </div>
 
         <!-- INFORMACIÓN ADICIONAL -->
-        <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(6, 102, 153, 0.1) 0%, rgba(6, 102, 153, 0.05) 100%); border: 2px solid #066699; border-radius: 0.75rem;">
-          <p style="font-size: 0.875rem; color: #02416d; margin-bottom: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+        <div
+          style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(6, 102, 153, 0.1) 0%, rgba(6, 102, 153, 0.05) 100%); border: 2px solid #066699; border-radius: 0.75rem;">
+          <p
+            style="font-size: 0.875rem; color: #02416d; margin-bottom: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-info-circle" style="color: #066699;"></i>
             Información:
           </p>
-          <ul style="font-size: 0.8125rem; color: #6b7280; line-height: 1.8; padding-left: 1.5rem; list-style-type: disc;">
+          <ul
+            style="font-size: 0.8125rem; color: #6b7280; line-height: 1.8; padding-left: 1.5rem; list-style-type: disc;">
             <li>El servicio de WhatsApp debe estar corriendo en el servidor configurado</li>
             <li>Una vez conectado, el sistema enviará mensajes automáticamente</li>
           </ul>
@@ -423,18 +469,22 @@
       </div>
 
       <!-- ERRORES PROFESIONAL -->
-      <div *ngIf="tabActiva === 'errores'" style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+      <div *ngIf="tabActiva === 'errores'"
+        style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
         <div style="border-bottom: 3px solid #aedd2b; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
           <div class="flex items-center gap-4 mb-3">
-            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
+            <div
+              style="width: 64px; height: 64px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
               <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffffff;"></i>
             </div>
             <div>
-              <h2 style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+              <h2
+                style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-line" style="color: #aedd2b; font-size: 1.75rem;"></i>
                 Log de Errores del Sistema
               </h2>
-              <p style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <p
+                style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fas fa-info-circle" style="color: #066699; font-size: 0.875rem;"></i>
                 Visualiza todos los errores y eventos registrados en el sistema
               </p>
@@ -443,49 +493,45 @@
         </div>
 
         <!-- CONTROLES Y ESTADÍSTICAS -->
-        <div class="mb-4 flex gap-3 flex-wrap items-center" style="padding: 1rem; background-color: #f8f8ec; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
-          <button
-            (click)="cargarErrores()"
-            [disabled]="cargandoErrores"
+        <div class="mb-4 flex gap-3 flex-wrap items-center"
+          style="padding: 1rem; background-color: #f8f8ec; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
+          <button (click)="cargarErrores()" [disabled]="cargandoErrores"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
-            [style.opacity]="cargandoErrores ? '0.5' : '1'"
-            [style.cursor]="cargandoErrores ? 'not-allowed' : 'pointer'"
+            [style.opacity]="cargandoErrores ? '0.5' : '1'" [style.cursor]="cargandoErrores ? 'not-allowed' : 'pointer'"
             onmouseover="if (!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
             onmouseout="if (!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; }">
             {{ cargandoErrores ? 'Cargando...' : 'Actualizar Errores' }}
           </button>
-          <button
-            (click)="limpiarErrores()"
-            [disabled]="cargandoErrores"
+          <button (click)="limpiarErrores()" [disabled]="cargandoErrores"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
-            [style.opacity]="cargandoErrores ? '0.5' : '1'"
-            [style.cursor]="cargandoErrores ? 'not-allowed' : 'pointer'"
+            [style.opacity]="cargandoErrores ? '0.5' : '1'" [style.cursor]="cargandoErrores ? 'not-allowed' : 'pointer'"
             onmouseover="if (!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
             onmouseout="if (!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; }">
             <i class="fas fa-trash"></i>
             Limpiar Errores
           </button>
-          <button
-            (click)="escribirErrorPrueba()"
-            [disabled]="cargandoErrores"
+          <button (click)="escribirErrorPrueba()" [disabled]="cargandoErrores"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
-            [style.opacity]="cargandoErrores ? '0.5' : '1'"
-            [style.cursor]="cargandoErrores ? 'not-allowed' : 'pointer'"
+            [style.opacity]="cargandoErrores ? '0.5' : '1'" [style.cursor]="cargandoErrores ? 'not-allowed' : 'pointer'"
             onmouseover="if (!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
             onmouseout="if (!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; }">
             <i class="fas fa-pen"></i>
             Escribir Error de Prueba
           </button>
           <div class="flex items-center gap-3 ml-auto" style="display: flex; align-items: center; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
+            <div
+              style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
               <i class="fas fa-list" style="color: #066699; font-size: 0.875rem;"></i>
               <span style="font-size: 0.875rem; color: #02416d; font-weight: 600;">Total: {{ totalErrores }}</span>
             </div>
-            <div *ngIf="errores.length > 0" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
+            <div *ngIf="errores.length > 0"
+              style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
               <i class="fas fa-eye" style="color: #066699; font-size: 0.875rem;"></i>
-              <span style="font-size: 0.875rem; color: #02416d; font-weight: 600;">Mostrando: {{ errores.length }}</span>
+              <span style="font-size: 0.875rem; color: #02416d; font-weight: 600;">Mostrando: {{ errores.length
+                }}</span>
             </div>
-            <div *ngIf="archivoLog" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
+            <div *ngIf="archivoLog"
+              style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
               <i class="fas fa-file-alt" style="color: #066699; font-size: 0.875rem;"></i>
               <span style="font-size: 0.75rem; color: #6b7280;">{{ archivoLog }}</span>
             </div>
@@ -493,12 +539,15 @@
         </div>
 
         <!-- Mensaje de error o información -->
-        <div *ngIf="mensajeError" style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-radius: 0.75rem;">
-          <p style="font-size: 0.875rem; color: #92400e; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <div *ngIf="mensajeError"
+          style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-radius: 0.75rem;">
+          <p
+            style="font-size: 0.875rem; color: #92400e; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i>
             Información:
           </p>
-          <p style="font-size: 0.8125rem; color: #78350f; white-space: pre-wrap; line-height: 1.6;">{{ mensajeError }}</p>
+          <p style="font-size: 0.8125rem; color: #78350f; white-space: pre-wrap; line-height: 1.6;">{{ mensajeError }}
+          </p>
         </div>
 
         <!-- TABLA DE ERRORES PROFESIONAL -->
@@ -508,35 +557,47 @@
               <table class="min-w-full text-xs md:text-sm" style="background-color: #ffffff;">
                 <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%);">
                   <tr>
-                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 8rem;">Fecha/Hora</th>
-                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 6rem;">Tipo</th>
-                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;">Mensaje</th>
-                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 8rem;">Archivo</th>
-                    <th style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 5rem;">Línea</th>
+                    <th
+                      style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 8rem;">
+                      Fecha/Hora</th>
+                    <th
+                      style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 6rem;">
+                      Tipo</th>
+                    <th
+                      style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;">
+                      Mensaje</th>
+                    <th
+                      style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 8rem;">
+                      Archivo</th>
+                    <th
+                      style="padding: 0.875rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; width: 5rem;">
+                      Línea</th>
                   </tr>
                 </thead>
                 <tbody style="background-color: #ffffff; border-top: 2px solid #e5e7eb;">
                   <tr *ngFor="let error of errores"
-                      style="border-bottom: 1px solid #e5e7eb; transition: all 0.2s; background-color: #ffffff;"
-                      onmouseover="this.style.backgroundColor='rgba(174, 221, 43, 0.05)'"
-                      onmouseout="this.style.backgroundColor='#ffffff'">
+                    style="border-bottom: 1px solid #e5e7eb; transition: all 0.2s; background-color: #ffffff;"
+                    onmouseover="this.style.backgroundColor='rgba(174, 221, 43, 0.05)'"
+                    onmouseout="this.style.backgroundColor='#ffffff'">
                     <td style="padding: 0.875rem 1rem; color: #02416d; font-size: 0.75rem; font-weight: 600;">
                       {{ error.fecha || 'N/A' }}
                     </td>
                     <td style="padding: 0.875rem 1rem;">
-                      <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; white-space: nowrap;"
-                            [style.background]="error.tipo === 'ERROR' ? 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)' : error.tipo === 'WARNING' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : error.tipo === 'NOTICE' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'"
-                            [style.color]="'#ffffff'">
-                        <i class="fas" 
-                           [class.fa-times-circle]="error.tipo === 'ERROR'"
-                           [class.fa-exclamation-triangle]="error.tipo === 'WARNING'"
-                           [class.fa-info-circle]="error.tipo === 'NOTICE' || error.tipo === 'INFO'"
-                           style="font-size: 0.625rem;"></i>
+                      <span
+                        style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; white-space: nowrap;"
+                        [style.background]="error.tipo === 'ERROR' ? 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)' : error.tipo === 'WARNING' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : error.tipo === 'NOTICE' ? 'linear-gradient(135deg, #066699 0%, #0a5483 100%)' : 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'"
+                        [style.color]="'#ffffff'">
+                        <i class="fas" [class.fa-times-circle]="error.tipo === 'ERROR'"
+                          [class.fa-exclamation-triangle]="error.tipo === 'WARNING'"
+                          [class.fa-info-circle]="error.tipo === 'NOTICE' || error.tipo === 'INFO'"
+                          style="font-size: 0.625rem;"></i>
                         {{ error.tipo }}
                       </span>
                     </td>
                     <td style="padding: 0.875rem 1rem; color: #02416d; word-break: break-word; max-width: 500px;">
-                      <div style="font-family: 'Courier New', monospace; font-size: 0.75rem; white-space: pre-wrap; line-height: 1.5;">{{ error.mensaje }}</div>
+                      <div
+                        style="font-family: 'Courier New', monospace; font-size: 0.75rem; white-space: pre-wrap; line-height: 1.5;">
+                        {{ error.mensaje }}</div>
                     </td>
                     <td style="padding: 0.875rem 1rem; color: #6b7280; font-size: 0.75rem;">
                       {{ error.archivo || 'N/A' }}
@@ -549,8 +610,10 @@
                   <tr *ngIf="!cargandoErrores && errores.length === 0 && !mensajeError">
                     <td colspan="5" style="padding: 3rem; text-align: center;">
                       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <i class="fas fa-check-circle" style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;"></i>
-                        <span style="color: #02416d; font-size: 0.9375rem; font-weight: 600;">No hay errores registrados en el archivo de log</span>
+                        <i class="fas fa-check-circle"
+                          style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;"></i>
+                        <span style="color: #02416d; font-size: 0.9375rem; font-weight: 600;">No hay errores registrados
+                          en el archivo de log</span>
                       </div>
                     </td>
                   </tr>
@@ -558,7 +621,8 @@
                   <tr *ngIf="cargandoErrores">
                     <td colspan="5" style="padding: 3rem; text-align: center;">
                       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3" style="border-color: #066699; border-top-color: transparent;"></div>
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3"
+                          style="border-color: #066699; border-top-color: transparent;"></div>
                         <span style="color: #02416d; font-size: 0.875rem; font-weight: 600;">Cargando errores...</span>
                       </div>
                     </td>
@@ -570,10 +634,9 @@
         </div>
 
         <!-- PAGINACIÓN PROFESIONAL -->
-        <div *ngIf="totalErrores > limiteErrores" style="margin-top: 1.5rem; padding: 1rem; background-color: #f8f8ec; border-radius: 0.5rem; border: 2px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
-          <button
-            (click)="cargarErroresAnteriores()"
-            [disabled]="offsetErrores === 0 || cargandoErrores"
+        <div *ngIf="totalErrores > limiteErrores"
+          style="margin-top: 1.5rem; padding: 1rem; background-color: #f8f8ec; border-radius: 0.5rem; border: 2px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+          <button (click)="cargarErroresAnteriores()" [disabled]="offsetErrores === 0 || cargandoErrores"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
             [style.opacity]="(offsetErrores === 0 || cargandoErrores) ? '0.5' : '1'"
             [style.cursor]="(offsetErrores === 0 || cargandoErrores) ? 'not-allowed' : 'pointer'"
@@ -582,14 +645,15 @@
             <i class="fas fa-chevron-left"></i>
             Anteriores
           </button>
-          <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
+          <div
+            style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background-color: #ffffff; border-radius: 0.5rem; border: 2px solid #e5e7eb;">
             <i class="fas fa-file-alt" style="color: #066699; font-size: 0.875rem;"></i>
             <span style="font-size: 0.875rem; color: #02416d; font-weight: 600;">
-              Página {{ Math.floor(offsetErrores / limiteErrores) + 1 }} de {{ Math.ceil(totalErrores / limiteErrores) }}
+              Página {{ Math.floor(offsetErrores / limiteErrores) + 1 }} de {{ Math.ceil(totalErrores / limiteErrores)
+              }}
             </span>
           </div>
-          <button
-            (click)="cargarErroresSiguientes()"
+          <button (click)="cargarErroresSiguientes()"
             [disabled]="offsetErrores + limiteErrores >= totalErrores || cargandoErrores"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
             [style.opacity]="(offsetErrores + limiteErrores >= totalErrores || cargandoErrores) ? '0.5' : '1'"
@@ -603,27 +667,33 @@
       </div>
 
       <!-- OTROS PROFESIONAL -->
-      <div *ngIf="tabActiva === 'otros'" style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+      <div *ngIf="tabActiva === 'otros'"
+        style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
         <div style="border-bottom: 3px solid #aedd2b; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
           <div class="flex items-center gap-4 mb-3">
-            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
+            <div
+              style="width: 64px; height: 64px; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
               <i class="fas fa-cog" style="font-size: 2rem; color: #ffffff;"></i>
             </div>
             <div>
-              <h2 style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+              <h2
+                style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-line" style="color: #aedd2b; font-size: 1.75rem;"></i>
                 Configuraciones Generales
               </h2>
-              <p style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+              <p
+                style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fas fa-info-circle" style="color: #066699; font-size: 0.875rem;"></i>
                 Roles, permisos, parámetros del sistema y seguridad
               </p>
             </div>
           </div>
         </div>
-        <div style="padding: 2rem; text-align: center; background-color: #f8f8ec; border-radius: 0.5rem; border: 2px dashed #e5e7eb;">
+        <div
+          style="padding: 2rem; text-align: center; background-color: #f8f8ec; border-radius: 0.5rem; border: 2px dashed #e5e7eb;">
           <i class="fas fa-tools" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
-          <p style="color: #02416d; font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Configuraciones adicionales</p>
+          <p style="color: #02416d; font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Configuraciones adicionales
+          </p>
           <p style="color: #6b7280; font-size: 0.875rem;">Esta sección estará disponible próximamente</p>
         </div>
       </div>
@@ -633,31 +703,31 @@
 </div>
 
 <!-- MODAL NUEVA RUTA PROFESIONAL -->
-<div *ngIf="modalRuta"
-     class="fixed inset-0 flex items-center justify-center z-50 p-4"
-     style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
-     (click)="cerrarModalRuta()">
+<div *ngIf="modalRuta" class="fixed inset-0 flex items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);" (click)="cerrarModalRuta()">
 
   <div class="bg-white w-full max-w-md rounded-xl shadow-2xl flex flex-col transform transition-all animate-scaleIn"
-       style="display: flex; flex-direction: column;"
-       (click)="$event.stopPropagation()">
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
 
     <!-- ENCABEZADO PROFESIONAL -->
-    <div style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <div
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <i class="fas fa-plus-circle" style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          <div
+            style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-plus-circle"
+              style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
           </div>
           <div>
-            <h3 style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+            <h3
+              style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
               <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
               Nueva Ruta
             </h3>
           </div>
         </div>
-        <button
-          (click)="cerrarModalRuta()"
+        <button (click)="cerrarModalRuta()"
           style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
@@ -668,28 +738,25 @@
 
     <!-- CONTENIDO -->
     <div style="background-color: #f8f8ec; padding: 2rem;">
-      <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+      <label
+        style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
         <i class="fas fa-route" style="color: #066699;"></i>
         Nombre de la Ruta <span style="color: #dc3545;">*</span>
       </label>
-      <input
-        type="text"
-        [(ngModel)]="nombreRuta"
-        placeholder="Ej: Ruta Norte"
+      <input type="text" [(ngModel)]="nombreRuta" placeholder="Ej: Ruta Norte"
         style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
         onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-        onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+        onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
     </div>
 
     <!-- FOOTER CON BOTONES -->
-    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
-      <button
-        (click)="cerrarModalRuta()"
+    <div
+      style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
+      <button (click)="cerrarModalRuta()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
         Cancelar
       </button>
-      <button
-        (click)="guardarRuta()"
+      <button (click)="guardarRuta()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
@@ -701,31 +768,31 @@
 
 
 <!-- MODAL EDITAR RUTA PROFESIONAL -->
-<div *ngIf="modalEditar"
-     class="fixed inset-0 flex items-center justify-center z-50 p-4"
-     style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
-     (click)="cerrarModalEditar()">
+<div *ngIf="modalEditar" class="fixed inset-0 flex items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);" (click)="cerrarModalEditar()">
 
   <div class="bg-white w-full max-w-md rounded-xl shadow-2xl flex flex-col transform transition-all animate-scaleIn"
-       style="display: flex; flex-direction: column;"
-       (click)="$event.stopPropagation()">
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
 
     <!-- ENCABEZADO PROFESIONAL -->
-    <div style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <div
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <i class="fas fa-edit" style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          <div
+            style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-edit"
+              style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
           </div>
           <div>
-            <h3 style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+            <h3
+              style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
               <i class="fas fa-route" style="margin-right: 0.5rem; color: #aedd2b;"></i>
               Editar Ruta
             </h3>
           </div>
         </div>
-        <button
-          (click)="cerrarModalEditar()"
+        <button (click)="cerrarModalEditar()"
           style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
@@ -736,27 +803,25 @@
 
     <!-- CONTENIDO -->
     <div style="background-color: #f8f8ec; padding: 2rem;">
-      <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+      <label
+        style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
         <i class="fas fa-route" style="color: #066699;"></i>
         Nombre de la Ruta <span style="color: #dc3545;">*</span>
       </label>
-      <input
-        type="text"
-        [(ngModel)]="nombreRutaEditar"
+      <input type="text" [(ngModel)]="nombreRutaEditar"
         style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
         onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-        onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+        onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
     </div>
 
     <!-- FOOTER CON BOTONES -->
-    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
-      <button
-        (click)="cerrarModalEditar()"
+    <div
+      style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
+      <button (click)="cerrarModalEditar()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
         Cancelar
       </button>
-      <button
-        (click)="editarRuta()"
+      <button (click)="editarRuta()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); color: #ffffff;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
@@ -767,35 +832,37 @@
 </div>
 
 <!-- MODAL NUEVO USUARIO PROFESIONAL -->
-<div *ngIf="verFormularioUsuario"
-     class="fixed inset-0 flex items-center justify-center z-50 p-4"
-     style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
-     (click)="cancelarFormulario()">
+<div *ngIf="verFormularioUsuario" class="fixed inset-0 flex items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);" (click)="cancelarFormulario()">
 
-  <div class="bg-white w-full max-w-4xl rounded-xl shadow-2xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
-       style="display: flex; flex-direction: column;"
-       (click)="$event.stopPropagation()">
+  <div
+    class="bg-white w-full max-w-4xl rounded-xl shadow-2xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
 
     <!-- ENCABEZADO PROFESIONAL -->
-    <div style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <div
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <i class="fas fa-user-plus" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          <div
+            style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-user-plus"
+              style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
           </div>
           <div>
-            <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+            <h3
+              style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
               <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
               Nuevo Usuario
             </h3>
-            <p style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <p
+              style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fas fa-info-circle" style="font-size: 0.875rem;"></i>
               Registro de usuarios del sistema
             </p>
           </div>
         </div>
-        <button
-          (click)="cancelarFormulario()"
+        <button (click)="cancelarFormulario()"
           style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
@@ -805,58 +872,48 @@
     </div>
 
     <!-- CONTENIDO CON SCROLL -->
-    <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
+    <div
+      style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
 
       <!-- FORMULARIO PROFESIONAL -->
-      <form
-        (ngSubmit)="guardarUsuario()"
-        #formUsuario="ngForm"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form (ngSubmit)="guardarUsuario()" #formUsuario="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <!-- NOMBRE COMPLETO -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-user" style="color: #066699;"></i>
             Nombre Completo <span style="color: #dc3545;">*</span>
           </label>
-          <input
-            type="text"
-            name="nombre_completo"
-            [(ngModel)]="usuario.nombre_completo"
-            required
+          <input type="text" name="nombre_completo" [(ngModel)]="usuario.nombre_completo" required
             placeholder="Ej: Carlos Ramírez"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- USUARIO -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-at" style="color: #066699;"></i>
             Nombre de Usuario <span style="color: #dc3545;">*</span>
           </label>
-          <input
-            type="text"
-            name="nombre_usuario"
-            [(ngModel)]="usuario.nombre_usuario"
-            required
+          <input type="text" name="nombre_usuario" [(ngModel)]="usuario.nombre_usuario" required
             placeholder="Ej: cramirez"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- ROL -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-user-tag" style="color: #066699;"></i>
             Rol <span style="color: #dc3545;">*</span>
           </label>
-          <select
-            name="rol"
-            [(ngModel)]="usuario.rol"
-            required
+          <select name="rol" [(ngModel)]="usuario.rol" required
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
             onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
@@ -868,15 +925,14 @@
 
         <!-- RUTA (Solo para cobradores) -->
         <div *ngIf="usuario.rol === 'cobrador'">
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-route" style="color: #066699;"></i>
             Ruta Asignada <span style="color: #dc3545;">*</span>
-            <span style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">({{ rutas.length }} rutas disponibles)</span>
+            <span style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">({{ rutas.length }} rutas
+              disponibles)</span>
           </label>
-          <select
-            name="id_ruta"
-            [(ngModel)]="usuario.id_ruta"
-            required
+          <select name="id_ruta" [(ngModel)]="usuario.id_ruta" required
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
             onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
@@ -885,11 +941,13 @@
               {{ ruta.nombre_ruta }} {{ ruta.activo === 0 ? '(Inactiva)' : '' }}
             </option>
           </select>
-          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
+          <p
+            style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
             <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
             La ruta asignada se usará automáticamente al crear clientes.
           </p>
-          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #10b981; display: flex; align-items: center; gap: 0.375rem;" *ngIf="rutas.length > 0">
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #10b981; display: flex; align-items: center; gap: 0.375rem;"
+            *ngIf="rutas.length > 0">
             <i class="fas fa-check-circle" style="font-size: 0.625rem;"></i>
             Todas las rutas del sistema están disponibles para selección
           </p>
@@ -897,69 +955,54 @@
 
         <!-- EMAIL -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-envelope" style="color: #066699;"></i>
             Email
           </label>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="usuario.email"
-            placeholder="correo@ejemplo.com"
+          <input type="email" name="email" [(ngModel)]="usuario.email" placeholder="correo@ejemplo.com"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- CLAVE -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-lock" style="color: #066699;"></i>
             Contraseña <span style="color: #dc3545;">*</span>
           </label>
-          <input
-            type="password"
-            name="clave"
-            [(ngModel)]="usuario.clave"
-            required
-            placeholder="********"
+          <input type="password" name="clave" [(ngModel)]="usuario.clave" required placeholder="********"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- CONFIRMAR CLAVE -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-lock" style="color: #066699;"></i>
             Confirmar Contraseña <span style="color: #dc3545;">*</span>
           </label>
-          <input
-            type="password"
-            name="confirmar_clave"
-            [(ngModel)]="confirmarClave"
-            required
-            placeholder="********"
+          <input type="password" name="confirmar_clave" [(ngModel)]="confirmarClave" required placeholder="********"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
       </form>
     </div>
 
     <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
-    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
-      <button
-        type="button"
-        (click)="cancelarFormularioUsuarios()"
+    <div
+      style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
+      <button type="button" (click)="cancelarFormularioUsuarios()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
         <i class="fas fa-times"></i>
         Cancelar
       </button>
-      <button
-        type="button"
-        (click)="guardarUsuario()"
-        [disabled]="formUsuario.invalid"
+      <button type="button" (click)="guardarUsuario()" [disabled]="formUsuario.invalid"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
         [style.opacity]="formUsuario.invalid ? '0.5' : '1'"
         [style.cursor]="formUsuario.invalid ? 'not-allowed' : 'pointer'"
@@ -972,35 +1015,37 @@
 </div>
 
 <!-- MODAL ASIGNAR RUTA PROFESIONAL -->
-<div *ngIf="modalAsignarRuta"
-     class="fixed inset-0 flex items-center justify-center z-50 p-4"
-     style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
-     (click)="cerrarModalAsignarRuta()">
+<div *ngIf="modalAsignarRuta" class="fixed inset-0 flex items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);" (click)="cerrarModalAsignarRuta()">
 
-  <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl max-h-[90vh] flex flex-col transform transition-all animate-scaleIn"
-       style="display: flex; flex-direction: column;"
-       (click)="$event.stopPropagation()">
+  <div
+    class="bg-white w-full max-w-lg rounded-xl shadow-2xl max-h-[90vh] flex flex-col transform transition-all animate-scaleIn"
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
 
     <!-- ENCABEZADO PROFESIONAL -->
-    <div style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <div
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <i class="fas fa-route" style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          <div
+            style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-route"
+              style="font-size: 1.5rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
           </div>
           <div>
-            <h3 style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+            <h3
+              style="font-size: 1.5rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
               <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
               Asignar Rutas
             </h3>
-            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.95); margin: 0.25rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <p
+              style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.95); margin: 0.25rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fas fa-user" style="font-size: 0.75rem;"></i>
               {{ usuarioSeleccionado?.nombre_completo }}
             </p>
           </div>
         </div>
-        <button
-          (click)="cerrarModalAsignarRuta()"
+        <button (click)="cerrarModalAsignarRuta()"
           style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
@@ -1010,20 +1055,19 @@
     </div>
 
     <!-- CONTENIDO CON SCROLL -->
-    <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(90vh - 200px);">
+    <div
+      style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(90vh - 200px);">
       <!-- LISTA DE RUTAS CON CHECKLIST PROFESIONAL -->
       <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto;">
-        <label
-          *ngFor="let ruta of rutas"
+        <label *ngFor="let ruta of rutas"
           style="display: flex; align-items: center; gap: 0.75rem; background-color: #ffffff; padding: 1rem; border-radius: 0.5rem; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.2s;"
           onmouseover="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)'"
           onmouseout="this.style.borderColor='#e5e7eb'; this.style.backgroundColor='#ffffff'">
-          <input
-            type="checkbox"
-            style="width: 1.25rem; height: 1.25rem; accent-color: #066699; cursor: pointer;"
+          <input type="checkbox" style="width: 1.25rem; height: 1.25rem; accent-color: #066699; cursor: pointer;"
             [checked]="rutasSeleccionadas.includes(ruta.id_ruta)"
             (change)="toggleRutaSeleccionada(ruta.id_ruta, $event.target.checked)" />
-          <span style="color: #02416d; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <span
+            style="color: #02416d; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-route" style="color: #066699; font-size: 0.75rem;"></i>
             {{ ruta.nombre_ruta }}
           </span>
@@ -1032,15 +1076,14 @@
     </div>
 
     <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
-    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
-      <button
-        (click)="cerrarModalAsignarRuta()"
+    <div
+      style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
+      <button (click)="cerrarModalAsignarRuta()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
         <i class="fas fa-times"></i>
         Cancelar
       </button>
-      <button
-        (click)="guardarAsignacionRutas()"
+      <button (click)="guardarAsignacionRutas()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
@@ -1051,35 +1094,37 @@
 </div>
 
 <!-- MODAL EDITAR USUARIO PROFESIONAL -->
-<div *ngIf="modalEditarUsuario"
-     class="fixed inset-0 flex items-center justify-center z-50 p-4"
-     style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
-     (click)="cerrarModalEditarUsuario()">
+<div *ngIf="modalEditarUsuario" class="fixed inset-0 flex items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);" (click)="cerrarModalEditarUsuario()">
 
-  <div class="bg-white w-full max-w-4xl rounded-xl shadow-2xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
-       style="display: flex; flex-direction: column;"
-       (click)="$event.stopPropagation()">
+  <div
+    class="bg-white w-full max-w-4xl rounded-xl shadow-2xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
 
     <!-- ENCABEZADO PROFESIONAL -->
-    <div style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <div
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <i class="fas fa-user-edit" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          <div
+            style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-user-edit"
+              style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
           </div>
           <div>
-            <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+            <h3
+              style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
               <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
               Editar Usuario
             </h3>
-            <p style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <p
+              style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fas fa-info-circle" style="font-size: 0.875rem;"></i>
               Actualización de datos del usuario
             </p>
           </div>
         </div>
-        <button
-          (click)="cerrarModalEditarUsuario()"
+        <button (click)="cerrarModalEditarUsuario()"
           style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
@@ -1089,51 +1134,45 @@
     </div>
 
     <!-- CONTENIDO CON SCROLL -->
-    <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
+    <div
+      style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
       <!-- FORMULARIO PROFESIONAL -->
-      <form
-        (ngSubmit)="guardarEdicionUsuario()"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form (ngSubmit)="guardarEdicionUsuario()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <!-- NOMBRE COMPLETO -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-user" style="color: #066699;"></i>
             Nombre Completo
           </label>
-          <input
-            type="text"
-            [(ngModel)]="usuarioEdit.nombre_completo"
-            name="nombre_completo"
+          <input type="text" [(ngModel)]="usuarioEdit.nombre_completo" name="nombre_completo"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- USUARIO -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-at" style="color: #066699;"></i>
             Nombre de Usuario
           </label>
-          <input
-            type="text"
-            [(ngModel)]="usuarioEdit.nombre_usuario"
-            name="nombre_usuario"
+          <input type="text" [(ngModel)]="usuarioEdit.nombre_usuario" name="nombre_usuario"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- ROL -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-user-tag" style="color: #066699;"></i>
             Rol
           </label>
-          <select
-            [(ngModel)]="usuarioEdit.rol"
-            name="rol"
+          <select [(ngModel)]="usuarioEdit.rol" name="rol"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
             onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
@@ -1144,35 +1183,32 @@
 
         <!-- EMAIL -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-envelope" style="color: #066699;"></i>
             Email
           </label>
-          <input
-            type="email"
-            [(ngModel)]="usuarioEdit.email"
-            name="email"
+          <input type="email" [(ngModel)]="usuarioEdit.email" name="email"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- NUEVA CLAVE -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-lock" style="color: #066699;"></i>
             Nueva Contraseña
             <span style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">(opcional)</span>
           </label>
-          <input
-            type="password"
-            [(ngModel)]="nuevaClave"
-            name="nueva_clave"
+          <input type="password" [(ngModel)]="nuevaClave" name="nueva_clave"
             placeholder="Dejar vacío para mantener la actual"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
-          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+          <p
+            style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
             <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
             Si no desea cambiar la contraseña, deje este campo vacío
           </p>
@@ -1180,30 +1216,27 @@
 
         <!-- CONFIRMAR NUEVA CLAVE -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-lock" style="color: #066699;"></i>
             Confirmar Nueva Contraseña
             <span style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">(opcional)</span>
           </label>
-          <input
-            type="password"
-            [(ngModel)]="confirmarNuevaClave"
-            name="confirmar_nueva_clave"
+          <input type="password" [(ngModel)]="confirmarNuevaClave" name="confirmar_nueva_clave"
             placeholder="Repetir la nueva contraseña"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"/>
+            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
         </div>
 
         <!-- ESTADO -->
         <div>
-          <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <label
+            style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-toggle-on" style="color: #066699;"></i>
             Estado
           </label>
-          <select
-            [(ngModel)]="usuarioEdit.estado"
-            name="estado"
+          <select [(ngModel)]="usuarioEdit.estado" name="estado"
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
             onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
             onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
@@ -1215,17 +1248,14 @@
     </div>
 
     <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
-    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
-      <button
-        type="button"
-        (click)="cerrarModalEditarUsuario()"
+    <div
+      style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0; position: sticky; bottom: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
+      <button type="button" (click)="cerrarModalEditarUsuario()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background-color: #6b7280; color: #ffffff;">
         <i class="fas fa-times"></i>
         Cancelar
       </button>
-      <button
-        type="button"
-        (click)="guardarEdicionUsuario()"
+      <button type="button" (click)="guardarEdicionUsuario()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
@@ -1240,37 +1270,36 @@
 
 
 <!-- MODAL CLAVE DINÁMICA PROFESIONAL -->
-<div
-  *ngIf="modalClaveDinamica"
-  class="fixed inset-0 flex items-center justify-center z-50 p-4"
-  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);"
-  (click)="cerrarModalClaveDinamica()">
-  
-  <div
-    class="bg-white rounded-xl shadow-2xl max-w-2xl w-full flex flex-col transform transition-all animate-scaleIn"
-    style="display: flex; flex-direction: column;"
-    (click)="$event.stopPropagation()">
-    
+<div *ngIf="modalClaveDinamica" class="fixed inset-0 flex items-center justify-center z-50 p-4"
+  style="background: rgba(2, 65, 109, 0.75); backdrop-filter: blur(4px);" (click)="cerrarModalClaveDinamica()">
+
+  <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full flex flex-col transform transition-all animate-scaleIn"
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
+
     <!-- ENCABEZADO PROFESIONAL -->
-    <div style="flex-shrink: 0; background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <div
+      style="flex-shrink: 0; background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <i class="fas fa-key" style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
+          <div
+            style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <i class="fas fa-key"
+              style="font-size: 1.75rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></i>
           </div>
           <div>
-            <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+            <h3
+              style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
               <i class="fas fa-chart-line" style="margin-right: 0.5rem; color: #aedd2b;"></i>
               Clave Dinámica Generada
             </h3>
-            <p *ngIf="usuarioClave" style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <p *ngIf="usuarioClave"
+              style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.95); margin: 0.375rem 0 0 0; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fas fa-user" style="font-size: 0.875rem;"></i>
               Cobrador: <strong>{{ usuarioClave.nombre_completo }}</strong>
             </p>
           </div>
         </div>
-        <button
-          (click)="cerrarModalClaveDinamica()"
+        <button (click)="cerrarModalClaveDinamica()"
           style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; color: #ffffff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'; this.style.transform='scale(1.05)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1)'">
@@ -1281,27 +1310,25 @@
 
     <!-- CONTENIDO CON SCROLL -->
     <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: auto; flex: 1; min-height: 0;">
-      
+
       <!-- CLAVE GENERADA - DESTACADA -->
       <div style="margin-bottom: 1.5rem;">
-        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <label
+          style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
           <i class="fas fa-mobile-alt" style="color: #9333ea;"></i>
           Clave de Acceso Temporal
         </label>
-        <div style="background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(126, 34, 206, 0.05) 100%); border: 3px solid #9333ea; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);">
+        <div
+          style="background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(126, 34, 206, 0.05) 100%); border: 3px solid #9333ea; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);">
           <!-- Clave en grande -->
           <div style="text-align: center; margin-bottom: 1rem;">
-            <input
-              type="text"
-              [value]="claveGenerada"
-              readonly
+            <input type="text" [value]="claveGenerada" readonly
               style="width: 100%; padding: 1rem; font-size: 2rem; font-weight: 800; text-align: center; font-family: 'Courier New', monospace; letter-spacing: 0.5em; color: #02416d; background-color: #ffffff; border: 2px solid #9333ea; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(147, 51, 234, 0.15); outline: none;"
               id="claveInput">
           </div>
-          
+
           <!-- Botón copiar -->
-          <button
-            (click)="copiarClave()"
+          <button (click)="copiarClave()"
             style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';"
@@ -1313,32 +1340,40 @@
       </div>
 
       <!-- INFORMACIÓN DE VIGENCIA -->
-      <div style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-left: 4px solid #f59e0b; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      <div
+        style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 2px solid #f59e0b; border-left: 4px solid #f59e0b; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
         <div style="display: flex; align-items: start; gap: 1rem;">
-          <div style="flex-shrink: 0; width: 40px; height: 40px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+          <div
+            style="flex-shrink: 0; width: 40px; height: 40px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
             <i class="fas fa-clock" style="font-size: 1.25rem; color: #ffffff;"></i>
           </div>
           <div style="flex: 1;">
-            <p style="font-size: 0.875rem; color: #92400e; font-weight: 700; margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+            <p
+              style="font-size: 0.875rem; color: #92400e; font-weight: 700; margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
               Vigencia de la Clave
             </p>
             <p style="font-size: 0.8125rem; color: #78350f; margin: 0 0 0.25rem 0; line-height: 1.6;">
-              Válida <strong style="color: #92400e;">solo para hoy</strong> hasta las <strong style="color: #92400e;">23:59:59</strong>
+              Válida <strong style="color: #92400e;">solo para hoy</strong> hasta las <strong
+                style="color: #92400e;">23:59:59</strong>
             </p>
             <p style="font-size: 0.8125rem; color: #78350f; margin: 0; line-height: 1.6;">
-              Fecha: <span style="font-family: 'Courier New', monospace; font-weight: 600; color: #02416d;">{{ fechaVigencia }}</span>
+              Fecha: <span style="font-family: 'Courier New', monospace; font-weight: 600; color: #02416d;">{{
+                fechaVigencia }}</span>
             </p>
           </div>
         </div>
       </div>
 
       <!-- INSTRUCCIONES -->
-      <div style="padding: 1rem; background: linear-gradient(135deg, rgba(6, 102, 153, 0.1) 0%, rgba(6, 102, 153, 0.05) 100%); border: 2px solid #066699; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-        <p style="font-size: 0.875rem; color: #02416d; margin-bottom: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+      <div
+        style="padding: 1rem; background: linear-gradient(135deg, rgba(6, 102, 153, 0.1) 0%, rgba(6, 102, 153, 0.05) 100%); border: 2px solid #066699; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <p
+          style="font-size: 0.875rem; color: #02416d; margin-bottom: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
           <i class="fas fa-info-circle" style="color: #066699;"></i>
           Instrucciones de Uso
         </p>
-        <ul style="font-size: 0.8125rem; color: #6b7280; line-height: 1.8; padding-left: 1.5rem; margin: 0; list-style-type: decimal;">
+        <ul
+          style="font-size: 0.8125rem; color: #6b7280; line-height: 1.8; padding-left: 1.5rem; margin: 0; list-style-type: decimal;">
           <li style="margin-bottom: 0.5rem;">
             Proporcione esta clave al cobrador para acceder al sistema
           </li>
@@ -1357,17 +1392,16 @@
     </div>
 
     <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
-    <div style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: space-between; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
-      <button
-        (click)="generarNuevaClave(usuarioClave.id_usuario)"
+    <div
+      style="padding: 1.5rem 2rem; background: #ffffff; border-top: 2px solid #e5e7eb; display: flex; justify-content: space-between; gap: 1rem; border-radius: 0 0 0.75rem 0.75rem; flex-shrink: 0;">
+      <button (click)="generarNuevaClave(usuarioClave.id_usuario)"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, #facc15 0%, #eab308 100%); color: #02416d;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
         <i class="fas fa-redo"></i>
         Regenerar Clave
       </button>
-      <button
-        (click)="cerrarModalClaveDinamica()"
+      <button (click)="cerrarModalClaveDinamica()"
         style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: #6b7280; color: #ffffff;">
         Cerrar
       </button>
@@ -1375,6 +1409,3 @@
 
   </div>
 </div>
-
-
-

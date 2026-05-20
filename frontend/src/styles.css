@@ -2,9 +2,9 @@
 
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
+
 
 /* Importar sistema de diseño profesional */
 @import "./app/design-system.css";
