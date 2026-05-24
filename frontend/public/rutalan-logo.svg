@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 520">
+  <title>Logo Rutalan — Variantes</title>
+  <desc>Imagotipo Rutalan: versión sin fondo, fondo oscuro y favicon</desc>
+
+  <style>
+    .logo-name { font-family: Arial, Helvetica, sans-serif; font-size: 52px; font-weight: 500; letter-spacing: -1.5px; fill: #0A2E5C; }
+    .logo-tag { font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 3.5px; fill: #0DBF6B; }
+    .logo-name-light { font-family: Arial, Helvetica, sans-serif; font-size: 52px; font-weight: 500; letter-spacing: -1.5px; fill: #5BA3F5; }
+    .logo-tag-light { font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 3.5px; fill: #0DBF6B; }
+    .label { font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 2px; fill: #888888; }
+  </style>
+
+  <!-- VERSION SIN FONDO -->
+  <text x="40" y="34" class="label">SIN FONDO</text>
+  <g transform="translate(40, 50)">
+    <g transform="translate(0, 10)">
+      <rect x="0" y="0" width="100" height="100" rx="22" fill="#0A2E5C"/>
+      <circle cx="22" cy="26" r="7.5" fill="#0DBF6B"/>
+      <circle cx="78" cy="26" r="7.5" fill="#5BA3F5" opacity="0.75"/>
+      <circle cx="50" cy="74" r="7.5" fill="#ffffff"/>
+      <path d="M29 26 Q50 26 50 50 Q50 74 50 74" fill="none" stroke="#0DBF6B" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M78 26 Q78 50 64 62 Q57 68 50 74" fill="none" stroke="#5BA3F5" stroke-width="3.2" stroke-linecap="round"/>
+      <circle cx="50" cy="74" r="4" fill="#0DBF6B"/>
+      <path d="M44 68 L50 75 L56 68" fill="none" stroke="#0DBF6B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="120" y="72" class="logo-name">rutalan</text>
+    <text x="122" y="103" class="logo-tag">GESTIÓN DE CRÉDITOS</text>
+  </g>
+
+  <line x1="40" y1="195" x2="640" y2="195" stroke="#e0e0e0" stroke-width="0.5"/>
+
+  <!-- VERSION FONDO OSCURO -->
+  <text x="40" y="222" class="label">FONDO OSCURO</text>
+  <rect x="40" y="232" width="580" height="130" rx="16" fill="#0A2E5C"/>
+  <g transform="translate(60, 242)">
+    <g transform="translate(0, 10)">
+      <rect x="0" y="0" width="100" height="100" rx="22" fill="#0DBF6B"/>
+      <circle cx="22" cy="26" r="7.5" fill="#0A2E5C"/>
+      <circle cx="78" cy="26" r="7.5" fill="#ffffff" opacity="0.6"/>
+      <circle cx="50" cy="74" r="7.5" fill="#ffffff"/>
+      <path d="M29 26 Q50 26 50 50 Q50 74 50 74" fill="none" stroke="#0A2E5C" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M78 26 Q78 50 64 62 Q57 68 50 74" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="50" cy="74" r="4" fill="#0A2E5C"/>
+      <path d="M44 68 L50 75 L56 68" fill="none" stroke="#0A2E5C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="120" y="72" class="logo-name-light">rutalan</text>
+    <text x="122" y="103" class="logo-tag-light">GESTIÓN DE CRÉDITOS</text>
+  </g>
+
+  <line x1="40" y1="382" x2="640" y2="382" stroke="#e0e0e0" stroke-width="0.5"/>
+
+  <!-- FAVICON -->
+  <text x="40" y="409" class="label">FAVICON / APP ICON</text>
+
+  <!-- Cuadrado -->
+  <g transform="translate(40, 420)">
+    <rect x="0" y="0" width="80" height="80" rx="18" fill="#0A2E5C"/>
+    <circle cx="18" cy="21" r="6" fill="#0DBF6B"/>
+    <circle cx="62" cy="21" r="6" fill="#5BA3F5" opacity="0.75"/>
+    <circle cx="40" cy="59" r="6" fill="#ffffff"/>
+    <path d="M24 21 Q40 21 40 40 Q40 59 40 59" fill="none" stroke="#0DBF6B" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M62 21 Q62 40 51 50 Q46 55 40 59" fill="none" stroke="#5BA3F5" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="40" cy="59" r="3" fill="#0DBF6B"/>
+    <path d="M35 54 L40 60 L45 54" fill="none" stroke="#0DBF6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="40" y="518" class="label">CUADRADO</text>
+
+  <!-- Circular -->
+  <g transform="translate(140, 420)">
+    <rect x="0" y="0" width="80" height="80" rx="40" fill="#0A2E5C"/>
+    <circle cx="18" cy="21" r="6" fill="#0DBF6B"/>
+    <circle cx="62" cy="21" r="6" fill="#5BA3F5" opacity="0.75"/>
+    <circle cx="40" cy="59" r="6" fill="#ffffff"/>
+    <path d="M24 21 Q40 21 40 40 Q40 59 40 59" fill="none" stroke="#0DBF6B" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M62 21 Q62 40 51 50 Q46 55 40 59" fill="none" stroke="#5BA3F5" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="40" cy="59" r="3" fill="#0DBF6B"/>
+    <path d="M35 54 L40 60 L45 54" fill="none" stroke="#0DBF6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="140" y="518" class="label">CIRCULAR</text>
+
+</svg>
