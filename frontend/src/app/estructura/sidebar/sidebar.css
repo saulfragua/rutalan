@@ -21,8 +21,8 @@
 }
 
 .brand-image {
-  width: 40px !important;
-  height: auto !important;
+  width: auto !important;
+  height: 5rem !important;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 

@@ -139,7 +139,7 @@ a {
 }
 
 .dashboard-mockup {
-  background: #0f172a;
+  background: rgb(10, 46, 92);
   border-radius: 20px;
   padding: 22px;
   color: white;
@@ -254,7 +254,7 @@ section {
 }
 
 .preventa {
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background:rgb(10, 46, 92);
   color: white;
 }
 
@@ -375,7 +375,7 @@ section {
 }
 
 footer {
-  background: var(--secondary);
+  background: rgb(10, 46, 92);
   color: #cbd5e1;
   padding: 35px 0;
   text-align: center;
