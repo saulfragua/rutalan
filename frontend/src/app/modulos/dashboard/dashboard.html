@@ -10,12 +10,11 @@
   <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 mb-3 sm:mb-4" style="border: 2px solid #e5e7eb;">
     <div class="flex flex-col md:flex-row items-start md:items-center gap-3 sm:gap-4">
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-        <label class="text-xs sm:text-sm font-medium whitespace-nowrap" style="color: #02416d;"><strong>Período:</strong></label>
-        <select 
-          [(ngModel)]="periodoSeleccionado"
-          (change)="cambiarPeriodo(periodoSeleccionado)"
-          class="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 bg-white cursor-pointer min-h-[44px]"
-          style="border-color: #066699; color: #02416d; focus:ring-color: #aedd2b;">
+        <label class="text-xs sm:text-sm font-medium whitespace-nowrap"
+          style="color: #02416d;"><strong>Período:</strong></label>
+        <select [(ngModel)]="periodoSeleccionado" (change)="cambiarPeriodo(periodoSeleccionado)"
+          class="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 bg-white cursor-pointer min-h-11"
+          style="border-color: #066699; color: #02416d;">
           <option value="hoy">Hoy</option>
           <option value="semana">Esta Semana</option>
           <option value="mes">Este Mes</option>
@@ -23,62 +22,63 @@
           <option value="personalizado">Personalizado</option>
         </select>
       </div>
-      
+
       <!-- Campos de fecha personalizado - Mobile First -->
-      <div *ngIf="mostrarRangoPersonalizado" class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end flex-1 w-full">
+      @if (mostrarRangoPersonalizado) {
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end flex-1 w-full">
         <div class="flex-1 min-w-0">
           <label class="block text-xs sm:text-sm font-medium mb-1" style="color: #02416d;">Fecha Inicio</label>
-          <input 
-            type="date" 
-            [(ngModel)]="fechaInicio" 
-            class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 min-h-[44px]"
+          <input type="date" [(ngModel)]="fechaInicio"
+            class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 min-h-11"
             style="border-color: #066699; color: #02416d;">
         </div>
         <div class="flex-1 min-w-0">
           <label class="block text-xs sm:text-sm font-medium mb-1" style="color: #02416d;">Fecha Fin</label>
-          <input 
-            type="date" 
-            [(ngModel)]="fechaFin" 
-            class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 min-h-[44px]"
+          <input type="date" [(ngModel)]="fechaFin"
+            class="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 min-h-11"
             style="border-color: #066699; color: #02416d;">
         </div>
         <div class="w-full sm:w-auto">
-          <button 
-            (click)="aplicarFiltros()" 
-            class="w-full sm:w-auto px-4 py-2 text-sm sm:text-base rounded-md transition whitespace-nowrap font-semibold min-h-[44px]"
+          <button (click)="aplicarFiltros()"
+            class="w-full sm:w-auto px-4 py-2 text-sm sm:text-base rounded-md transition whitespace-nowrap font-semibold min-h-11"
             style="background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;">
             Aplicar Filtros
           </button>
         </div>
       </div>
+      }
     </div>
   </div>
 
   <!-- Grid de tarjetas principales - 2 columnas en celular -->
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2 sm:gap-3 mb-3 sm:mb-4">
-    
+
     <!-- Tarjeta 1: Total Créditos -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #066699;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Total Créditos</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #066699;">{{ formatearMoneda(totalGeneralCreditos) }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #066699;">{{
+        formatearMoneda(totalGeneralCreditos) }}</p>
     </div>
 
     <!-- Tarjeta 2: Total Cobrado -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #10b981;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Total Cobrado</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #10b981;">{{ formatearMoneda(totalCobradoEnDia) }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #10b981;">{{
+        formatearMoneda(totalCobradoEnDia) }}</p>
     </div>
 
     <!-- Tarjeta 3: Total Clientes -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #8b5cf6;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Total Clientes</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #8b5cf6;">{{ estadisticasClientes.total_clientes || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #8b5cf6;">{{
+        estadisticasClientes.total_clientes || 0 }}</p>
     </div>
 
     <!-- Tarjeta 4: Clientes con Crédito -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #aedd2b;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Con Crédito</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #066699;">{{ estadisticasClientes.clientes_con_credito || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #066699;">{{
+        estadisticasClientes.clientes_con_credito || 0 }}</p>
     </div>
 
     <!-- Tarjeta 5: Rutas Activas -->
@@ -90,67 +90,76 @@
     <!-- Tarjeta 6: Cajas Abiertas -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #aedd2b;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Cajas Abiertas</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #066699;">{{ estadisticasCajas.cajas_abiertas || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #066699;">{{ estadisticasCajas.cajas_abiertas
+        || 0 }}</p>
     </div>
 
     <!-- Tarjeta 7: Total Seguros -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #f59e0b;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Total Seguros</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #f59e0b;">{{ formatearMoneda(estadisticasSeguros.total_seguros || 0) }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #f59e0b;">{{
+        formatearMoneda(estadisticasSeguros.total_seguros || 0) }}</p>
     </div>
 
     <!-- Tarjeta 8: Créditos Vencidos -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #dc3545;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Créditos Vencidos</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #dc3545;">{{ estadisticasMorosidad.creditos_vencidos || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #dc3545;">{{
+        estadisticasMorosidad.creditos_vencidos || 0 }}</p>
     </div>
 
   </div>
 
   <!-- Segunda fila de tarjetas - 2 columnas en celular -->
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 mb-3 sm:mb-4">
-    
+
     <!-- Tarjeta 9: Cuotas Pagadas -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #10b981;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Cuotas Pagadas</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #10b981;">{{ estadisticasCuotas.cuotas_pagadas || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #10b981;">{{ estadisticasCuotas.cuotas_pagadas
+        || 0 }}</p>
     </div>
 
     <!-- Tarjeta 10: Cuotas Pendientes -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #f59e0b;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Cuotas Pendientes</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #f59e0b;">{{ estadisticasCuotas.cuotas_pendientes || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #f59e0b;">{{
+        estadisticasCuotas.cuotas_pendientes || 0 }}</p>
     </div>
 
     <!-- Tarjeta 11: Cuotas Vencidas -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #dc3545;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Cuotas Vencidas</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #dc3545;">{{ estadisticasCuotas.cuotas_vencidas || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #dc3545;">{{ estadisticasCuotas.cuotas_vencidas
+        || 0 }}</p>
     </div>
 
     <!-- Tarjeta 12: Refinanciados Manuales -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #fbbf24;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Ref. Manuales</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #066699;">{{ estadisticasRefinanciaciones.refinanciados_manuales || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #066699;">{{
+        estadisticasRefinanciaciones.refinanciados_manuales || 0 }}</p>
     </div>
 
     <!-- Tarjeta 13: Refinanciados Sistema -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #dc3545;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Ref. Sistema</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #dc3545;">{{ estadisticasRefinanciaciones.refinanciados_sistema || 0 }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold" style="color: #dc3545;">{{
+        estadisticasRefinanciaciones.refinanciados_sistema || 0 }}</p>
     </div>
 
     <!-- Tarjeta 14: Comisión Cobrador -->
     <div class="bg-white rounded-lg shadow-md p-2 sm:p-3" style="border-left: 4px solid #aedd2b;">
       <p class="text-xs mb-1 truncate" style="color: #6b7280;">Comisión Cobrador</p>
-      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #066699;">{{ formatearMoneda(estadisticasSeguros.comision_cobrador || 0) }}</p>
+      <p class="text-sm sm:text-base md:text-lg font-bold truncate" style="color: #066699;">{{
+        formatearMoneda(estadisticasSeguros.comision_cobrador || 0) }}</p>
     </div>
 
   </div>
 
   <!-- Gráficos en grid de 3 columnas -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-    
+
     <!-- Gráfico 1: Créditos por Ruta -->
     <div class="bg-white rounded-lg shadow-md p-4" style="border: 2px solid #e5e7eb;">
       <h3 class="text-sm font-semibold mb-2" style="color: #02416d;">Créditos por Ruta</h3>
@@ -189,7 +198,8 @@
         </div>
         <div class="p-1 rounded" style="background-color: rgba(220, 53, 69, 0.1);">
           <p class="text-xs" style="color: #6b7280;">Sin</p>
-          <p class="text-sm font-bold" style="color: #dc3545;">{{ (estadisticasClientes.total_clientes || 0) - (estadisticasClientes.clientes_con_credito || 0) }}</p>
+          <p class="text-sm font-bold" style="color: #dc3545;">{{ (estadisticasClientes.total_clientes || 0) -
+            (estadisticasClientes.clientes_con_credito || 0) }}</p>
         </div>
       </div>
     </div>
@@ -251,18 +261,24 @@
       <table class="min-w-full divide-y divide-gray-200">
         <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%);">
           <tr>
-            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Ruta</th>
-            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Total</th>
-            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Con Saldo</th>
-            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Cobrado</th>
+            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Ruta
+            </th>
+            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Total
+            </th>
+            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Con
+              Saldo</th>
+            <th class="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider" style="color: #ffffff;">Cobrado
+            </th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           <tr *ngFor="let ruta of clientesPorRuta" class="hover:bg-gray-50">
-            <td class="px-3 py-2 whitespace-nowrap text-sm font-medium" style="color: #02416d;">{{ ruta.nombre_ruta }}</td>
+            <td class="px-3 py-2 whitespace-nowrap text-sm font-medium" style="color: #02416d;">{{ ruta.nombre_ruta }}
+            </td>
             <td class="px-3 py-2 whitespace-nowrap text-sm" style="color: #6b7280;">{{ ruta.total_clientes }}</td>
             <td class="px-3 py-2 whitespace-nowrap text-sm" style="color: #6b7280;">{{ ruta.clientes_con_saldo }}</td>
-            <td class="px-3 py-2 whitespace-nowrap text-sm font-semibold" style="color: #10b981;">{{ formatearMoneda(ruta.cobrado_en_dia) }}</td>
+            <td class="px-3 py-2 whitespace-nowrap text-sm font-semibold" style="color: #10b981;">{{
+              formatearMoneda(ruta.cobrado_en_dia) }}</td>
           </tr>
           <tr *ngIf="clientesPorRuta.length === 0">
             <td colspan="4" class="px-3 py-2 text-center text-sm" style="color: #6b7280;">No hay datos disponibles</td>
@@ -271,7 +287,8 @@
         <tfoot style="background-color: #f8f8ec;">
           <tr>
             <td class="px-3 py-2 text-sm font-bold" style="color: #02416d;">Total Cobrado</td>
-            <td colspan="3" class="px-3 py-2 text-sm font-bold text-right" style="color: #10b981;">{{ formatearMoneda(totalCobradoEnDia) }}</td>
+            <td colspan="3" class="px-3 py-2 text-sm font-bold text-right" style="color: #10b981;">{{
+              formatearMoneda(totalCobradoEnDia) }}</td>
           </tr>
         </tfoot>
       </table>
@@ -279,11 +296,15 @@
   </div>
 
   <!-- Indicador de carga -->
-  <div *ngIf="cargando" class="fixed inset-0 flex items-center justify-center z-50" style="background-color: rgba(0, 0, 0, 0.5);">
+  <div [hidden]="!cargando" class="fixed inset-0 flex items-center justify-center z-50"
+    style="background-color: rgba(0, 0, 0, 0.5);">
     <div class="bg-white rounded-lg p-6 flex items-center gap-4">
-      <svg class="animate-spin h-8 w-8" style="color: #066699;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <svg class="animate-spin h-8 w-8" style="color: #066699;" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
       </svg>
       <span class="text-lg font-medium" style="color: #02416d;">Cargando datos...</span>
     </div>

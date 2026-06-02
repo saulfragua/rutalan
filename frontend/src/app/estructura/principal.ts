@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 declare var $: any;
 
@@ -14,10 +15,19 @@ export class Principal implements OnInit, AfterViewInit {
 
   private isBrowser: boolean;
 
+  rutaActual: string = 'Dashboard';
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router
   ) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const ruta = this.router.url.split('/')[1];
+      this.rutaActual = ruta.charAt(0).toUpperCase() + ruta.slice(1);
+    });
+
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -37,7 +47,7 @@ export class Principal implements OnInit, AfterViewInit {
 
   inicializarSidebar() {
     if (!this.isBrowser) return;
-    
+
     // Cerrar sidebar por defecto en móviles
     if (window.innerWidth < 992) {
       document.body.classList.add('sidebar-collapse');
@@ -61,6 +71,12 @@ export class Principal implements OnInit, AfterViewInit {
     if (!usuarioStr) {
       this.router.navigate(['/login']);
       return;
+    }
+  }
+
+  irAlLanding() {
+    if (this.isBrowser) {
+      window.location.href = 'http://localhost/rutalan/landing/index.html';
     }
   }
 

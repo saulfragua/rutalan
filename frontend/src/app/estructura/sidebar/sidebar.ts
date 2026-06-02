@@ -70,4 +70,10 @@ export class Sidebar implements OnInit {
     }
   }
 
+   irAlLanding() {
+    if (this.isBrowser) {
+      window.location.href = 'http://localhost/rutalan/landing/index.html';
+    }
+  }
+
 }

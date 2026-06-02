@@ -4,11 +4,12 @@
   <div class="content-header">
     <div class="container-fluid px-2 md:px-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-        
-        <ol class="breadcrumb flex flex-wrap text-xs sm:text-sm text-gray-400">
-          <li class="breadcrumb-item"><a href="#" class="hover:text-white"><i class="fas fa-home"></i></a></li>
-          <p class="breadcrumb-item">/</p>
-          <li class="breadcrumb-item active">Dashboard</li>
+
+        <ol class="breadcrumb flex flex-wrap text-xs sm:text-sm gap-2 text-gray-400">
+          <li class="breadcrumb-item cursor-pointer"><a (click)="irAlLanding()" class="hover:text-white"><i
+                class="fas fa-home"></i></a></li>
+          <p>/</p>
+          <li class="breadcrumb-item active">{{ rutaActual }}</li>
         </ol>
       </div>
     </div>
