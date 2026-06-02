@@ -34,7 +34,7 @@ export class Navbar implements OnInit, AfterViewInit {
 
   inicializarPushMenu() {
     if (!this.isBrowser) return;
-    
+
     // Esperar a que jQuery y AdminLTE estén cargados
     if (typeof $ !== 'undefined' && $.fn.pushMenu) {
       $('[data-widget="pushmenu"]').PushMenu('toggle');
@@ -50,40 +50,21 @@ export class Navbar implements OnInit, AfterViewInit {
 
   toggleSidebar() {
     if (!this.isBrowser) return;
-    
-    // Toggle manual del sidebar
-    const sidebar = document.querySelector('.main-sidebar');
-    const body = document.body;
-    
-    if (sidebar && body) {
-      // En móviles, usar clase personalizada
-      if (window.innerWidth < 992) {
-        if (body.classList.contains('sidebar-open')) {
-          body.classList.remove('sidebar-open');
-          sidebar.classList.remove('show');
-        } else {
-          body.classList.add('sidebar-open');
-          sidebar.classList.add('show');
-        }
-      } else {
-        // En desktop, usar la clase de AdminLTE
-        if (body.classList.contains('sidebar-collapse')) {
-          body.classList.remove('sidebar-collapse');
-        } else {
-          body.classList.add('sidebar-collapse');
-        }
-      }
-    }
 
-    // También usar AdminLTE si está disponible
-    if (typeof $ !== 'undefined' && $.fn.pushMenu) {
-      $('[data-widget="pushmenu"]').PushMenu('toggle');
+    const body = document.body;
+
+    if (window.innerWidth < 992) {
+      // Móvil
+      body.classList.toggle('sidebar-open');
+    } else {
+      // Desktop
+      body.classList.toggle('sidebar-collapse');
     }
   }
 
   cerrarSesion() {
     if (!this.isBrowser) return;
-    
+
     // 🔐 Eliminar usuario del localStorage
     localStorage.removeItem('usuario');
 

@@ -1,81 +1,21 @@
-<svg viewBox="34 44.72 392.99999999999994 132.08" width="392.99999999999994" xmlns="http://www.w3.org/2000/svg" style="max-height: 500px" height="132.08">
-  <title>Logo Rutalan — Variantes</title>
-  <desc>Imagotipo Rutalan: versión sin fondo, fondo oscuro y favicon</desc>
-
+<svg viewBox="0 0 380 110" width="380" height="110" xmlns="http://www.w3.org/2000/svg">
+  <title>Rutalan — Sin Fondo</title>
   <style>
     .logo-name { font-family: Arial, Helvetica, sans-serif; font-size: 52px; font-weight: 500; letter-spacing: -1.5px; fill: #0A2E5C; }
-    .logo-tag { font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 3.5px; fill: #0DBF6B; }
-    .logo-name-light { font-family: Arial, Helvetica, sans-serif; font-size: 52px; font-weight: 500; letter-spacing: -1.5px; fill: #5BA3F5; }
-    .logo-tag-light { font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 3.5px; fill: #0DBF6B; }
-    .label { font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 2px; fill: #888888; }
+    .logo-tag  { font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 3.5px; fill: #0DBF6B; }
   </style>
-
-  
-  <text class="label" y="34" x="40">SIN FONDO</text>
-  <g transform="translate(40, 50)">
-    <g transform="translate(0, 10)">
-      <rect fill="#0A2E5C" rx="22" height="100" width="100" y="0" x="0"/>
-      <circle fill="#0DBF6B" r="7.5" cy="26" cx="22"/>
-      <circle opacity="0.75" fill="#5BA3F5" r="7.5" cy="26" cx="78"/>
-      <circle fill="#ffffff" r="7.5" cy="74" cx="50"/>
-      <path stroke-linecap="round" stroke-width="3.2" stroke="#0DBF6B" fill="none" d="M29 26 Q50 26 50 50 Q50 74 50 74"/>
-      <path stroke-linecap="round" stroke-width="3.2" stroke="#5BA3F5" fill="none" d="M78 26 Q78 50 64 62 Q57 68 50 74"/>
-      <circle fill="#0DBF6B" r="4" cy="74" cx="50"/>
-      <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.8" stroke="#0DBF6B" fill="none" d="M44 68 L50 75 L56 68"/>
-    </g>
-    <text class="logo-name" y="72" x="120">rutalan</text>
-    <text class="logo-tag" y="103" x="122">GESTIÓN DE CRÉDITOS</text>
+  <!-- ÍCONO -->
+  <g transform="translate(0, 5)">
+    <rect fill="#0A2E5C" rx="22" height="100" width="100" y="0" x="0"/>
+    <circle fill="#0DBF6B" r="7.5" cy="26" cx="22"/>
+    <circle opacity="0.75" fill="#5BA3F5" r="7.5" cy="26" cx="78"/>
+    <circle fill="#ffffff" r="7.5" cy="74" cx="50"/>
+    <path stroke-linecap="round" stroke-width="3.2" stroke="#0DBF6B" fill="none" d="M29 26 Q50 26 50 50 Q50 74 50 74"/>
+    <path stroke-linecap="round" stroke-width="3.2" stroke="#5BA3F5" fill="none" d="M78 26 Q78 50 64 62 Q57 68 50 74"/>
+    <circle fill="#0DBF6B" r="4" cy="74" cx="50"/>
+    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.8" stroke="#0DBF6B" fill="none" d="M44 68 L50 75 L56 68"/>
   </g>
-
-  <line stroke-width="0.5" stroke="#e0e0e0" y2="195" x2="640" y1="195" x1="40"/>
-
-  
-  <text class="label" y="222" x="40">FONDO OSCURO</text>
-  <rect fill="#0A2E5C" rx="16" height="130" width="580" y="232" x="40"/>
-  <g transform="translate(60, 242)">
-    <g transform="translate(0, 10)">
-      <rect fill="#0DBF6B" rx="22" height="100" width="100" y="0" x="0"/>
-      <circle fill="#0A2E5C" r="7.5" cy="26" cx="22"/>
-      <circle opacity="0.6" fill="#ffffff" r="7.5" cy="26" cx="78"/>
-      <circle fill="#ffffff" r="7.5" cy="74" cx="50"/>
-      <path stroke-linecap="round" stroke-width="3.2" stroke="#0A2E5C" fill="none" d="M29 26 Q50 26 50 50 Q50 74 50 74"/>
-      <path opacity="0.6" stroke-linecap="round" stroke-width="3.2" stroke="#ffffff" fill="none" d="M78 26 Q78 50 64 62 Q57 68 50 74"/>
-      <circle fill="#0A2E5C" r="4" cy="74" cx="50"/>
-      <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.8" stroke="#0A2E5C" fill="none" d="M44 68 L50 75 L56 68"/>
-    </g>
-    <text class="logo-name-light" y="72" x="120">rutalan</text>
-    <text class="logo-tag-light" y="103" x="122">GESTIÓN DE CRÉDITOS</text>
-  </g>
-
-  <line stroke-width="0.5" stroke="#e0e0e0" y2="382" x2="640" y1="382" x1="40"/>
-
-  
-  <text class="label" y="409" x="40">FAVICON / APP ICON</text>
-
-  
-  <g transform="translate(40, 420)">
-    <rect fill="#0A2E5C" rx="18" height="80" width="80" y="0" x="0"/>
-    <circle fill="#0DBF6B" r="6" cy="21" cx="18"/>
-    <circle opacity="0.75" fill="#5BA3F5" r="6" cy="21" cx="62"/>
-    <circle fill="#ffffff" r="6" cy="59" cx="40"/>
-    <path stroke-linecap="round" stroke-width="2.5" stroke="#0DBF6B" fill="none" d="M24 21 Q40 21 40 40 Q40 59 40 59"/>
-    <path stroke-linecap="round" stroke-width="2.5" stroke="#5BA3F5" fill="none" d="M62 21 Q62 40 51 50 Q46 55 40 59"/>
-    <circle fill="#0DBF6B" r="3" cy="59" cx="40"/>
-    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.2" stroke="#0DBF6B" fill="none" d="M35 54 L40 60 L45 54"/>
-  </g>
-  <text class="label" y="518" x="40">CUADRADO</text>
-
-  
-  <g transform="translate(140, 420)">
-    <rect fill="#0A2E5C" rx="40" height="80" width="80" y="0" x="0"/>
-    <circle fill="#0DBF6B" r="6" cy="21" cx="18"/>
-    <circle opacity="0.75" fill="#5BA3F5" r="6" cy="21" cx="62"/>
-    <circle fill="#ffffff" r="6" cy="59" cx="40"/>
-    <path stroke-linecap="round" stroke-width="2.5" stroke="#0DBF6B" fill="none" d="M24 21 Q40 21 40 40 Q40 59 40 59"/>
-    <path stroke-linecap="round" stroke-width="2.5" stroke="#5BA3F5" fill="none" d="M62 21 Q62 40 51 50 Q46 55 40 59"/>
-    <circle fill="#0DBF6B" r="3" cy="59" cx="40"/>
-    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.2" stroke="#0DBF6B" fill="none" d="M35 54 L40 60 L45 54"/>
-  </g>
-  <text class="label" y="518" x="140">CIRCULAR</text>
-
+  <!-- TEXTO -->
+  <text class="logo-name" y="72" x="118">rutalan</text>
+  <text class="logo-tag"  y="100" x="120">GESTIÓN DE CRÉDITOS</text>
 </svg>

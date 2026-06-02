@@ -1,0 +1,11 @@
+<svg viewBox="0 0 100 100" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+  <title>Rutalan — Favicon</title>
+  <rect fill="#0A2E5C" rx="22" height="100" width="100" y="0" x="0"/>
+  <circle fill="#0DBF6B" r="7.5" cy="26" cx="22"/>
+  <circle opacity="0.75" fill="#5BA3F5" r="7.5" cy="26" cx="78"/>
+  <circle fill="#ffffff" r="7.5" cy="74" cx="50"/>
+  <path stroke-linecap="round" stroke-width="3.2" stroke="#0DBF6B" fill="none" d="M29 26 Q50 26 50 50 Q50 74 50 74"/>
+  <path stroke-linecap="round" stroke-width="3.2" stroke="#5BA3F5" fill="none" d="M78 26 Q78 50 64 62 Q57 68 50 74"/>
+  <circle fill="#0DBF6B" r="4" cy="74" cx="50"/>
+  <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.8" stroke="#0DBF6B" fill="none" d="M44 68 L50 75 L56 68"/>
+</svg>

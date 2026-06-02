@@ -1,7 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="index3.html" class="brand-link">
-    <img src="assets/dist/img/rutalan-logo-sin-fondo.svg" alt="AdminLTE Logo" class="brand-image" />
+    <img src="assets/dist/img/rutalan-favicon.svg" alt="AdminLTE Logo" class="brand-image" />
+      <div class="brand-texts">
+    <span class="brand-name">rutalan</span>
+    <span class="brand-sub">GESTIÓN DE CREDITOS</span>
+  </div>
+    
   </a>
 
   <!-- Sidebar -->
@@ -19,19 +24,16 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul
-        class="nav nav-pills nav-sidebar flex-column"
-        data-widget="treeview"
-        role="menu"
-        data-accordion="false"
-      >
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- DASHBOARD (Solo Administradores) -->
-        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
+        @if (rolUsuario === 'admin') {
+        <li class="nav-item">
           <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
             <p>Dashboard</p>
           </a>
         </li>
+        }
 
         <li class="nav-item">
           <a [routerLink]="['/clientes']" routerLinkActive="router-link-active" class="nav-link">
@@ -62,34 +64,30 @@
         </li>
 
         <!-- CAJA (Solo Administradores) -->
-        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
+        @if (rolUsuario === 'admin') {
+        <li class="nav-item">
           <a [routerLink]="['/caja']" routerLinkActive="router-link-active" class="nav-link">
             <i class="nav-icon fas fa-cash-register"></i>
             <p>Caja</p>
           </a>
         </li>
+        }
 
         <!-- ADMINISTRADOR (Solo Administradores) -->
-        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
-          <a
-            [routerLink]="['/administrador']"
-            routerLinkActive="router-link-active"
-            class="nav-link"
-          >
+        @if (rolUsuario === 'admin') {
+        <li class="nav-item">
+          <a [routerLink]="['/administrador']" routerLinkActive="router-link-active" class="nav-link">
             <i class="nav-icon fas fa-user-shield"></i>
             <p>Administrador</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="rolUsuario === 'admin'">
-          <a
-            [routerLink]="['/informes']"
-            routerLinkActive="router-link-active"
-            class="nav-link"
-          >
+        <li class="nav-item">
+          <a [routerLink]="['/informes']" routerLinkActive="router-link-active" class="nav-link">
             <i class="nav-icon fas fa-chart-bar"></i>
             <p>Informes</p>
           </a>
         </li>
+        }
         <!-- <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>

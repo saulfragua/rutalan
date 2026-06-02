@@ -2,12 +2,12 @@
 .content-wrapper {
   min-height: calc(100vh - 57px);
   background-color: #f8f8ec;
+  margin-top: 0;
 }
 
 .content-header {
-  background: linear-gradient(135deg, #0a5483 0%, #066699 100%);
-  padding: 1rem 0;
-  border-bottom: 3px solid #aedd2b;
+  background: linear-gradient(135deg, #fefeff 0%, #fefeff 100%);
+  /* padding: 1rem 0; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -19,20 +19,21 @@
 
 .breadcrumb {
   background: transparent !important;
+  
 }
 
 .breadcrumb-item a {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: rgb(100, 116, 139) !important;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .breadcrumb-item a:hover {
-  color: #aedd2b !important;
+  color: #0dbf6b !important;
 }
 
 .breadcrumb-item.active {
-  color: #ffffff !important;
+  color: #64748b !important;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
@@ -49,7 +50,7 @@
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin: 0;
+  /* margin: 0; */
 }
 
 /* Responsive adjustments */
@@ -168,4 +169,38 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+}
+
+/* Sidebar fijo en desktop */
+@media (min-width: 992px) {
+  .main-sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh !important;
+    overflow-y: auto;
+    z-index: 1038;
+  }
+
+  body.sidebar-collapse .content-wrapper {
+  margin-left: 4.6rem !important; /* ~74px, el ancho colapsado de AdminLTE */
+}
+
+body.sidebar-collapse .main-header {
+  margin-left: 4.6rem !important;
+}
+
+  .main-header {
+    position: sticky !important;
+    top: 0;
+    z-index: 1037;
+  }
+}
+
+/* Navbar fijo */
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1037;
+  width: 100%;
 }
