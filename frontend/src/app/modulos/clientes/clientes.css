@@ -486,3 +486,17 @@ table tbody tr:hover td {
     max-height: 300px;
   }
 }
+
+/* Fix barra de búsqueda */
+.search-input {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.search-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
