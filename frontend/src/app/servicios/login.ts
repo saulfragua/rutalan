@@ -20,8 +20,8 @@ export class LoginService {
 
   constructor(private http: HttpClient) {}
 
-  login(usuario: string, clave: string): Observable<any> {
-    const body = JSON.stringify({ usuario, clave });
+  login(usuario: string, clave: string, recaptcha: string): Observable<any> {
+    const body = JSON.stringify({ usuario, clave, recaptcha });
     
     return this.http.post<any>(
       `${this.url}?control=login`,

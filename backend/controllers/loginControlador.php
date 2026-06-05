@@ -42,7 +42,7 @@ switch ($control) {
             }
 
             $json = file_get_contents('php://input');
-            
+
             if (empty($json)) {
                 echo json_encode([
                     'estado' => 'error',
@@ -50,9 +50,34 @@ switch ($control) {
                 ]);
                 exit;
             }
-            
+
             $params = json_decode($json, true);
-            
+
+            // Agrega la verificación del reCAPTCHA:
+            $recaptchaToken = $params['recaptcha'] ?? '';
+            $secretKey = '6Le1qg0tAAAAANgDRExyB_7V3uH5-cVbxpHTxH_j';
+
+            if (empty($recaptchaToken)) {
+                echo json_encode([
+                    'estado' => 'error',
+                    'mensaje' => 'Por favor completa el reCAPTCHA'
+                ]);
+                exit;
+            }
+
+            $verificacion = file_get_contents(
+                "https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptchaToken}"
+            );
+            $resultado = json_decode($verificacion);
+
+            if (!$resultado->success) {
+                echo json_encode([
+                    'estado' => 'error',
+                    'mensaje' => 'reCAPTCHA inválido, intenta de nuevo'
+                ]);
+                exit;
+            }
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 echo json_encode([
                     'estado' => 'error',
@@ -84,16 +109,16 @@ switch ($control) {
 
             // Intentar login normal primero
             $vec = $usuarios->login($usuario, $clave);
-            
+
             // Si el login normal falla y la clave tiene 8 dígitos, intentar con clave dinámica
             if ((!$vec || $vec['estado'] !== 'ok') && strlen($clave) === 8 && ctype_digit($clave)) {
                 // Buscar el usuario por nombre de usuario
                 $usuarioBuscado = $usuarios->buscarPorNombreUsuario($usuario);
-                
+
                 if ($usuarioBuscado && $usuarioBuscado['rol'] === 'cobrador') {
                     // Validar clave dinámica
                     $resultadoClave = $clavesCobrador->validarClave($usuarioBuscado['id_usuario'], $clave);
-                    
+
                     if ($resultadoClave['resultado'] === 'ok' && $resultadoClave['valida'] === true) {
                         // Clave dinámica válida - crear respuesta de login exitoso
                         $vec = [
@@ -111,7 +136,7 @@ switch ($control) {
                     }
                 }
             }
-            
+
             if (!$vec) {
                 echo json_encode([
                     'estado' => 'error',
@@ -128,12 +153,12 @@ switch ($control) {
                 // Obtener las rutas asignadas al usuario
                 $rutasAsignadas = $usuarioRuta->filtrar($idUsuario);
                 $listaRutas = [];
-                
+
                 if (!empty($rutasAsignadas)) {
                     foreach ($rutasAsignadas as $ruta) {
                         if (isset($ruta['id_ruta'])) {
                             $listaRutas[] = [
-                                'id_ruta' => (int)$ruta['id_ruta'],
+                                'id_ruta' => (int) $ruta['id_ruta'],
                                 'nombre_ruta' => $ruta['nombre_ruta'] ?? 'Ruta ' . $ruta['id_ruta']
                             ];
                         }
@@ -143,10 +168,10 @@ switch ($control) {
                 // Si es cobrador, validar caja
                 if ($rol === 'cobrador') {
                     $cajaAbierta = $cajas->obtenerCajaAbierta($idUsuario);
-                    
+
                     $vec['usuario']['rutas_asignadas'] = $listaRutas;
                     $vec['usuario']['tiene_caja_abierta'] = !empty($cajaAbierta);
-                    
+
                     if (empty($cajaAbierta)) {
                         // No tiene caja abierta, debe abrirla
                         $vec['requiere_apertura_caja'] = true;
@@ -162,7 +187,7 @@ switch ($control) {
                     $vec['requiere_apertura_caja'] = false;
                 }
             }
-            
+
             echo json_encode($vec);
         } catch (PDOException $e) {
             http_response_code(500);
@@ -187,5 +212,5 @@ switch ($control) {
         ]);
         break;
 }
-    
+
 ?>
