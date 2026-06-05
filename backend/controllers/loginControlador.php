@@ -21,6 +21,7 @@ require_once "../models/usuariosModelos.php";
 require_once "../models/cajasModelos.php";
 require_once "../models/usuarioRutaModelos.php";
 require_once "../models/clavesCobradorModelos.php";
+require_once "../config/key.php";
 
 $control = $_GET['control'] ?? '';
 $usuarios = new Usuarios($conexion);
@@ -55,7 +56,7 @@ switch ($control) {
 
             // Agrega la verificación del reCAPTCHA:
             $recaptchaToken = $params['recaptcha'] ?? '';
-            $secretKey = '6Le1qg0tAAAAANgDRExyB_7V3uH5-cVbxpHTxH_j';
+            $secretKey = RECAPTCHA_SECRET;
 
             if (empty($recaptchaToken)) {
                 echo json_encode([
