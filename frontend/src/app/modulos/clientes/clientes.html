@@ -46,7 +46,7 @@
       <!-- BARRA DE BÚSQUEDA -->
       <div class="mt-4 sm:mt-6">
         <div
-          class="flex items-center gap-2 px-3 shadow-sm bg-white border-2 border-[#e5e7eb] rounded-lg focus-within:ring-2 focus-within:ring-[#aedd2b] transition-all duration-200">
+          class="flex items-center gap-2 px-3 shadow-sm bg-white border-2 border-[#e5e7eb] rounded-lg focus-within:ring-2 focus-within:ring-[#0dbf6b] transition-all duration-200">
           <i class="fas fa-search text-[#02416d] text-sm shrink-0 pointer-events-none"></i>
           <input type="text" [(ngModel)]="terminoBusqueda" (input)="filtrarClientes()"
             placeholder="Buscar por nombre o documento..."
@@ -309,7 +309,7 @@
           de {{ clientesFiltrados.length }} clientes
         </span>
         <select [(ngModel)]="clientesPorPagina" (change)="cambiarPorPagina(clientesPorPagina)"
-          class="px-2 py-1 border-2 border-[#e5e7eb] rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B]">
+          class="px-2 py-1 border-2 border-white rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B] shadow-sm">
           <option *ngFor="let op of opcionesPorPagina" [value]="op">{{ op }} por página</option>
         </select>
       </div>

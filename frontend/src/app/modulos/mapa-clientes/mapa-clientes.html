@@ -1,8 +1,8 @@
 <div class="container-fluid p-4" style="background-color: #f8f8ec; min-height: 100vh;">
-  
+
   <!-- Encabezado -->
-  <div class="card mb-4" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    <div class="card-header" style="background: linear-gradient(135deg, #066699 0%, #0a5483 100%); border-bottom: 4px solid #aedd2b; padding: 1.5rem;">
+  <div class=" mb-4" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <div class=" bg-[#0a2e5c]" style=" border-bottom: 4px solid #0dbf6b; padding: 1.5rem;">
       <div class="d-flex justify-content-between align-items-center flex-wrap">
         <div>
           <h2 class="mb-0" style="color: #ffffff; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
@@ -13,30 +13,25 @@
             Visualiza las ubicaciones GPS de todos los clientes en el mapa
           </p>
         </div>
-        <button 
-          (click)="router.navigate(['/clientes'])"
-          class="btn"
+        <button (click)="router.navigate(['/clientes'])" class="btn"
           style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); color: #ffffff; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.2s;"
           onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'; this.style.transform='translateY(-2px)'"
           onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateY(0)'">
-          Volver a Clientes
+          <i class="fas fa-times"></i>
         </button>
       </div>
     </div>
-    
+
     <!-- Filtros -->
     <div class="card-body" style="background-color: #ffffff; padding: 1.5rem;">
       <div class="row align-items-end">
-        <div class="col-md-4">
+        <div class="col-md-4 ">
           <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #02416d; margin-bottom: 0.5rem;">
             <i class="fas fa-route mr-2"></i>
             Filtrar por Ruta
           </label>
-          <select 
-            [(ngModel)]="rutaSeleccionada"
-            (change)="filtrarPorRuta()"
-            class="form-control"
-            style="border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.625rem 1rem; font-size: 0.875rem;">
+          <select [(ngModel)]="rutaSeleccionada" (change)="filtrarPorRuta()" class="border-white outline-none shadow-sm"
+            style=" border-radius: 0.5rem; padding: 0.625rem 1rem; font-size: 0.875rem;">
             <option [value]="null">Todas las rutas</option>
             <option *ngFor="let ruta of rutas" [value]="ruta.id_ruta">
               {{ ruta.nombre_ruta }}
@@ -44,18 +39,18 @@
           </select>
         </div>
         <div class="col-md-4">
-          <button 
-            (click)="limpiarFiltro()"
-            class="btn btn-secondary"
+          <button (click)="limpiarFiltro()" class=" text-[#0f172a] hover:transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
             style="width: 100%; padding: 0.625rem; font-weight: 600; border-radius: 0.5rem;">
             Limpiar Filtro
           </button>
         </div>
         <div class="col-md-4">
-          <div class="d-flex align-items-center" style="padding: 0.625rem 1rem; background-color: #f3f4f6; border-radius: 0.5rem;">
+          <div class="d-flex align-items-center"
+            style="padding: 0.625rem 1rem; background-color: #f3f4f6; border-radius: 0.5rem;">
             <i class="fas fa-map-marker-alt mr-2" style="color: #066699;"></i>
             <span style="font-size: 0.875rem; color: #02416d; font-weight: 600;">
-              {{ clientesConUbicacion.length }} {{ clientesConUbicacion.length === 1 ? 'cliente' : 'clientes' }} con ubicación
+              {{ clientesConUbicacion.length }} {{ clientesConUbicacion.length === 1 ? 'cliente' : 'clientes' }} con
+              ubicación
             </span>
           </div>
         </div>
@@ -66,21 +61,24 @@
   <!-- Mapa -->
   <div class="card" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     <div class="card-body p-0" style="position: relative;">
-      <div *ngIf="cargando" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <div *ngIf="cargando"
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div class="text-center">
           <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #066699;"></i>
           <p class="mt-2 mb-0" style="color: #02416d; font-weight: 600;">Cargando ubicaciones...</p>
         </div>
       </div>
-      
+
       <div #mapaContainer>
         <div id="mapa" style="width: 100%; height: 600px; min-height: 500px; display: block;"></div>
       </div>
-      
-      <div *ngIf="!cargando && clientesConUbicacion.length === 0" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+
+      <div *ngIf="!cargando && clientesConUbicacion.length === 0"
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
         <i class="fas fa-map-marked-alt" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
         <p style="color: #02416d; font-weight: 600; margin: 0;">No hay clientes con ubicación GPS registrada</p>
-        <p style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">Captura la ubicación de los clientes desde el módulo de Clientes</p>
+        <p style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">Captura la ubicación de los clientes desde
+          el módulo de Clientes</p>
       </div>
     </div>
   </div>
