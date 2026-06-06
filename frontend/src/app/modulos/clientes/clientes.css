@@ -500,3 +500,82 @@ table tbody tr:hover td {
   box-shadow: none !important;
   border: none !important;
 }
+
+/* ── Tabla estilo sobrio ─────────────────────────────────────────── */
+table thead,
+table thead tr {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: #ffffff !important;
+}
+
+table thead th {
+  background: transparent !important;
+  background-color: #ffffff !important;
+  color: #6b7280 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  border-top: none !important;
+}
+
+table tbody tr {
+  border-bottom: 1px solid #f3f4f6 !important;
+}
+
+table tbody tr:hover {
+  background-color: #f9fafb !important;
+}
+
+table tbody tr:hover td {
+  background-color: #f9fafb !important;
+}
+
+/* ── Botones de acción tabla ─────────────────────────────────────── */
+table .btn-editar,
+table button:has(+ button) {
+  /* no aplica bien con has, mejor por clase */
+}
+
+/* Botones de acción tabla */
+.btn-accion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  min-height: unset !important;
+}
+
+.btn-editar {
+  background-color: #f0f4f8;
+  color: #0A2E5C;
+}
+.btn-editar:hover { background-color: #dde6f0; }
+
+.btn-inactivar {
+  background-color: #fefce8;
+  color: #92400e;
+}
+.btn-inactivar:hover { background-color: #fef08a; }
+
+.btn-activar {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+.btn-activar:hover { background-color: #bbf7d0; }
+
+.btn-eliminar {
+  background-color: #fff1f2;
+  color: #9f1239;
+}
+.btn-eliminar:hover { background-color: #fecdd3; }

@@ -47,7 +47,7 @@ import { Informes } from './modulos/informes/informes';
     Error,
     MapaClientes,
     Informes
-    
+
   ],
   imports: [
     BrowserModule,

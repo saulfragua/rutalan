@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -18,6 +19,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './clientes.css',
 })
 export class Clientes implements OnInit, OnDestroy {
+
   environment = environment;
 
   listaClientes: any[] = [];
@@ -25,27 +27,27 @@ export class Clientes implements OnInit, OnDestroy {
   terminoBusqueda: string = '';
   cargando: boolean = false;
   private routerSubscription?: Subscription;
-  
+
   // Modal de documentos
   modalDocumentosAbierto: boolean = false;
   clienteSeleccionado: any = null;
   mostrarSoloFiador: boolean = false;
-  
+
   // Modal de foto ampliada
   modalFotoAbierto: boolean = false;
   fotoSeleccionada: string = '';
   tituloFoto: string = '';
   esFiador: boolean = false;
-  
+
   // Rutas del usuario logueado
   rutasUsuario: any[] = [];
   // Todas las rutas (para modo edición)
   todasLasRutas: any[] = [];
   isBrowser: boolean = false;
-  
+
   // Rol del usuario logueado
   rolUsuario: string = '';
-  
+
   // Modo edición
   modoEdicion: boolean = false;
   clienteEditando: any = null;
@@ -56,16 +58,25 @@ export class Clientes implements OnInit, OnDestroy {
   capturandoUbicacion: boolean = false;
   ubicacionCapturada: boolean = false;
 
-  constructor(    
+  // Paginación
+  paginaActual: number = 1;
+  clientesPorPagina: number = 5;
+  totalPaginas: number = 0;
+  clientesPaginados: any[] = [];
+  opcionesPorPagina: number[] = [5,10, 25, 50, 100];
+  Math= Math;
+
+  constructor(
     public usuarios: UsuariosService,
     public fiadores: Fiadores,
     public clientes: ClientesService,
     private usuarioRutaService: UsuarioRutaService,
     private rutasService: Rutas,
     public router: Router,
+    private cdr: ChangeDetectorRef, 
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.isBrowser = isPlatformBrowser(this.platformId); 
+    this.isBrowser = isPlatformBrowser(this.platformId);
     // Suscribirse a los eventos de navegación para recargar datos cada vez que se accede al módulo
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -80,20 +91,20 @@ export class Clientes implements OnInit, OnDestroy {
     this.obtenerRolUsuario();
     this.cargarClientes();
   }
-  
+
   // Función para obtener el rol del usuario logueado
   obtenerRolUsuario() {
     if (!this.isBrowser || typeof localStorage === 'undefined') {
       this.rolUsuario = '';
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       this.rolUsuario = '';
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       this.rolUsuario = usuario.rol || '';
@@ -115,11 +126,8 @@ export class Clientes implements OnInit, OnDestroy {
       next: (resp: any) => {
         this.listaClientes = resp || [];
         this.clientesFiltrados = resp || [];
-        // Si hay un término de búsqueda, aplicar filtro
-        if (this.terminoBusqueda) {
-          this.filtrarClientes();
-        }
         this.cargando = false;
+        this.actualizarPaginacion();
       },
       error: (error) => {
         this.cargando = false;
@@ -136,40 +144,75 @@ export class Clientes implements OnInit, OnDestroy {
     }
 
     const termino = this.terminoBusqueda.toLowerCase().trim();
-    
+
     this.clientesFiltrados = this.listaClientes.filter((cliente: any) => {
       // Buscar por nombre completo
       const nombreCompleto = `${cliente.nombres || ''} ${cliente.apellidos || ''}`.toLowerCase();
       const coincideNombre = nombreCompleto.includes(termino);
-      
+
       // Buscar por documento
       const documento = (cliente.documento || '').toLowerCase();
       const coincideDocumento = documento.includes(termino);
-      
+
       return coincideNombre || coincideDocumento;
     });
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  actualizarPaginacion() {
+    this.totalPaginas = Math.ceil(this.clientesFiltrados.length / this.clientesPorPagina);
+    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
+    const fin = inicio + this.clientesPorPagina;
+    this.clientesPaginados = this.clientesFiltrados.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacion();
+  }
+
+  cambiarPorPagina(cantidad: number) {
+    this.clientesPorPagina = cantidad;
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  getPaginas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 
   // Función para limpiar la búsqueda
   limpiarBusqueda() {
     this.terminoBusqueda = '';
     this.clientesFiltrados = this.listaClientes;
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
   }
 
   // Función para abrir modal (nuevo cliente)
   abrirModalCliente() {
     this.modoEdicion = false;
     this.clienteEditando = null;
-    
+
     // Asegurar que el rol esté actualizado
     this.obtenerRolUsuario();
-    
+
     const modal = document.getElementById('modalCliente');
     if (modal) {
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
-    
+
     // Cargar rutas según el rol:
     // - Administrador: puede ver TODAS las rutas del sistema sin restricción
     // - Cobrador: solo puede ver sus rutas asignadas
@@ -178,11 +221,11 @@ export class Clientes implements OnInit, OnDestroy {
     } else {
       this.cargarRutasUsuario();
     }
-    
+
     // Limpiar formulario
     this.limpiarFormulario();
   }
-  
+
   // Función para cargar todas las rutas (para modo edición)
   cargarTodasLasRutas() {
     this.rutasService.consultar().subscribe({
@@ -194,15 +237,15 @@ export class Clientes implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   // Función para abrir modal en modo edición
   editarCliente(cliente: any) {
     this.modoEdicion = true;
     this.clienteEditando = cliente;
-    
+
     // Cargar todas las rutas para poder seleccionar
     this.cargarTodasLasRutas();
-    
+
     // Cargar datos del cliente
     this.clientes.consultarPorId(cliente.id_cliente).subscribe({
       next: (resp: any) => {
@@ -222,12 +265,12 @@ export class Clientes implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   // Función para cargar datos en el formulario
   cargarDatosEnFormulario(cliente: any) {
     const form = document.querySelector('#modalCliente form') as HTMLFormElement;
     if (!form) return;
-    
+
     // Cargar datos del cliente
     (form.querySelector('[name="documento"]') as HTMLInputElement).value = cliente.documento || '';
     (form.querySelector('[name="nombres"]') as HTMLInputElement).value = cliente.nombres || '';
@@ -235,21 +278,21 @@ export class Clientes implements OnInit, OnDestroy {
     (form.querySelector('[name="direccion"]') as HTMLInputElement).value = cliente.direccion || '';
     (form.querySelector('[name="telefono"]') as HTMLInputElement).value = cliente.telefono || '';
     (form.querySelector('[name="telefono2"]') as HTMLInputElement).value = cliente.telefono2 || '';
-    
+
     // Cargar ubicación GPS si existe
     this.latitud = cliente.latitud ? parseFloat(cliente.latitud) : null;
     this.longitud = cliente.longitud ? parseFloat(cliente.longitud) : null;
     this.ubicacionCapturada = (this.latitud !== null && this.longitud !== null);
-    
+
     // Actualizar indicador visual
     this.actualizarIndicadorUbicacion();
-    
+
     // Cargar ruta si existe
     const selectRuta = form.querySelector('[name="id_ruta"]') as HTMLSelectElement;
     if (selectRuta && cliente.id_ruta) {
       selectRuta.value = cliente.id_ruta.toString();
     }
-    
+
     // Cargar imágenes del cliente
     if (cliente.foto_cliente) {
       const img = document.getElementById('prevFotoCliente') as HTMLImageElement;
@@ -269,19 +312,19 @@ export class Clientes implements OnInit, OnDestroy {
         img.src = environment.apiUrl + '/' + cliente.foto_cedula_atras;
       }
     }
-    
+
     // Si tiene fiador, cargar datos del fiador
     if (cliente.id_fiador && cliente.documento_fiador) {
       const checkFiador = document.getElementById('checkFiador') as HTMLInputElement;
       const formFiador = document.getElementById('formFiador');
-      
+
       if (checkFiador) {
         checkFiador.checked = true;
       }
       if (formFiador) {
         formFiador.classList.remove('hidden');
       }
-      
+
       // Cargar datos del fiador
       (form.querySelector('[name="documento_fiador"]') as HTMLInputElement).value = cliente.documento_fiador || '';
       (form.querySelector('[name="nombres_fiador"]') as HTMLInputElement).value = cliente.nombres_fiador || '';
@@ -289,7 +332,7 @@ export class Clientes implements OnInit, OnDestroy {
       (form.querySelector('[name="direccion_fiador"]') as HTMLInputElement).value = cliente.direccion_fiador || '';
       (form.querySelector('[name="telefono_fiador"]') as HTMLInputElement).value = cliente.telefono_fiador || '';
       (form.querySelector('[name="telefono2_fiador"]') as HTMLInputElement).value = cliente.telefono2_fiador || '';
-      
+
       // Cargar imágenes del fiador
       if (cliente.foto_fiador) {
         const img = document.getElementById('prevFotoFiador') as HTMLImageElement;
@@ -311,22 +354,22 @@ export class Clientes implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   // Función para cargar rutas del usuario logueado
   cargarRutasUsuario() {
     if (!this.isBrowser || typeof localStorage === 'undefined') {
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       const idUsuario = usuario.id_usuario;
-      
+
       if (idUsuario && !isNaN(parseInt(String(idUsuario)))) {
         this.usuarioRutaService.rutasPorUsuario(parseInt(String(idUsuario))).subscribe({
           next: (resp: any) => {
@@ -359,7 +402,7 @@ export class Clientes implements OnInit, OnDestroy {
   toggleFiador() {
     const checkFiador = document.getElementById('checkFiador') as HTMLInputElement;
     const formFiador = document.getElementById('formFiador');
-    
+
     if (checkFiador && formFiador) {
       if (checkFiador.checked) {
         formFiador.classList.remove('hidden');
@@ -374,7 +417,7 @@ export class Clientes implements OnInit, OnDestroy {
     try {
       // Manejar tanto si se pasa el evento completo como si se pasa solo el target
       let input: HTMLInputElement | null = null;
-      
+
       if (event && event.target) {
         input = event.target as HTMLInputElement;
       } else if (event && event.files) {
@@ -383,26 +426,26 @@ export class Clientes implements OnInit, OnDestroy {
       } else if (event && event.currentTarget) {
         input = event.currentTarget as HTMLInputElement;
       }
-      
+
       if (!input) {
         return;
       }
-      
+
       if (!input.files || input.files.length === 0) {
         return;
       }
-      
+
       const file = input.files[0];
       if (!file) {
         return;
       }
-      
+
       // Validar que sea una imagen
       if (!file.type.startsWith('image/')) {
         alert('Por favor seleccione un archivo de imagen válido');
         return;
       }
-      
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const preview = document.getElementById(previewId);
@@ -434,38 +477,38 @@ export class Clientes implements OnInit, OnDestroy {
         this.longitud = position.coords.longitude;
         this.ubicacionCapturada = true;
         this.capturandoUbicacion = false;
-        
+
         // Actualizar campos ocultos en el formulario
         const form = document.querySelector('#modalCliente form') as HTMLFormElement;
         if (form) {
           let latInput = form.querySelector('[name="latitud"]') as HTMLInputElement;
           let lngInput = form.querySelector('[name="longitud"]') as HTMLInputElement;
-          
+
           if (!latInput) {
             latInput = document.createElement('input');
             latInput.type = 'hidden';
             latInput.name = 'latitud';
             form.appendChild(latInput);
           }
-          
+
           if (!lngInput) {
             lngInput = document.createElement('input');
             lngInput.type = 'hidden';
             lngInput.name = 'longitud';
             form.appendChild(lngInput);
           }
-          
+
           latInput.value = this.latitud.toString();
           lngInput.value = this.longitud.toString();
         }
-        
+
         this.actualizarIndicadorUbicacion();
         alert(`Ubicación capturada:\nLatitud: ${this.latitud.toFixed(6)}\nLongitud: ${this.longitud.toFixed(6)}`);
       },
       (error) => {
         this.capturandoUbicacion = false;
         let mensaje = 'Error al obtener la ubicación: ';
-        switch(error.code) {
+        switch (error.code) {
           case error.PERMISSION_DENIED:
             mensaje += 'Permiso denegado. Por favor, permite el acceso a la ubicación en tu navegador.';
             break;
@@ -512,16 +555,16 @@ export class Clientes implements OnInit, OnDestroy {
     if (form) {
       form.reset();
     }
-    
+
     // Limpiar ubicación GPS
     this.latitud = null;
     this.longitud = null;
     this.ubicacionCapturada = false;
     this.actualizarIndicadorUbicacion();
-    
+
     // Resetear previews de imágenes
-    const previews = ['prevFotoCliente', 'prevCedulaFrontal', 'prevCedulaAtras', 
-                      'prevFotoFiador', 'prevCedulaFrontalFiador', 'prevCedulaAtrasFiador'];
+    const previews = ['prevFotoCliente', 'prevCedulaFrontal', 'prevCedulaAtras',
+      'prevFotoFiador', 'prevCedulaFrontalFiador', 'prevCedulaAtrasFiador'];
     previews.forEach(id => {
       const preview = document.getElementById(id) as HTMLImageElement;
       if (preview) {
@@ -549,13 +592,13 @@ export class Clientes implements OnInit, OnDestroy {
   // Función para guardar cliente
   async guardarCliente(event: Event) {
     event.preventDefault();
-    
+
     // Verificar que estamos en el navegador
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
       alert('Error: No se puede acceder al almacenamiento local');
       return;
     }
-    
+
     // Obtener usuario logueado del localStorage
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
@@ -571,14 +614,14 @@ export class Clientes implements OnInit, OnDestroy {
     if (!idUsuario || isNaN(parseInt(idUsuario))) {
       // Continuar sin id_usuario si no es válido
     }
-    
+
     const form = event.target as HTMLFormElement;
-    
+
     if (!form) {
       alert('Error: No se pudo acceder al formulario');
       return;
     }
-    
+
     const formData = new FormData();
 
     // Obtener valores del cliente
@@ -602,13 +645,13 @@ export class Clientes implements OnInit, OnDestroy {
     formData.append('direccion', direccion);
     formData.append('telefono', telefono);
     formData.append('telefono2', telefono2);
-    
+
     // Agregar ubicación GPS si está disponible
     if (this.latitud !== null && this.longitud !== null) {
       formData.append('latitud', this.latitud.toString());
       formData.append('longitud', this.longitud.toString());
     }
-    
+
     // Obtener ruta seleccionada del select (tanto en creación como en edición)
     const selectRuta = form.querySelector('[name="id_ruta"]') as HTMLSelectElement;
     if (selectRuta && selectRuta.value) {
@@ -619,14 +662,14 @@ export class Clientes implements OnInit, OnDestroy {
         // Si es administrador, usar primera ruta de todas las rutas disponibles
         if (this.rolUsuario === 'admin' && this.todasLasRutas.length > 0) {
           formData.append('id_ruta', this.todasLasRutas[0].id_ruta.toString());
-        } 
+        }
         // Si es cobrador, usar primera ruta asignada al usuario
         else if (this.rolUsuario === 'cobrador' && this.rutasUsuario.length > 0) {
           formData.append('id_ruta', this.rutasUsuario[0].id_ruta.toString());
         }
       }
     }
-    
+
     // Solo agregar id_usuario si es válido
     if (idUsuario && !isNaN(parseInt(idUsuario))) {
       formData.append('id_usuario', idUsuario.toString());
@@ -694,7 +737,7 @@ export class Clientes implements OnInit, OnDestroy {
 
     try {
       let respuesta: any;
-      
+
       if (this.modoEdicion && this.clienteEditando) {
         // Modo edición
         respuesta = await this.clientes.editarFormData(this.clienteEditando.id_cliente, formData).toPromise();
@@ -702,7 +745,7 @@ export class Clientes implements OnInit, OnDestroy {
         // Modo creación
         respuesta = await this.clientes.insertarFormData(formData).toPromise();
       }
-      
+
       // Verificar respuesta (puede ser 'success' o 'ok')
       if (respuesta && (respuesta.resultado === 'success' || respuesta.resultado === 'ok')) {
         alert(respuesta.mensaje || (this.modoEdicion ? 'Cliente actualizado correctamente' : 'Cliente guardado correctamente'));
@@ -792,7 +835,7 @@ export class Clientes implements OnInit, OnDestroy {
       alert('El cliente ya se encuentra activo.');
       return;
     }
-    
+
     if (!confirm(`¿Está seguro de activar al cliente ${cliente.nombres} ${cliente.apellidos}?`)) {
       return;
     }
@@ -819,7 +862,7 @@ export class Clientes implements OnInit, OnDestroy {
       alert('No tiene permisos para inactivar clientes. Solo los administradores pueden realizar esta acción.');
       return;
     }
-    
+
     if (!confirm(`¿Está seguro de inactivar al cliente ${cliente.nombres} ${cliente.apellidos}?`)) {
       return;
     }
@@ -846,7 +889,7 @@ export class Clientes implements OnInit, OnDestroy {
       alert('No tiene permisos para eliminar clientes. Solo los administradores pueden realizar esta acción.');
       return;
     }
-    
+
     if (!confirm(`¿Está seguro de ELIMINAR permanentemente al cliente ${cliente.nombres} ${cliente.apellidos}?\n\nEsta acción no se puede deshacer.`)) {
       return;
     }

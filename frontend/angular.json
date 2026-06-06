@@ -43,7 +43,12 @@
               "src/assets/plugins/fontawesome-free/css/all.min.css",
               "src/assets/dist/css/adminlte.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jszip/dist/jszip.min.js",
+              "node_modules/pdfmake/build/pdfmake.min.js",
+              "node_modules/pdfmake/build/vfs_fonts.js"
+            ]
           },
           "configurations": {
             "production": {

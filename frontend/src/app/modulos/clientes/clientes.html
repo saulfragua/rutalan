@@ -51,258 +51,302 @@
           <input type="text" [(ngModel)]="terminoBusqueda" (input)="filtrarClientes()"
             placeholder="Buscar por nombre o documento..."
             class="search-input flex-1 py-2.5 sm:py-3 text-sm sm:text-base text-[#02416d]">
-          @if (terminoBusqueda) {
-          <button (click)="limpiarBusqueda()" class="text-[#6b7280] hover:text-[#dc3545]">
+          <button *ngIf="terminoBusqueda" (click)="limpiarBusqueda()" class="text-[#6b7280] hover:text-[#dc3545]">
             <i class="fas fa-times-circle"></i>
           </button>
-          }
         </div>
       </div>
-      @if (terminoBusqueda && clientesFiltrados.length > 0) {
-      <p class="mt-2 text-xs sm:text-sm text-[#6b7280]">
+      <p *ngIf="terminoBusqueda && clientesFiltrados.length > 0" class="mt-2 text-xs sm:text-sm text-[#6b7280]">
         <i class="fas fa-info-circle text-[#066699] mr-1"></i>
         Mostrando {{ clientesFiltrados.length }} de {{ listaClientes.length }} cliente(s)
       </p>
-      }
-      @if (terminoBusqueda && clientesFiltrados.length === 0) {
-      <p class="mt-2 text-xs sm:text-sm text-red-600">
+      <p *ngIf="terminoBusqueda && clientesFiltrados.length === 0" class="mt-2 text-xs sm:text-sm text-red-600">
         <i class="fas fa-exclamation-circle mr-1"></i>
         No se encontraron clientes que coincidan con "{{ terminoBusqueda }}"
       </p>
-      }
     </div>
   </div>
 
   <!-- TABLA CLIENTES PROFESIONAL - Mobile First (Solo Tabla) -->
-  <div
-    class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white -webkit-overflow-scrolling-touch">
-    <div class="inline-block min-w-full align-middle">
-      <div class="overflow-hidden">
-        <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
-          <thead class="bg-linear-to-r from-[#0a5483] to-[#066699]">
-            <tr>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                ID</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Documento</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Foto</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Cliente</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Dirección</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Teléfono</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Teléfono 2</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Estado</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Usuario</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Ruta</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Fecha Reg.</th>
-              <!-- Columnas del Fiador -->
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
-                Doc. Fiador</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
-                Foto Fiador</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
-                Fiador</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
-                Tel. Fiador</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
-                Dir. Fiador</th>
-              <th
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-                Acciones</th>
-            </tr>
-          </thead>
+  <div class="mt-4 rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
+        <thead class="bg-teal-950">
+          <tr>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              ID</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Documento</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Foto</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Cliente</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Dirección</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Teléfono</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Teléfono 2</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Estado</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Usuario</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Ruta</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Fecha Reg.</th>
+            <!-- Columnas del Fiador -->
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
+              Doc. Fiador</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
+              Foto Fiador</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
+              Fiador</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
+              Tel. Fiador</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
+              Dir. Fiador</th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Acciones</th>
+          </tr>
+        </thead>
 
-          <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+        <tbody class="bg-white border-t-2 border-[#e5e7eb]">
 
-            <!-- CARGANDO -->
-            <tr *ngIf="cargando">
-              <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
-                <div class="flex flex-col items-center justify-center">
-                  <div
-                    class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3">
-                  </div>
-                  <span class="text-[#02416d] text-sm sm:text-base font-semibold">Cargando clientes...</span>
+          <!-- CARGANDO -->
+          <tr *ngIf="cargando">
+            <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3">
                 </div>
-              </td>
-            </tr>
+                <span class="text-[#02416d] text-sm sm:text-base font-semibold">Cargando clientes...</span>
+              </div>
+            </td>
+          </tr>
 
-            <!-- LISTA DE CLIENTES -->
-            <tr *ngFor="let cliente of clientesFiltrados"
-              class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)]">
-              <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
-                <span
-                  class="bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{
-                  cliente.id_cliente }}</span>
-              </td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                {{ cliente.documento }}</td>
+          <!-- LISTA DE CLIENTES -->
+          <tr *ngFor="let cliente of clientesPaginados"
+            class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)]">
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
+              <span
+                class="bg-[#0dbf6b] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{
+                cliente.id_cliente }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.documento }}</td>
 
-              <!-- FOTO CLIENTE PROFESIONAL -->
-              <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
-                <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                  <div (click)="abrirModalFotoCliente(cliente)"
-                    class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border border-[#e5e7eb] bg-[#f8f8ec] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#066699] hover:scale-105 hover:shadow-md"
-                    title="Click para ampliar foto">
-                    <img *ngIf="cliente.foto_cliente" [src]="environment.apiUrl + '/' + cliente.foto_cliente"
-                      class="w-full h-full object-cover rounded"
-                      onerror="this.src='assets/dist/img/documentos/foto.jpg'">
-                    <img *ngIf="!cliente.foto_cliente" src="assets/dist/img/documentos/foto.jpg"
-                      class="w-full h-full object-cover rounded">
-                  </div>
-                  <button (click)="abrirModalDocumentos(cliente)"
-                    class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded bg-linear-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
-                    <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
-                    <span class="hidden sm:inline">Doc</span>
-                  </button>
+            <!-- FOTO CLIENTE PROFESIONAL -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
+              <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                <div (click)="abrirModalFotoCliente(cliente)"
+                  class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border border-[#e5e7eb] bg-[#f8f8ec] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#066699] hover:scale-105 hover:shadow-md"
+                  title="Click para ampliar foto">
+                  <img *ngIf="cliente.foto_cliente" [src]="environment.apiUrl + '/' + cliente.foto_cliente"
+                    class="w-full h-full object-cover rounded" onerror="this.src='assets/dist/img/documentos/foto.jpg'">
+                  <img *ngIf="!cliente.foto_cliente" src="assets/dist/img/documentos/foto.jpg"
+                    class="w-full h-full object-cover rounded">
                 </div>
-              </td>
+                <button (click)="abrirModalDocumentos(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded   transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
+                  <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
+                  <span class="hidden sm:inline">Doc</span>
+                </button>
+              </div>
+            </td>
 
-              <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
-                <span
-                  class="font-semibold text-[#02416d] text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">{{
-                  cliente.nombres }} {{ cliente.apellidos }}</span>
-              </td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
-                title="{{ cliente.direccion || '-' }}">{{ cliente.direccion || '-' }}</td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                {{ cliente.telefono || '-' }}</td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                {{ cliente.telefono2 || '-' }}</td>
-              <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
-                <span [class]="cliente.activo ? 'text-green-600' : 'text-red-600'"
-                  class="font-semibold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                  {{ cliente.activo ? 'Activo' : 'Inactivo' }}
-                </span>
-              </td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
-                {{ cliente.id_usuario || '-' }}</td>
-              <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
-                <span *ngIf="cliente.nombre_ruta"
-                  class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)] whitespace-nowrap">
-                  {{ cliente.nombre_ruta }}
-                </span>
-                <span *ngIf="!cliente.nombre_ruta"
-                  class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                  Sin ruta
-                </span>
-              </td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
-                {{ cliente.fecha_registro || '-' }}
-              </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+              <span
+                class="font-semibold text-[#02416d] text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">{{
+                cliente.nombres }} {{ cliente.apellidos }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
+              title="{{ cliente.direccion || '-' }}">{{ cliente.direccion || '-' }}</td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.telefono || '-' }}</td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.telefono2 || '-' }}</td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
+              <span [class]="cliente.activo ? 'text-green-600' : 'text-red-600'"
+                class="font-semibold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                {{ cliente.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+              {{ cliente.id_usuario || '-' }}</td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
+              <span *ngIf="cliente.nombre_ruta"
+                class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)] whitespace-nowrap">
+                {{ cliente.nombre_ruta }}
+              </span>
+              <span *ngIf="!cliente.nombre_ruta"
+                class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                Sin ruta
+              </span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
+              {{ cliente.fecha_registro || '-' }}
+            </td>
 
-              <!-- Datos del Fiador -->
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                {{ cliente.documento_fiador || '-' }}
-              </td>
+            <!-- Datos del Fiador -->
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.documento_fiador || '-' }}
+            </td>
 
-              <!-- FOTO FIADOR PROFESIONAL -->
-              <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
-                <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2" *ngIf="cliente.id_fiador">
-                  <div (click)="abrirModalFotoFiador(cliente)"
-                    class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border-2 border-[#aedd2b] bg-[rgba(174,221,43,0.1)] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#9bc825] hover:scale-105 hover:shadow-md"
-                    title="Click para ampliar foto">
-                    <img *ngIf="cliente.foto_fiador" [src]="environment.apiUrl + '/' + cliente.foto_fiador"
-                      class="w-full h-full object-cover rounded"
-                      onerror="this.src='assets/dist/img/documentos/foto.jpg'">
-                    <img *ngIf="!cliente.foto_fiador && cliente.id_fiador" src="assets/dist/img/documentos/foto.jpg"
-                      class="w-full h-full object-cover rounded">
-                  </div>
-                  <button (click)="abrirModalDocumentosFiador(cliente)"
-                    class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded bg-linear-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
-                    <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
-                    <span class="hidden sm:inline">Doc</span>
-                  </button>
+            <!-- FOTO FIADOR PROFESIONAL -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
+              <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2" *ngIf="cliente.id_fiador">
+                <div (click)="abrirModalFotoFiador(cliente)"
+                  class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border-2 border-[#aedd2b] bg-[rgba(174,221,43,0.1)] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#9bc825] hover:scale-105 hover:shadow-md"
+                  title="Click para ampliar foto">
+                  <img *ngIf="cliente.foto_fiador" [src]="environment.apiUrl + '/' + cliente.foto_fiador"
+                    class="w-full h-full object-cover rounded" onerror="this.src='assets/dist/img/documentos/foto.jpg'">
+                  <img *ngIf="!cliente.foto_fiador && cliente.id_fiador" src="assets/dist/img/documentos/foto.jpg"
+                    class="w-full h-full object-cover rounded">
                 </div>
-                <span *ngIf="!cliente.id_fiador"
-                  class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">-</span>
-              </td>
+                <button (click)="abrirModalDocumentosFiador(cliente)"
+                  class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded bg-linear-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
+                  <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
+                  <span class="hidden sm:inline">Doc</span>
+                </button>
+              </div>
+              <span *ngIf="!cliente.id_fiador"
+                class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">-</span>
+            </td>
 
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
-                title="{{ cliente.nombre_completo_fiador || '-' }}">
-                {{ cliente.nombre_completo_fiador || '-' }}
-              </td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                {{ cliente.telefono_fiador || '-' }}
-              </td>
-              <td
-                class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
-                title="{{ cliente.direccion_fiador || '-' }}">
-                {{ cliente.direccion_fiador || '-' }}
-              </td>
-              <!-- ACCIONES PROFESIONALES -->
-              <td class="px-0.5 sm:px-1 md:px-2 lg:px-3 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
-                <div class="flex flex-col gap-0.5 sm:gap-1 md:gap-1.5">
-                  <!-- Botón Editar (Todos los roles) -->
-                  <button (click)="editarCliente(cliente)"
-                    class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-7 sm:min-h-8 md:min-h-9">
-                    Editar
-                  </button>
-                  <!-- Botones Activar/Inactivar -->
-                  <button *ngIf="rolUsuario === 'admin' && cliente.activo" (click)="inactivarCliente(cliente)"
-                    class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#facc15] to-[#eab308] text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap mimin-h-7m:min-h-[32px] md:min-h-9">
-                    Inactivar
-                  </button>
-                  <button *ngIf="(rolUsuario === 'admin' || rolUsuario === 'cobrador') && !cliente.activo"
-                    (click)="activarCliente(cliente)"
-                    class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-7 sm:min-h-8 md:min-h-9">
-                    Activar
-                  </button>
-                  <!-- Botón Eliminar (Solo Administradores) -->
-                  <button *ngIf="rolUsuario === 'admin'" (click)="eliminarCliente(cliente)"
-                    class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#dc3545] to-[#c82333] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-7 sm:min-h-8 md:min-h-9">
-                    Eliminar
-                  </button>
-                </div>
-              </td>
-            </tr>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
+              title="{{ cliente.nombre_completo_fiador || '-' }}">
+              {{ cliente.nombre_completo_fiador || '-' }}
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              {{ cliente.telefono_fiador || '-' }}
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
+              title="{{ cliente.direccion_fiador || '-' }}">
+              {{ cliente.direccion_fiador || '-' }}
+            </td>
+            <!-- ACCIONES PROFESIONALES -->
+            <td class="px-0.5 sm:px-1 md:px-2 lg:px-3 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+              <div class="flex  gap-0.5 sm:gap-1 md:gap-1.5">
+                <!-- Editar -->
+                <button (click)="editarCliente(cliente)" class="btn-accion btn-editar">
+                  <i class="fas fa-edit hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"></i>
+                </button>
 
-            <!-- SIN REGISTROS -->
-            <tr *ngIf="!cargando && clientesFiltrados.length === 0 && !terminoBusqueda">
-              <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
-                <div class="flex flex-col items-center justify-center">
-                  <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
-                  <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay clientes
-                    registrados</span>
-                </div>
-              </td>
-            </tr>
+                <!-- Inactivar -->
+                <button *ngIf="rolUsuario === 'admin' && cliente.activo" (click)="inactivarCliente(cliente)"
+                  class="btn-accion btn-inactivar hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+                  <i class="fas fa-times"></i>
+                </button>
 
-          </tbody>
-        </table>
+                <!-- Activar -->
+                <button *ngIf="(rolUsuario === 'admin' || rolUsuario === 'cobrador') && !cliente.activo"
+                  (click)="activarCliente(cliente)"
+                  class="btn-accion btn-activar hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+                  <i class="fas fa-check"></i>
+                </button>
+
+                <!-- Eliminar -->
+                <button *ngIf="rolUsuario === 'admin'" (click)="eliminarCliente(cliente)"
+                  class="btn-accion btn-eliminar hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+                  <i class="fas fa-trash"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+
+          <!-- SIN REGISTROS -->
+          <tr *ngIf="!cargando && clientesFiltrados.length === 0 && !terminoBusqueda">
+            <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
+                <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay clientes
+                  registrados</span>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div
+      class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t-2 border-[#e5e7eb]">
+
+      <!-- Info + selector por página -->
+      <div class="flex items-center gap-3 text-sm text-[#6b7280]">
+        <span>
+          Mostrando {{ (paginaActual - 1) * clientesPorPagina + 1 }} -
+          {{ Math.min(paginaActual * clientesPorPagina, clientesFiltrados.length) }}
+          de {{ clientesFiltrados.length }} clientes
+        </span>
+        <select [(ngModel)]="clientesPorPagina" (change)="cambiarPorPagina(clientesPorPagina)"
+          class="px-2 py-1 border-2 border-[#e5e7eb] rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B]">
+          <option *ngFor="let op of opcionesPorPagina" [value]="op">{{ op }} por página</option>
+        </select>
       </div>
+
+      <!-- Botones de página -->
+      <div class="flex items-center gap-1">
+        <!-- Primera -->
+        <button (click)="cambiarPagina(1)" [disabled]="paginaActual === 1"
+          class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+          «
+        </button>
+        <!-- Anterior -->
+        <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1"
+          class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+          ‹
+        </button>
+
+        <!-- Páginas numeradas -->
+        <button *ngFor="let p of getPaginas()" (click)="cambiarPagina(p)"
+          [class]="p === paginaActual ? 
+        'px-3 py-1.5 rounded-lg text-sm font-semibold bg-[#0A2E5C] text-white border-2 border-[#0A2E5C]' : 
+        'px-3 py-1.5 rounded-lg text-sm font-medium bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white transition-all duration-200'">
+          {{ p }}
+        </button>
+
+        <!-- Siguiente -->
+        <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas"
+          class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+          ›
+        </button>
+        <!-- Última -->
+        <button (click)="cambiarPagina(totalPaginas)" [disabled]="paginaActual === totalPaginas"
+          class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+          »
+        </button>
+      </div>
+
     </div>
   </div>
 
