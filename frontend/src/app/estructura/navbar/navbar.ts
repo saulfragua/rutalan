@@ -65,11 +65,16 @@ export class Navbar implements OnInit, AfterViewInit {
   cerrarSesion() {
     if (!this.isBrowser) return;
 
+    // ✅ Confirmación antes de cerrar sesión
+    const confirmar = confirm('¿Está seguro que desea cerrar sesión?');
+    if (!confirmar) return;
+
     // 🔐 Eliminar usuario del localStorage
     localStorage.removeItem('usuario');
 
     // 🚪 Redirigir al login
     this.router.navigate(['/login']);
+    
   }
 
 }

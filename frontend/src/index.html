@@ -29,7 +29,14 @@
   <!-- summernote -->
   <link rel="stylesheet" href="assets/plugins/summernote/summernote-bs4.min.css">
 
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script> 
+  <script>
+    var recaptchaReady = false;
+    function onRecaptchaLoad() {
+      recaptchaReady = true;
+      window.dispatchEvent(new Event('recaptchaready'));
+    }
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 </head>
 
 <body>
