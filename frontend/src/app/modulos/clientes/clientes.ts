@@ -63,8 +63,8 @@ export class Clientes implements OnInit, OnDestroy {
   clientesPorPagina: number = 5;
   totalPaginas: number = 0;
   clientesPaginados: any[] = [];
-  opcionesPorPagina: number[] = [5,10, 25, 50, 100];
-  Math= Math;
+  opcionesPorPagina: number[] = [5, 10, 25, 50, 100];
+  Math = Math;
 
   constructor(
     public usuarios: UsuariosService,
@@ -73,7 +73,7 @@ export class Clientes implements OnInit, OnDestroy {
     private usuarioRutaService: UsuarioRutaService,
     private rutasService: Rutas,
     public router: Router,
-    private cdr: ChangeDetectorRef, 
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -735,6 +735,38 @@ export class Clientes implements OnInit, OnDestroy {
       }
     }
 
+    // Verificar si el fiador ya está asociado a otros clientes
+    if (tieneFiador) {
+      const documentoFiadorForm = (form.querySelector('[name="documento_fiador"]') as HTMLInputElement)?.value?.trim() || '';
+
+      if (documentoFiadorForm) {
+        try {
+          const respFiador: any = await this.fiadores.buscarPorDocumento(documentoFiadorForm).toPromise();
+
+          if (respFiador && respFiador.resultado === 'ok' && respFiador.fiador?.id_fiador) {
+            const idFiadorExistente = respFiador.fiador.id_fiador;
+            const respConteo: any = await this.fiadores.contarClientesAsociados(idFiadorExistente).toPromise();
+            const totalAsociados = parseInt(respConteo?.total_clientes || 0);
+
+            if (totalAsociados > 0) {
+              const confirmarUso = confirm(
+                `⚠️ Este fiador ya está asociado a ${totalAsociados} cliente(s): ${respConteo.nombres_clientes}.\n\n` +
+                `Si continúa, este fiador quedará vinculado también a este cliente. Cualquier edición futura de sus datos afectará a TODOS los clientes vinculados.\n\n` +
+                `¿Desea continuar de todas formas?`
+              );
+              if (!confirmarUso) {
+                return; // Cancela el guardado
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error al verificar fiador existente:', error);
+          // No bloqueamos el guardado si esta verificación falla
+        }
+      }
+    }
+
+
     try {
       let respuesta: any;
 
@@ -760,6 +792,7 @@ export class Clientes implements OnInit, OnDestroy {
       const mensajeError = error?.error?.mensaje || error?.message || (this.modoEdicion ? 'Error al actualizar el cliente' : 'Error al guardar el cliente');
       alert(mensajeError);
     }
+
   }
 
   // Función para abrir modal de documentos del cliente

@@ -7,30 +7,38 @@ import { environment } from '../../environments/environment';
 })
 export class Fiadores {
 
-    url = `${environment.apiUrl}/controllers/fiadoresControlador.php`;
+  url = `${environment.apiUrl}/controllers/fiadoresControlador.php`;
 
   constructor(private http: HttpClient) { }
 
-     consultar(){
+  consultar() {
     return this.http.get(`${this.url}?control=consultar`);
   }
-  
-  eliminar(id: number){
+
+  eliminar(id: number) {
     return this.http.get(`${this.url}?control=eliminar&id=${id}`);
   }
 
-  insertar(datos: any){
+  insertar(datos: any) {
     return this.http.post(`${this.url}?control=insertar`, JSON.stringify(datos));
   }
 
-  editar(id: number, datos: any){
+  editar(id: number, datos: any) {
     return this.http.post(`${this.url}?control=editar&id=${id}`, JSON.stringify(datos));
   }
 
-  filtrar(datos: any){
+  filtrar(datos: any) {
     return this.http.get(`${this.url}?control=filtra&datos=${datos}`);
+  }
+
+  buscarPorDocumento(documento: string) {
+    return this.http.get(`${this.url}?control=buscarPorDocumento&documento=${documento}`);
+  }
+
+  contarClientesAsociados(id_fiador: number) {
+    return this.http.get(`${this.url}?control=contarClientes&id_fiador=${id_fiador}`);
   }
 }
 
-  
+
 

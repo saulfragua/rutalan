@@ -144,6 +144,17 @@ public function buscarPorDocumento($documento) {
 public function obtenerUltimoId() {
     return $this->conexion->lastInsertId();
 }
+
+// METODO CONTAR CLIENTES ASOCIADOS A UN FIADOR
+public function contarClientesAsociados($id_fiador) {
+    $stmt = $this->conexion->prepare(
+        "SELECT COUNT(*) as total, GROUP_CONCAT(CONCAT(nombres, ' ', apellidos) SEPARATOR ', ') as nombres_clientes 
+         FROM clientes 
+         WHERE id_fiador = ? AND activo = 1"
+    );
+    $stmt->execute([$id_fiador]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 }
 
 ?>
