@@ -9,7 +9,7 @@
         <div class="flex-1 w-full">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
             <!-- Icono - Responsive -->
-            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-linear-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md">
               <i class="fas fa-file-invoice-dollar text-white text-lg sm:text-xl md:text-2xl"></i>
             </div>
             <div class="flex-1 min-w-0">
@@ -31,7 +31,7 @@
         <div class="flex flex-row w-full sm:w-auto gap-2">
           <button
             (click)="abrirModalCredito()"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
             <i class="fas fa-plus-circle"></i>
             <span>Nuevo Crédito</span>
           </button>
@@ -73,7 +73,7 @@
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden">
           <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
-            <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+            <thead class="bg-linear-to-r from-[#0a5483] to-[#066699]">
               <tr>
                 <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">ID</th>
                 <th class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">Cliente</th>
@@ -107,7 +107,7 @@
                   [class.bg-[rgba(220,53,69,0.05)]]="credito.estado_credito === 'cancelado'"
                   class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)]">
                 <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
-                  <span class="bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{ credito.id_credito }}</span>
+                  <span class="bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">#{{ credito.id_credito }}</span>
                 </td>
                 <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">
                   {{ credito.nombres_cliente }} {{ credito.apellidos_cliente }}
@@ -151,23 +151,23 @@
                   <div class="flex flex-col gap-0.5 sm:gap-1 md:gap-1.5">
                     <button
                       (click)="verPlanPagos(credito.id_credito)"
-                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-7 sm:min-h-8 md:min-h-9">
                       Ver Plan
                     </button>
                     <button
                       *ngIf="credito.estado_credito !== 'cancelado'"
                       (click)="editarCredito(credito.id_credito)"
-                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#066699] to-[#0a5483] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-7 sm:min-h-8 md:min-h-9">
                       Editar
                     </button>
                     <button
                       *ngIf="credito.estado_credito !== 'cancelado' && rolUsuario === 'admin'"
                       (click)="cancelarCredito(credito.id_credito)"
-                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gradient-to-r from-[#dc3545] to-[#c82333] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-[28px] sm:min-h-[32px] md:min-h-[36px]">
+                      class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-r from-[#dc3545] to-[#c82333] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap min-h-7 sm:min-h-8 md:min-h-9">
                       Cancelar
                     </button>
                     <span *ngIf="credito.estado_credito === 'cancelado'" 
-                          class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#9ca3af] text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gray-300 text-white whitespace-nowrap">
+                          class="inline-flex items-center justify-center px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#9ca3af] text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-gray-300 whitespace-nowrap">
                       Cancelado
                     </span>
                   </div>
@@ -250,7 +250,7 @@
           <!-- TABLA DE CRÉDITOS PENDIENTES - Mobile First -->
           <div class="overflow-x-auto mt-3 rounded-lg border-2 border-[rgba(245,158,11,0.2)] bg-white -webkit-overflow-scrolling-touch">
             <table class="min-w-full text-xs sm:text-sm bg-white">
-              <thead class="bg-gradient-to-r from-[#f59e0b] to-[#d97706]">
+              <thead class="bg-linear-to-r from-[#f59e0b] to-[#d97706]">
                 <tr>
                   <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">N° Crédito</th>
                   <th class="px-1 sm:px-2 md:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">Tipo</th>
@@ -264,7 +264,7 @@
                 <tr *ngFor="let credito of creditosPendientesCliente" 
                     class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(245,158,11,0.05)]">
                   <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d] font-bold">
-                    <span class="bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-bold whitespace-nowrap">#{{ credito.id_credito }}</span>
+                    <span class="bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-bold whitespace-nowrap">#{{ credito.id_credito }}</span>
                   </td>
                   <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d]">
                     <span *ngIf="credito.tipo_credito === 'comun' || !credito.tipo_credito" 
