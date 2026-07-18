@@ -6,7 +6,7 @@
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div class="flex-1 w-full sm:w-auto">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-linear-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md shrink-0">
               <i class="fas fa-chart-bar text-white text-lg sm:text-xl md:text-2xl"></i>
             </div>
             <div class="flex-1 min-w-0">
@@ -116,7 +116,7 @@
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.nombre_completo_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.documento_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.telefono_cliente || item.telefono2_cliente || '-' }}</td>
-              <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm max-w-[120px] truncate" [title]="item.direccion_cliente">{{ item.direccion_cliente || '-' }}</td>
+              <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm max-w-30 truncate" [title]="item.direccion_cliente">{{ item.direccion_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm text-right font-semibold">{{ formatearMonto(item.monto_pagado) }}</td>
               <td class="px-2 py-2 text-[#066699] text-xs sm:text-sm font-medium">{{ item.usuario_registro || '-' }}</td>
               <td class="px-2 py-2 text-[#6b7280] text-xs sm:text-sm">{{ item.nombre_ruta || '-' }}</td>
@@ -145,7 +145,7 @@
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.nombre_completo_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.documento_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.telefono_cliente || item.telefono2_cliente || '-' }}</td>
-              <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm max-w-[120px] truncate" [title]="item.direccion_cliente">{{ item.direccion_cliente || '-' }}</td>
+              <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm max-w-30 truncate" [title]="item.direccion_cliente">{{ item.direccion_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm text-right font-semibold">{{ formatearMonto(item.monto_credito) }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm text-center">{{ item.cuotas || '-' }}</td>
               <td class="px-2 py-2 text-[#066699] text-xs sm:text-sm font-medium">{{ item.usuario_registro || '-' }}</td>

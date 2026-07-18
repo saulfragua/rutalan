@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { InformesService } from '../../servicios/informes';
 
 @Component({
@@ -15,10 +17,35 @@ export class Informes {
   lista: any[] = [];
   error: string | null = null;
 
-  constructor(private informesService: InformesService) {
+  private isBrowser: boolean;
+
+  constructor(
+    private informesService: InformesService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     const hoy = new Date().toISOString().split('T')[0];
     this.fechaDesde = hoy;
     this.fechaHasta = hoy;
+  }
+
+  ngOnInit() {
+    // Validar que sea administrador
+    if (this.isBrowser && typeof localStorage !== 'undefined') {
+      const usuarioStr = localStorage.getItem('usuario');
+      if (usuarioStr) {
+        try {
+          const usuario = JSON.parse(usuarioStr);
+          if (usuario.rol !== 'admin') {
+            this.router.navigate(['/clientes']);
+            return;
+          }
+        } catch (error) {
+          console.error('Error al validar rol:', error);
+        }
+      }
+    }
   }
 
   generarInforme(): void {
