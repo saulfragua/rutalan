@@ -97,17 +97,21 @@
             <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Estado</th>
-            <th
+            <!-- <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-              Usuario</th>
+              Usuario</th> -->
             <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Ruta</th>
-            <th
+            <!-- <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
-              Fecha Reg.</th>
+              Fecha Reg.</th> -->
             <!-- Columnas del Fiador -->
+
             <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
+              Fiador</th>
+            <!-- <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
               Doc. Fiador</th>
             <th
@@ -121,7 +125,7 @@
               Tel. Fiador</th>
             <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-[#aedd2b] whitespace-nowrap">
-              Dir. Fiador</th>
+              Dir. Fiador</th> -->
             <th
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1.5 sm:py-2 md:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Acciones</th>
@@ -132,7 +136,7 @@
 
           <!-- CARGANDO -->
           <tr *ngIf="cargando">
-            <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+            <td [attr.colspan]="11" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
               <div class="flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-[#066699] border-t-transparent mb-3">
                 </div>
@@ -172,10 +176,17 @@
               </div>
             </td>
 
-            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
-              <span
-                class="font-semibold text-[#02416d] text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap">{{
-                cliente.nombres }} {{ cliente.apellidos }}</span>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] max-w-25 sm:max-w-35 md:max-w-none"
+              title="{{ cliente.nombres }} {{ cliente.apellidos }}">
+              <div class="flex flex-col leading-tight">
+                <span class="font-semibold text-[#02416d] text-[10px] sm:text-xs md:text-sm lg:text-base wrap-break-word">
+                  {{ cliente.nombres }}
+                </span>
+                <span class="text-[#6b7280] text-[10px] sm:text-xs md:text-sm wrap-break-word">
+                  {{ cliente.apellidos }}
+                </span>
+              </div>
             </td>
             <td
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
@@ -192,9 +203,9 @@
                 {{ cliente.activo ? 'Activo' : 'Inactivo' }}
               </span>
             </td>
-            <td
+            <!-- <td
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
-              {{ cliente.id_usuario || '-' }}</td>
+              {{ cliente.id_usuario || '-' }}</td> -->
             <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d]">
               <span *ngIf="cliente.nombre_ruta"
                 class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)] whitespace-nowrap">
@@ -205,51 +216,20 @@
                 Sin ruta
               </span>
             </td>
-            <td
+            <!-- <td
               class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-[10px] sm:text-xs whitespace-nowrap">
               {{ cliente.fecha_registro || '-' }}
-            </td>
+            </td> -->
 
             <!-- Datos del Fiador -->
-            <td
-              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-              {{ cliente.documento_fiador || '-' }}
-            </td>
-
-            <!-- FOTO FIADOR PROFESIONAL -->
-            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3">
-              <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2" *ngIf="cliente.id_fiador">
-                <div (click)="abrirModalFotoFiador(cliente)"
-                  class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center overflow-hidden rounded border-2 border-[#aedd2b] bg-[rgba(174,221,43,0.1)] shadow-sm cursor-pointer transition-all duration-200 hover:border-[#9bc825] hover:scale-105 hover:shadow-md"
-                  title="Click para ampliar foto">
-                  <img *ngIf="cliente.foto_fiador" [src]="environment.apiUrl + '/' + cliente.foto_fiador"
-                    class="w-full h-full object-cover rounded" onerror="this.src='assets/dist/img/documentos/foto.jpg'">
-                  <img *ngIf="!cliente.foto_fiador && cliente.id_fiador" src="assets/dist/img/documentos/foto.jpg"
-                    class="w-full h-full object-cover rounded">
-                </div>
-                <button (click)="abrirModalDocumentosFiador(cliente)"
-                  class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded bg-linear-to-r from-[#10b981] to-[#059669] text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
-                  <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
-                  <span class="hidden sm:inline">Doc</span>
-                </button>
-              </div>
-              <span *ngIf="!cliente.id_fiador"
-                class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">-</span>
-            </td>
-
-            <td
-              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
-              title="{{ cliente.nombre_completo_fiador || '-' }}">
-              {{ cliente.nombre_completo_fiador || '-' }}
-            </td>
-            <td
-              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-              {{ cliente.telefono_fiador || '-' }}
-            </td>
-            <td
-              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
-              title="{{ cliente.direccion_fiador || '-' }}">
-              {{ cliente.direccion_fiador || '-' }}
+            <!-- FIADOR RESUMIDO -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
+              <button *ngIf="cliente.id_fiador" (click)="abrirModalDocumentosFiador(cliente)"
+                class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[rgba(174,221,43,0.1)] text-[#02416d] text-[10px] sm:text-xs font-semibold border border-[#aedd2b] hover:bg-[rgba(174,221,43,0.2)] transition-all duration-200 whitespace-nowrap">
+                <i class="fas fa-user-shield text-[#066699]"></i>
+                <span class="hidden sm:inline">Ver fiador</span>
+              </button>
+              <span *ngIf="!cliente.id_fiador" class="text-[#9ca3af] text-[10px] sm:text-xs">-</span>
             </td>
             <!-- ACCIONES PROFESIONALES -->
             <td class="px-0.5 sm:px-1 md:px-2 lg:px-3 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
@@ -284,7 +264,7 @@
 
           <!-- SIN REGISTROS -->
           <tr *ngIf="!cargando && clientesFiltrados.length === 0 && !terminoBusqueda">
-            <td [attr.colspan]="18" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
+            <td [attr.colspan]="11" class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 text-center">
               <div class="flex flex-col items-center justify-center">
                 <i class="fas fa-inbox text-3xl sm:text-4xl md:text-5xl text-[#9ca3af] mb-4"></i>
                 <span class="text-[#02416d] text-sm sm:text-base md:text-lg font-semibold">No hay clientes
@@ -910,6 +890,22 @@
           <i class="fas fa-user-shield" style="color: #aedd2b;"></i>
           Fiador: {{ clienteSeleccionado?.nombre_completo_fiador }}
         </h3>
+
+        <div *ngIf="clienteSeleccionado?.id_fiador"
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: rgba(174,221,43,0.05); border: 1px solid #aedd2b; border-radius: 0.5rem;">
+          <div>
+            <span style="font-size:0.75rem; color:#6b7280; display:block;">Documento</span>
+            <span style="font-weight:600; color:#02416d;">{{ clienteSeleccionado?.documento_fiador || '-' }}</span>
+          </div>
+          <div>
+            <span style="font-size:0.75rem; color:#6b7280; display:block;">Teléfono</span>
+            <span style="font-weight:600; color:#02416d;">{{ clienteSeleccionado?.telefono_fiador || '-' }}</span>
+          </div>
+          <div>
+            <span style="font-size:0.75rem; color:#6b7280; display:block;">Dirección</span>
+            <span style="font-weight:600; color:#02416d;">{{ clienteSeleccionado?.direccion_fiador || '-' }}</span>
+          </div>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- CÉDULA FRONTAL FIADOR -->
