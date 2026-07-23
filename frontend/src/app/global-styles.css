@@ -148,10 +148,10 @@ div[class*="modal"]:not(.modal):not(.modal-backdrop) {
 
 div[id*="modal"]:not(.modal):not(.modal-backdrop) > div:first-child,
 div[class*="modal"]:not(.modal):not(.modal-backdrop) > div:first-child {
-  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  background: #0A2E5C !important;
   color: #ffffff !important;
   padding: 1.5rem !important;
-  border-bottom: 3px solid #aedd2b !important;
+  border-bottom: 3px solid #0DBF6B !important;
 }
 
 /* Cards - Estilos globales */

@@ -12,9 +12,12 @@
   /* Paleta de Colores Principal */
   --color-crema: #f8f8ec;
   --color-verde-lima: #aedd2b;
+  --color-verde-brand: #0DBF6B;
   --color-azul-medio: #066699;
   --color-azul-oscuro: #0a5483;
   --color-azul-muy-oscuro: #02416d;
+  --color-navy: #0A2E5C;
+
   
   /* Colores Derivados */
   --color-verde-lima-hover: #9bc825;
@@ -393,9 +396,9 @@ select.form-control {
 
 .modal-header {
   padding: var(--spacing-lg);
-  background: linear-gradient(135deg, var(--color-azul-oscuro) 0%, var(--color-azul-medio) 100%);
+  background: var(--color-navy);
   color: var(--text-white);
-  border-bottom: 3px solid var(--color-verde-lima);
+  border-bottom: 3px solid var(--color-verde-brand);
   display: flex;
   align-items: center;
   justify-content: space-between;

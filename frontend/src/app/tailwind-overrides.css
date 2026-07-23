@@ -130,9 +130,9 @@ input.bg-gray-700:focus {
 /* Modales */
 [class*="bg-[#2f353a]"] > div:first-child,
 .modal-header {
-  background: linear-gradient(135deg, #0a5483 0%, #066699 100%) !important;
+  background: #0A2E5C !important;
   color: #ffffff !important;
-  border-bottom: 3px solid #aedd2b !important;
+  border-bottom: 3px solid #0DBF6B !important;
 }
 
 /* Badges verdes -> Verde lima */

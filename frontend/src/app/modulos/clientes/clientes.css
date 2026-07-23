@@ -303,9 +303,9 @@ table tbody tr:hover td {
 
 /* Header del modal */
 .modal-cliente-header {
-  background: linear-gradient(135deg, #066699 0%, #0a5483 100%);
+  background: #0A2E5C;
   padding: 1.75rem 2rem;
-  border-bottom: 4px solid #aedd2b;
+  border-bottom: 4px solid #0DBF6B;
   border-radius: 0.75rem 0.75rem 0 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -583,3 +583,5 @@ table button:has(+ button) {
   color: #9f1239;
 }
 .btn-eliminar:hover { background-color: #fecdd3; }
+
+
