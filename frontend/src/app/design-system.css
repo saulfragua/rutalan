@@ -11,7 +11,7 @@
 :root {
   /* Paleta de Colores Principal */
   --color-crema: #f8f8ec;
-  --color-verde-lima: #aedd2b;
+  --color-verde-lima: #0DBF6B; // before: #aedd2b;
   --color-verde-brand: #0DBF6B;
   --color-azul-medio: #066699;
   --color-azul-oscuro: #0a5483;
@@ -20,7 +20,7 @@
 
   
   /* Colores Derivados */
-  --color-verde-lima-hover: #9bc825;
+  --color-verde-lima-hover: #0aad60; /* Color verde lima más oscuro para hover */
   --color-verde-lima-light: #c5e85a;
   --color-azul-medio-hover: #055580;
   --color-azul-oscuro-hover: #094a72;

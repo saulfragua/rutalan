@@ -303,9 +303,9 @@ table tbody tr:hover td {
 
 /* Header del modal */
 .modal-cliente-header {
-  background: #0A2E5C;
+  background: linear-gradient(135deg, #066699 0%, #0a5483 100%);
   padding: 1.75rem 2rem;
-  border-bottom: 4px solid #0DBF6B;
+  border-bottom: 4px solid #aedd2b;
   border-radius: 0.75rem 0.75rem 0 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -489,6 +489,15 @@ table tbody tr:hover td {
   .imagen-documento {
     max-height: 300px;
   }
+
+  .modal-cliente-header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .modal-cliente-header h3 {
+    font-size: 1.25rem !important;
+  }
+  
 }
 
 /* Fix barra de búsqueda */

@@ -27,16 +27,16 @@
 .bg-yellow-500,
 .bg-yellow-600,
 .bg-yellow-400 {
-  background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%) !important;
-  color: #02416d !important;
-  border-color: #aedd2b !important;
+  background: #0DBF6B !important;
+  color:  #ffffff !important;
+  border-color: #0DBF6B !important;
 }
 
 [class*="bg-[#c8982e]"]:hover,
 .bg-yellow-500:hover,
 .bg-yellow-600:hover,
 .bg-yellow-400:hover {
-  background: linear-gradient(135deg, #9bc825 0%, #8ab820 100%) !important;
+  background: #0aad60 !important;
 }
 
 /* Botones azules -> Nueva paleta azul */
@@ -138,9 +138,9 @@ input.bg-gray-700:focus {
 /* Badges verdes -> Verde lima */
 .bg-green-100,
 .bg-green-500 {
-  background-color: rgba(174, 221, 43, 0.2) !important;
+  background-color: rgba(13, 191, 107, 0.2) !important;
   color: #02416d !important;
-  border: 1px solid #aedd2b !important;
+  border: 1px solid #0DBF6B !important;
 }
 
 /* Badges amarillos -> Mantener pero con mejor contraste */

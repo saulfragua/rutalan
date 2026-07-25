@@ -536,7 +536,7 @@
         type="button"
         (click)="guardarCredito($event)"
         [disabled]="tienePagos"
-        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: #0DBF6B; color: #02416d;"
         [style.opacity]="tienePagos ? '0.5' : '1'"
         [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
         onmouseover="if(!tienePagos) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
