@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -44,9 +44,17 @@ export class Creditos implements OnInit, OnDestroy {
   listaClientes: any[] = [];
   listaClientesFiltrados: any[] = [];
   terminoBusquedaCliente: string = '';
-  
+
   // Rutas del usuario (para cobradores)
   rutasUsuario: any[] = [];
+
+  // Paginación
+  paginaActual: number = 1;
+  creditosPorPagina: number = 5;
+  totalPaginas: number = 0;
+  creditosPaginados: any[] = [];
+  opcionesPorPagina: number[] = [5, 10, 25, 50, 100];
+  Math = Math;
 
   // Formulario
   formularioCredito: any = {
@@ -71,7 +79,7 @@ export class Creditos implements OnInit, OnDestroy {
 
   private isBrowser: boolean;
   private routerSubscription?: Subscription;
-  
+
   // Rol del usuario logueado
   rolUsuario: string = '';
 
@@ -81,11 +89,12 @@ export class Creditos implements OnInit, OnDestroy {
     private planPagosService: Planpagos,
     private cajaService: CajaService,
     private usuarioRutaService: UsuarioRutaService,
+    private cdr: ChangeDetectorRef,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    
+
     // Suscribirse a los eventos de navegación para recargar datos cada vez que se accede al módulo
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -109,7 +118,7 @@ export class Creditos implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.obtenerRolUsuario();
-    
+
     // Si es cobrador, cargar sus rutas primero (esto también cargará clientes y créditos)
     // Si es admin, cargar directamente clientes y créditos
     if (this.rolUsuario === 'cobrador') {
@@ -118,11 +127,11 @@ export class Creditos implements OnInit, OnDestroy {
       this.cargarClientes();
       this.cargarCreditos();
     }
-    
+
     // Inicializar cálculo del resumen
     this.calcularResumen();
   }
-  
+
   /**
    * Obtiene el rol del usuario logueado
    */
@@ -131,13 +140,13 @@ export class Creditos implements OnInit, OnDestroy {
       this.rolUsuario = '';
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       this.rolUsuario = '';
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       this.rolUsuario = usuario.rol || '';
@@ -166,17 +175,17 @@ export class Creditos implements OnInit, OnDestroy {
     this.creditosService.consultar().subscribe({
       next: (resp: any) => {
         let creditosFiltrados = resp || [];
-        
+
         // Filtrar créditos con saldo en 0 (sin saldo pendiente)
         creditosFiltrados = creditosFiltrados.filter((credito: any) => {
           const saldoActual = parseFloat(credito.saldo_actual || 0);
           return saldoActual > 0;
         });
-        
+
         // Si es cobrador, filtrar solo créditos de sus rutas asignadas
         if (this.rolUsuario === 'cobrador' && this.rutasUsuario.length > 0) {
           const idRutasUsuario = this.rutasUsuario.map((r: any) => r.id_ruta);
-          creditosFiltrados = creditosFiltrados.filter((credito: any) => 
+          creditosFiltrados = creditosFiltrados.filter((credito: any) =>
             credito.id_ruta && idRutasUsuario.includes(parseInt(credito.id_ruta))
           );
           console.log('🟡 Cobrador - Créditos filtrados por rutas y saldo > 0:', creditosFiltrados.length, 'de', (resp || []).length);
@@ -187,18 +196,52 @@ export class Creditos implements OnInit, OnDestroy {
         } else {
           console.log('🔵 Administrador - Créditos con saldo > 0:', creditosFiltrados.length, 'de', (resp || []).length);
         }
-        
+
         this.listaCreditos = creditosFiltrados;
         this.cargando = false;
+        this.cdr.detectChanges();
+        this.actualizarPaginacion(); 
       },
       error: (error) => {
         console.error('Error al cargar créditos:', error);
         this.cargando = false;
         alert('Error al cargar los créditos');
+        this.cdr.detectChanges();
+        this.actualizarPaginacion(); 
       }
     });
   }
 
+  actualizarPaginacion() {
+  this.totalPaginas = Math.ceil(this.listaCreditos.length / this.creditosPorPagina);
+  if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+  const inicio = (this.paginaActual - 1) * this.creditosPorPagina;
+  const fin = inicio + this.creditosPorPagina;
+  this.creditosPaginados = this.listaCreditos.slice(inicio, fin);
+  this.cdr.detectChanges();
+}
+
+cambiarPagina(pagina: number) {
+  if (pagina < 1 || pagina > this.totalPaginas) return;
+  this.paginaActual = pagina;
+  this.actualizarPaginacion();
+}
+
+cambiarPorPagina(cantidad: number) {
+  this.creditosPorPagina = cantidad;
+  this.paginaActual = 1;
+  this.actualizarPaginacion();
+}
+
+getPaginas(): number[] {
+  const paginas: number[] = [];
+  const rango = 2;
+  for (let i = Math.max(1, this.paginaActual - rango);
+    i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+    paginas.push(i);
+  }
+  return paginas;
+}
   /**
    * Carga las rutas asignadas al usuario (solo para cobradores)
    */
@@ -206,16 +249,16 @@ export class Creditos implements OnInit, OnDestroy {
     if (!this.isBrowser || typeof localStorage === 'undefined') {
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       const idUsuario = usuario.id_usuario;
-      
+
       if (idUsuario && !isNaN(parseInt(String(idUsuario)))) {
         this.usuarioRutaService.rutasPorUsuario(parseInt(String(idUsuario))).subscribe({
           next: (resp: any) => {
@@ -254,11 +297,11 @@ export class Creditos implements OnInit, OnDestroy {
       next: (resp: any) => {
         // Filtrar solo clientes activos
         let clientesActivos = (resp || []).filter((c: any) => c.activo == 1);
-        
+
         // Si es cobrador, filtrar solo clientes de sus rutas asignadas
         if (this.rolUsuario === 'cobrador' && this.rutasUsuario.length > 0) {
           const idRutasUsuario = this.rutasUsuario.map((r: any) => r.id_ruta);
-          clientesActivos = clientesActivos.filter((c: any) => 
+          clientesActivos = clientesActivos.filter((c: any) =>
             c.id_ruta && idRutasUsuario.includes(parseInt(c.id_ruta))
           );
           console.log('🟡 Cobrador - Clientes filtrados por rutas:', clientesActivos.length, 'de', (resp || []).length);
@@ -269,14 +312,18 @@ export class Creditos implements OnInit, OnDestroy {
         } else {
           console.log('🔵 Administrador - Todos los clientes activos:', clientesActivos.length);
         }
-        
+
         this.listaClientes = clientesActivos;
         this.listaClientesFiltrados = this.listaClientes;
+        this.cdr.detectChanges();
+        this.actualizarPaginacion(); 
       },
       error: (error) => {
         console.error('Error al cargar clientes:', error);
         this.listaClientes = [];
         this.listaClientesFiltrados = [];
+        this.cdr.detectChanges();
+        this.actualizarPaginacion(); 
       }
     });
   }
@@ -287,7 +334,7 @@ export class Creditos implements OnInit, OnDestroy {
    */
   buscarCreditos() {
     const termino = this.terminoBusqueda.trim();
-    
+
     if (!termino) {
       this.cargarCreditos();
       return;
@@ -299,17 +346,17 @@ export class Creditos implements OnInit, OnDestroy {
         // Verificar si la respuesta es un array o un objeto con error
         if (Array.isArray(resp)) {
           let creditosFiltrados = resp;
-          
+
           // Filtrar créditos con saldo en 0 (sin saldo pendiente)
           creditosFiltrados = creditosFiltrados.filter((credito: any) => {
             const saldoActual = parseFloat(credito.saldo_actual || 0);
             return saldoActual > 0;
           });
-          
+
           // Si es cobrador, filtrar solo créditos de sus rutas asignadas
           if (this.rolUsuario === 'cobrador' && this.rutasUsuario.length > 0) {
             const idRutasUsuario = this.rutasUsuario.map((r: any) => r.id_ruta);
-            creditosFiltrados = creditosFiltrados.filter((credito: any) => 
+            creditosFiltrados = creditosFiltrados.filter((credito: any) =>
               credito.id_ruta && idRutasUsuario.includes(parseInt(credito.id_ruta))
             );
             console.log('🟡 Cobrador - Búsqueda: Créditos filtrados por rutas y saldo > 0:', creditosFiltrados.length);
@@ -317,7 +364,7 @@ export class Creditos implements OnInit, OnDestroy {
             // Si es cobrador pero no tiene rutas asignadas, no mostrar créditos
             creditosFiltrados = [];
           }
-          
+
           this.listaCreditos = creditosFiltrados;
         } else if (resp && resp.resultado === 'error') {
           alert(resp.mensaje || 'Error al buscar los créditos');
@@ -326,6 +373,8 @@ export class Creditos implements OnInit, OnDestroy {
           this.listaCreditos = [];
         }
         this.cargando = false;
+        this.cdr.detectChanges();
+        this.actualizarPaginacion(); 
       },
       error: (error) => {
         console.error('Error al buscar créditos:', error);
@@ -333,6 +382,8 @@ export class Creditos implements OnInit, OnDestroy {
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al buscar los créditos';
         alert(mensajeError);
         this.listaCreditos = [];
+        this.cdr.detectChanges();
+        this.actualizarPaginacion(); 
       }
     });
   }
@@ -342,6 +393,7 @@ export class Creditos implements OnInit, OnDestroy {
    */
   limpiarBusqueda() {
     this.terminoBusqueda = '';
+    this.paginaActual = 1;
     this.cargarCreditos();
   }
 
@@ -370,7 +422,7 @@ export class Creditos implements OnInit, OnDestroy {
     this.tienePagos = false;
     this.clienteTieneCreditoPendiente = false;
     this.creditosPendientesCliente = [];
-    
+
     // Asegurar que el rol esté actualizado y los clientes cargados correctamente
     this.obtenerRolUsuario();
     if (this.rolUsuario === 'cobrador' && this.rutasUsuario.length === 0) {
@@ -384,7 +436,7 @@ export class Creditos implements OnInit, OnDestroy {
         this.cargarClientes();
       }
     }
-    
+
     this.resetearFormulario();
     this.mostrarModal();
   }
@@ -401,6 +453,7 @@ export class Creditos implements OnInit, OnDestroy {
     this.creditosService.tienePagos(idCredito).subscribe({
       next: (resp: any) => {
         this.tienePagos = resp.tiene_pagos || false;
+        this.cdr.detectChanges();
 
         // Cargar datos del crédito
         this.creditosService.consultarPorId(idCredito).subscribe({
@@ -418,17 +471,20 @@ export class Creditos implements OnInit, OnDestroy {
             this.calcularResumen();
             this.mostrarModal();
             this.cargando = false;
+            this.cdr.detectChanges();
           },
           error: (error) => {
             console.error('Error al cargar crédito:', error);
             this.cargando = false;
             alert('Error al cargar el crédito');
+            this.cdr.detectChanges();
           }
         });
       },
       error: (error) => {
         console.error('Error al verificar pagos:', error);
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -534,7 +590,7 @@ export class Creditos implements OnInit, OnDestroy {
     } else {
       fechaBase = new Date();
     }
-    
+
     const fechaFinalizacion = new Date(fechaBase);
     fechaFinalizacion.setDate(fechaBase.getDate() + cuotas);
     const fechaFormateada = fechaFinalizacion.toLocaleDateString('es-CO', {
@@ -622,30 +678,30 @@ export class Creditos implements OnInit, OnDestroy {
     } else {
       idUsuario = parseInt(String(idUsuario));
     }
-    
+
     console.log('ID Usuario obtenido del localStorage:', idUsuario);
 
     // Validar y convertir valores
     const montoCredito = parseFloat(String(this.formularioCredito.monto_credito || 0));
     const cuotas = parseInt(String(this.formularioCredito.cuotas || 31));
     const idCliente = parseInt(String(this.formularioCredito.id_cliente || 0));
-    
+
     // Validaciones adicionales
     if (!idCliente || idCliente <= 0) {
       alert('Debe seleccionar un cliente válido');
       return;
     }
-    
+
     if (isNaN(montoCredito) || montoCredito <= 0) {
       alert('El monto del crédito debe ser mayor a 0');
       return;
     }
-    
+
     if (isNaN(cuotas) || cuotas <= 0) {
       alert('Las cuotas deben ser mayores a 0');
       return;
     }
-    
+
     if (!this.formularioCredito.frecuencia_pago) {
       alert('Debe seleccionar una frecuencia de pago');
       return;
@@ -708,17 +764,17 @@ export class Creditos implements OnInit, OnDestroy {
       frecuencia_pago: this.formularioCredito.frecuencia_pago,
       incluir_seguro: this.formularioCredito.incluir_seguro || false
     };
-    
+
     // Agregar id_usuario del usuario logueado (si es válido)
     if (idUsuario && !isNaN(idUsuario)) {
       datosCredito.id_usuario = idUsuario;
     }
-    
+
     // Agregar id_ruta del cliente seleccionado (si existe)
     if (idRuta && !isNaN(parseInt(String(idRuta)))) {
       datosCredito.id_ruta = parseInt(String(idRuta));
     }
-    
+
     // Si está editando y no tiene pagos, permitir cambiar la fecha de creación
     if (this.modoEdicion && !this.tienePagos) {
       if (this.formularioCredito.fecha_toma_credito) {
@@ -730,18 +786,18 @@ export class Creditos implements OnInit, OnDestroy {
         datosCredito.hora_toma_credito = hora.length === 5 ? hora + ':00' : hora;
       }
     }
-    
+
     console.log('ID Usuario (del localStorage):', idUsuario);
     console.log('ID Ruta (del cliente):', idRuta);
 
     try {
       console.log('Datos a enviar:', datosCredito);
-      
+
       if (this.modoEdicion) {
         // Editar crédito
         const respuesta: any = await this.creditosService.editar(this.creditoEditando.id_credito, datosCredito).toPromise();
         console.log('Respuesta del servidor (editar):', respuesta);
-        
+
         if (respuesta && (respuesta.resultado === 'ok' || respuesta.resultado === 'success')) {
           alert(respuesta.mensaje || 'Crédito actualizado correctamente');
           this.cerrarModalCredito();
@@ -754,7 +810,7 @@ export class Creditos implements OnInit, OnDestroy {
         try {
           const respuesta: any = await this.creditosService.insertar(datosCredito).toPromise();
           console.log('Respuesta del servidor (insertar):', respuesta);
-          
+
           // Verificar respuesta (puede ser 'ok' o 'success')
           if (respuesta && (respuesta.resultado === 'ok' || respuesta.resultado === 'success')) {
             // Mostrar mensaje (puede incluir advertencia sobre plan de pagos)
@@ -791,7 +847,7 @@ export class Creditos implements OnInit, OnDestroy {
     } catch (error: any) {
       console.error('Error al guardar crédito:', error);
       const mensajeError = error?.error?.mensaje || error?.message || 'Error al guardar el crédito';
-      
+
       // Verificar si el crédito se guardó a pesar del error
       if (mensajeError.includes('Invalid parameter number') && mensajeError.includes('planpagos')) {
         // El error es en el plan de pagos, pero el crédito probablemente se guardó
@@ -841,12 +897,12 @@ export class Creditos implements OnInit, OnDestroy {
     this.cargandoPlanPagos = true;
     this.listaPlanPagos = [];
     this.planPagosInfo = null;
-    
+
     // Primero obtener información del crédito para verificar si es refinanciado por sistema
     this.creditosService.consultarPorId(idCredito).subscribe({
       next: (creditoResp: any) => {
         const credito = Array.isArray(creditoResp) ? creditoResp[0] : creditoResp;
-        
+
         // Si es refinanciado por sistema, no tiene plan de pagos
         if (credito && credito.tipo_credito === 'refinanciado_por_sistema') {
           // Obtener estadísticas de cuotas del crédito anterior refinanciado
@@ -855,7 +911,7 @@ export class Creditos implements OnInit, OnDestroy {
               const cuotasPagadas = cuotasResp ? cuotasResp.filter((c: any) => c.estado === 'pagada').length : 0;
               const cuotasPendientes = cuotasResp ? cuotasResp.filter((c: any) => c.estado === 'pendiente').length : 0;
               const cuotasVencidas = cuotasResp ? cuotasResp.filter((c: any) => c.estado === 'vencida').length : 0;
-              
+
               // Crear objeto de información sin plan de pagos
               this.planPagosInfo = {
                 id_credito: credito.id_credito,
@@ -876,6 +932,7 @@ export class Creditos implements OnInit, OnDestroy {
               this.listaPlanPagos = [];
               this.cargandoPlanPagos = false;
               this.mostrarModalPlanPagos();
+              this.cdr.detectChanges();
             },
             error: () => {
               // Si no hay plan de pagos, usar valores por defecto
@@ -898,6 +955,7 @@ export class Creditos implements OnInit, OnDestroy {
               this.listaPlanPagos = [];
               this.cargandoPlanPagos = false;
               this.mostrarModalPlanPagos();
+              this.cdr.detectChanges();
             }
           });
         } else {
@@ -914,10 +972,12 @@ export class Creditos implements OnInit, OnDestroy {
               }
               this.cargandoPlanPagos = false;
               this.mostrarModalPlanPagos();
+              this.cdr.detectChanges();
             },
             error: (error) => {
               console.error('Error al cargar plan de pagos:', error);
               this.cargandoPlanPagos = false;
+              this.cdr.detectChanges();
               alert('Error al cargar el plan de pagos');
             }
           });
@@ -937,11 +997,13 @@ export class Creditos implements OnInit, OnDestroy {
             }
             this.cargandoPlanPagos = false;
             this.mostrarModalPlanPagos();
+            this.cdr.detectChanges();
           },
           error: (error2) => {
             console.error('Error al cargar plan de pagos:', error2);
             this.cargandoPlanPagos = false;
             alert('Error al cargar el plan de pagos');
+            this.cdr.detectChanges();
           }
         });
       }
@@ -1081,7 +1143,7 @@ export class Creditos implements OnInit, OnDestroy {
       alert('No tiene permisos para cancelar créditos. Solo los administradores pueden realizar esta acción.');
       return;
     }
-    
+
     if (!confirm('¿Está seguro de que desea cancelar este crédito? Esta acción no se puede deshacer.')) {
       return;
     }
