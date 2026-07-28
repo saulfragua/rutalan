@@ -168,8 +168,7 @@
                   <img *ngIf="!cliente.foto_cliente" src="assets/dist/img/documentos/foto.jpg"
                     class="w-full h-full object-cover rounded">
                 </div>
-                <button (click)="abrirModalDocumentos(cliente)"
-                title="Ver documentos del cliente"
+                <button (click)="abrirModalDocumentos(cliente)" title="Ver documentos del cliente"
                   class="inline-flex items-center justify-center px-1 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold rounded   transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md whitespace-nowrap">
                   <i class="fas fa-file-alt text-[8px] sm:text-xs mr-0.5 sm:mr-1"></i>
                   <span class="hidden sm:inline">Doc</span>
@@ -227,7 +226,7 @@
             <!-- FIADOR RESUMIDO -->
             <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center">
               <button *ngIf="cliente.id_fiador" (click)="abrirModalDocumentosFiador(cliente)"
-              title="Ver documentos del fiador"
+                title="Ver documentos del fiador"
                 class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[rgba(174,221,43,0.1)] text-[#02416d] text-[10px] sm:text-xs font-semibold border border-[#aedd2b] hover:bg-[rgba(174,221,43,0.2)] transition-all duration-200 whitespace-nowrap">
                 <i class="fas fa-user-shield text-[#066699]"></i>
                 <span class="hidden sm:inline">Ver fiador</span>
@@ -244,15 +243,14 @@
 
                 <!-- Inactivar -->
                 <button *ngIf="rolUsuario === 'admin' && cliente.activo" (click)="inactivarCliente(cliente)"
-                title="Inactivar cliente"
+                  title="Inactivar cliente"
                   class="btn-accion btn-inactivar hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
                   <i class="fas fa-times"></i>
                 </button>
 
                 <!-- Activar -->
                 <button *ngIf="(rolUsuario === 'admin' || rolUsuario === 'cobrador') && !cliente.activo"
-                  (click)="activarCliente(cliente)"
-                  title="Activar cliente"
+                  (click)="activarCliente(cliente)" title="Activar cliente"
                   class="btn-accion btn-activar hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
                   <i class="fas fa-check"></i>
                 </button>
@@ -293,7 +291,7 @@
           {{ Math.min(paginaActual * clientesPorPagina, clientesFiltrados.length) }}
           de {{ clientesFiltrados.length }} clientes
         </span>
-        <select [(ngModel)]="clientesPorPagina" (change)="cambiarPorPagina(clientesPorPagina)"
+        <select [ngModel]="clientesPorPagina" (ngModelChange)="cambiarPorPagina($event)"
           class="px-2 py-1 border-2 border-white rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B] shadow-sm">
           <option *ngFor="let op of opcionesPorPagina" [value]="op">{{ op }} por página</option>
         </select>
@@ -359,12 +357,11 @@
           </div>
           <div class="flex-1 min-w-0">
             <h3
-              class="text-base sm:text-xl md:text-2xl font-extrabold m-0 tracking-wide flex items-center gap-1 sm:gap-2"
-              style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-              <i class="fas fa-edit text-sm sm:text-base md:text-lg" style="color: #0DBF6B;"></i>
-              <span class="truncate" style="color: #ffffff;">{{ modoEdicion ? 'Editar Cliente' : 'Nuevo Cliente'
-                }}</span>
+              style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
+              <i class="fas fa-edit" style="margin-right: 0.5rem; color: #0DBF6B;"></i>
+              {{ modoEdicion ? 'Editar ' : 'Nuevo' }} Cliente
             </h3>
+
             <p class="text-xs sm:text-sm md:text-base mt-1 sm:mt-1.5 font-medium hidden sm:flex items-center gap-2"
               style="color: rgba(255,255,255,0.95);">
               <i class="fas fa-info-circle text-xs"></i>

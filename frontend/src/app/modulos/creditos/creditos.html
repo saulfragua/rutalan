@@ -239,7 +239,7 @@
           {{ Math.min(paginaActual * creditosPorPagina, listaCreditos.length) }}
           de {{ listaCreditos.length }} créditos
         </span>
-        <select [(ngModel)]="creditosPorPagina" (change)="cambiarPorPagina(creditosPorPagina)"
+        <select [ngModel]="creditosPorPagina" (ngModelChange)="cambiarPorPagina($event)"
           class="px-2 py-1 border-2 border-white rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B] shadow-sm">
           <option *ngFor="let op of opcionesPorPagina" [value]="op">{{ op }} por página</option>
         </select>
@@ -289,7 +289,7 @@
 
     <!-- ENCABEZADO PROFESIONAL -->
     <div class="modal-credito-header"
-      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #0DBF6B; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
@@ -300,7 +300,7 @@
           <div>
             <h3
               style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
-              <i class="fas fa-edit" style="margin-right: 0.5rem; color: #aedd2b;"></i>
+              <i class="fas fa-edit" style="margin-right: 0.5rem; color: #0DBF6B;"></i>
               {{ modoEdicion ? 'Editar' : 'Nuevo' }} Crédito
             </h3>
             <p
@@ -371,7 +371,7 @@
                     class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(245,158,11,0.05)]">
                     <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d] font-bold">
                       <span
-                        class="bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-bold whitespace-nowrap">#{{
+                        class="bg-linear-to-r from-[#0DBF6B] to-[#0A5483] text-[#02416d] px-1 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-bold whitespace-nowrap">#{{
                         credito.id_credito }}</span>
                     </td>
                     <td class="px-1 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 text-[#02416d]">
@@ -437,7 +437,7 @@
             <input type="text" [(ngModel)]="terminoBusquedaCliente" (input)="filtrarClientes()" name="buscarCliente"
               placeholder="Buscar por nombre o apellido..."
               style="width: 100%; padding-left: 2.75rem; padding-right: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
-              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onfocus="this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
               onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
           </div>
         </div>
@@ -452,7 +452,7 @@
           <select [(ngModel)]="formularioCredito.id_cliente" (change)="validarCliente()" name="id_cliente"
             [disabled]="tienePagos || modoEdicion" required
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
-            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+            onfocus="this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
             onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
             <option value="">Seleccione un cliente</option>
             <option *ngFor="let cliente of listaClientesFiltrados" [value]="cliente.id_cliente">
@@ -479,7 +479,7 @@
                 style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
                 [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
                 [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
-                onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+                onfocus="if(!tienePagos) { this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
                 onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
             </div>
             <div>
@@ -488,7 +488,7 @@
                 style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
                 [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
                 [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
-                onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+                onfocus="if(!tienePagos) { this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
                 onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
             </div>
           </div>
@@ -521,7 +521,7 @@
                 style="width: 100%; padding-left: 2.5rem; padding-right: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem; font-size: 1rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
                 [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
                 [style.cursor]="tienePagos ? 'not-allowed' : 'text'"
-                onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+                onfocus="if(!tienePagos) { this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
                 onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
             </div>
           </div>
@@ -538,7 +538,7 @@
               style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
               [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
               [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
-              onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+              onfocus="if(!tienePagos) { this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
               onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
               <option value="31">31 días</option>
               <option value="40">40 días</option>
@@ -559,7 +559,7 @@
             style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none; cursor: pointer;"
             [style.background-color]="tienePagos ? '#e5e7eb' : '#ffffff'"
             [style.cursor]="tienePagos ? 'not-allowed' : 'pointer'"
-            onfocus="if(!tienePagos) { this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
+            onfocus="if(!tienePagos) { this.style.borderColor='#0DBF6B'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'; }"
             onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
             <option value="diario">Diario</option>
             <option value="semanal">Semanal</option>
@@ -585,10 +585,10 @@
 
         <!-- RESUMEN DEL CRÉDITO PROFESIONAL -->
         <div
-          style="background: linear-gradient(135deg, #f8f8ec 0%, #ffffff 100%); border: 2px solid #aedd2b; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          style="background: linear-gradient(135deg, #f8f8ec 0%, #ffffff 100%); border: 2px solid #0DBF6B; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
           <h3
             style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fas fa-clipboard-check" style="color: #aedd2b;"></i>
+            <i class="fas fa-clipboard-check" style="color: #0DBF6B;"></i>
             Resumen del Crédito
           </h3>
           <div style="display: flex; flex-direction: column; gap: 0.75rem;">
@@ -617,7 +617,7 @@
                 formatearMoneda(resumen.intereses) }}</span>
             </div>
             <div
-              style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); border-radius: 0.5rem; border: 2px solid #aedd2b; margin-top: 0.5rem;">
+              style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: linear-gradient(135deg, #0DBF6B 0%, #0B9C5A 100%); border-radius: 0.5rem; border: 2px solid #0DBF6B; margin-top: 0.5rem;">
               <span style="font-size: 1rem; color: #02416d; font-weight: 800;">Total a pagar:</span>
               <span style="font-size: 1.125rem; color: #02416d; font-weight: 800;">${{
                 formatearMoneda(resumen.total_pagar) }}</span>
@@ -659,7 +659,7 @@
   </div>
 </div>
 
-<!-- MODAL PLAN DE PAGOS -->
+
 <!-- MODAL PLAN DE PAGOS PROFESIONAL -->
 <div id="modalPlanPagos" class="modal-plan-pagos-backdrop fixed inset-0 hidden items-center justify-center z-50 p-0"
   style="background: transparent; backdrop-filter: none;" (click)="cerrarModalPlanPagos()">
@@ -670,7 +670,7 @@
 
     <!-- ENCABEZADO PROFESIONAL -->
     <div class="modal-plan-pagos-header"
-      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #aedd2b; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      style="flex-shrink: 0; background: linear-gradient(135deg, #066699 0%, #0a5483 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #0DBF6B; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
@@ -681,7 +681,7 @@
           <div>
             <h3
               style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); letter-spacing: 0.025em;">
-              <i class="fas fa-chart-line" style="margin-right: 0.5rem; color: #aedd2b;"></i>
+              <i class="fas fa-chart-line" style="margin-right: 0.5rem; color: #0DBF6B;"></i>
               Plan de Pagos
             </h3>
             <p *ngIf="planPagosInfo"
@@ -899,14 +899,14 @@
                   </tr>
 
                   <!-- LISTA DE CUOTAS -->
-                  <tr *ngFor="let cuota of listaPlanPagos"
+                  <tr *ngFor="let cuota of cuotasPaginadas"
                     style="border-bottom: 1px solid #e5e7eb; transition: all 0.2s; background-color: #ffffff;"
                     onmouseover="this.style.backgroundColor='rgba(174, 221, 43, 0.05)'"
                     onmouseout="this.style.backgroundColor='#ffffff'">
                     <td style="padding: 0.875rem 1rem; color: #02416d; font-weight: 700;">
                       <span
-                        style="background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 700;">#{{
-                        cuota.numero_cuota }}</span>
+                        style="background: linear-gradient(135deg, #0DBF6B 0%, #0B9C5A 100%); color: #02416d; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 700;">#{{cuota.numero_cuota
+                        }}</span>
                     </td>
                     <td style="padding: 0.875rem 1rem; color: #02416d; font-size: 0.8125rem;">
                       <div style="display: flex; flex-direction: column;">
@@ -940,7 +940,7 @@
                   </tr>
 
                   <!-- SIN REGISTROS -->
-                  <tr *ngIf="!cargandoPlanPagos && listaPlanPagos.length === 0">
+                  <tr *ngIf="!cargandoPlanPagos && cuotasPaginadas.length === 0">
                     <td [attr.colspan]="5" style="padding: 3rem; text-align: center;">
                       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                         <i class="fas fa-inbox" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
@@ -951,6 +951,43 @@
                   </tr>
                 </tbody>
               </table>
+
+              <div
+                style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-top: 1rem; padding: 0.75rem 1rem; background: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem;"
+                class="sm:flex-row sm:justify-between">
+                <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; color: #6b7280;">
+                  <span>
+                    Mostrando {{ (paginaActualCuotas - 1) * cuotasPorPagina + 1 }} -
+                    {{ Math.min(paginaActualCuotas * cuotasPorPagina, listaPlanPagos.length) }}
+                    de {{ listaPlanPagos.length }} cuotas
+                  </span>
+                  <select [ngModel]="cuotasPorPagina" (ngModelChange)="cambiarPorPaginaCuotas($event)"
+                    style="padding: 0.25rem 0.5rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; color: #02416d; font-size: 0.875rem;">
+                    <option *ngFor="let op of opcionesPorPaginaCuotas" [value]="op">{{ op }} por página</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
+                  <button (click)="cambiarPaginaCuotas(1)" [disabled]="paginaActualCuotas === 1"
+                    style="padding: 0.375rem 0.5rem; border-radius: 0.5rem; font-size: 0.875rem; border: 2px solid #e5e7eb; background: #ffffff; color: #02416d;">«</button>
+                  <button (click)="cambiarPaginaCuotas(paginaActualCuotas - 1)" [disabled]="paginaActualCuotas === 1"
+                    style="padding: 0.375rem 0.5rem; border-radius: 0.5rem; font-size: 0.875rem; border: 2px solid #e5e7eb; background: #ffffff; color: #02416d;">‹</button>
+
+                  <button *ngFor="let p of getPaginasCuotas()" (click)="cambiarPaginaCuotas(p)"
+                    [style.background]="p === paginaActualCuotas ? '#0A2E5C' : '#ffffff'"
+                    [style.color]="p === paginaActualCuotas ? '#ffffff' : '#02416d'"
+                    style="padding: 0.375rem 0.625rem; border-radius: 0.5rem; font-size: 0.875rem; border: 2px solid #e5e7eb; font-weight: 600;">
+                    {{ p }}
+                  </button>
+
+                  <button (click)="cambiarPaginaCuotas(paginaActualCuotas + 1)"
+                    [disabled]="paginaActualCuotas === totalPaginasCuotas"
+                    style="padding: 0.375rem 0.5rem; border-radius: 0.5rem; font-size: 0.875rem; border: 2px solid #e5e7eb; background: #ffffff; color: #02416d;">›</button>
+                  <button (click)="cambiarPaginaCuotas(totalPaginasCuotas)"
+                    [disabled]="paginaActualCuotas === totalPaginasCuotas"
+                    style="padding: 0.375rem 0.5rem; border-radius: 0.5rem; font-size: 0.875rem; border: 2px solid #e5e7eb; background: #ffffff; color: #02416d;">»</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

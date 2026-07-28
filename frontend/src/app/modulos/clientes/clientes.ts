@@ -176,7 +176,7 @@ export class Clientes implements OnInit, OnDestroy {
   }
 
   cambiarPorPagina(cantidad: number) {
-    this.clientesPorPagina = cantidad;
+    this.clientesPorPagina = Number(cantidad);
     this.paginaActual = 1;
     this.actualizarPaginacion();
   }

@@ -56,6 +56,14 @@ export class Creditos implements OnInit, OnDestroy {
   opcionesPorPagina: number[] = [5, 10, 25, 50, 100];
   Math = Math;
 
+
+  // Paginación cuotas (dentro del modal Plan de Pagos)
+  paginaActualCuotas: number = 1;
+  cuotasPorPagina: number = 10;
+  totalPaginasCuotas: number = 0;
+  cuotasPaginadas: any[] = [];
+  opcionesPorPaginaCuotas: number[] = [10, 15, 25, 50];
+
   // Formulario
   formularioCredito: any = {
     id_cliente: '',
@@ -200,48 +208,84 @@ export class Creditos implements OnInit, OnDestroy {
         this.listaCreditos = creditosFiltrados;
         this.cargando = false;
         this.cdr.detectChanges();
-        this.actualizarPaginacion(); 
+        this.actualizarPaginacion();
       },
       error: (error) => {
         console.error('Error al cargar créditos:', error);
         this.cargando = false;
         alert('Error al cargar los créditos');
         this.cdr.detectChanges();
-        this.actualizarPaginacion(); 
+        this.actualizarPaginacion();
       }
     });
   }
 
+  // Paginación de créditos
+
   actualizarPaginacion() {
-  this.totalPaginas = Math.ceil(this.listaCreditos.length / this.creditosPorPagina);
-  if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
-  const inicio = (this.paginaActual - 1) * this.creditosPorPagina;
-  const fin = inicio + this.creditosPorPagina;
-  this.creditosPaginados = this.listaCreditos.slice(inicio, fin);
-  this.cdr.detectChanges();
-}
-
-cambiarPagina(pagina: number) {
-  if (pagina < 1 || pagina > this.totalPaginas) return;
-  this.paginaActual = pagina;
-  this.actualizarPaginacion();
-}
-
-cambiarPorPagina(cantidad: number) {
-  this.creditosPorPagina = cantidad;
-  this.paginaActual = 1;
-  this.actualizarPaginacion();
-}
-
-getPaginas(): number[] {
-  const paginas: number[] = [];
-  const rango = 2;
-  for (let i = Math.max(1, this.paginaActual - rango);
-    i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
-    paginas.push(i);
+    this.totalPaginas = Math.ceil(this.listaCreditos.length / this.creditosPorPagina);
+    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.creditosPorPagina;
+    const fin = inicio + this.creditosPorPagina;
+    this.creditosPaginados = this.listaCreditos.slice(inicio, fin);
+    this.cdr.detectChanges();
   }
-  return paginas;
-}
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacion();
+  }
+
+  cambiarPorPagina(cantidad: number) {
+    this.creditosPorPagina = Number(cantidad);
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  getPaginas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
+  // Paginación de cuotas (dentro del modal Plan de Pagos)
+  actualizarPaginacionCuotas() {
+    this.totalPaginasCuotas = Math.ceil(this.listaPlanPagos.length / this.cuotasPorPagina);
+    if (this.paginaActualCuotas > this.totalPaginasCuotas) this.paginaActualCuotas = 1;
+    const inicio = (this.paginaActualCuotas - 1) * this.cuotasPorPagina;
+    const fin = inicio + this.cuotasPorPagina;
+    this.cuotasPaginadas = this.listaPlanPagos.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPaginaCuotas(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginasCuotas) return;
+    this.paginaActualCuotas = pagina;
+    this.actualizarPaginacionCuotas();
+  }
+
+  cambiarPorPaginaCuotas(cantidad: any) {
+    this.cuotasPorPagina = Number(cantidad);
+    this.paginaActualCuotas = 1;
+    this.actualizarPaginacionCuotas();
+  }
+
+  getPaginasCuotas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActualCuotas - rango);
+      i <= Math.min(this.totalPaginasCuotas, this.paginaActualCuotas + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
+
   /**
    * Carga las rutas asignadas al usuario (solo para cobradores)
    */
@@ -316,14 +360,14 @@ getPaginas(): number[] {
         this.listaClientes = clientesActivos;
         this.listaClientesFiltrados = this.listaClientes;
         this.cdr.detectChanges();
-        this.actualizarPaginacion(); 
+        this.actualizarPaginacion();
       },
       error: (error) => {
         console.error('Error al cargar clientes:', error);
         this.listaClientes = [];
         this.listaClientesFiltrados = [];
         this.cdr.detectChanges();
-        this.actualizarPaginacion(); 
+        this.actualizarPaginacion();
       }
     });
   }
@@ -374,7 +418,7 @@ getPaginas(): number[] {
         }
         this.cargando = false;
         this.cdr.detectChanges();
-        this.actualizarPaginacion(); 
+        this.actualizarPaginacion();
       },
       error: (error) => {
         console.error('Error al buscar créditos:', error);
@@ -383,7 +427,7 @@ getPaginas(): number[] {
         alert(mensajeError);
         this.listaCreditos = [];
         this.cdr.detectChanges();
-        this.actualizarPaginacion(); 
+        this.actualizarPaginacion();
       }
     });
   }
@@ -897,6 +941,7 @@ getPaginas(): number[] {
     this.cargandoPlanPagos = true;
     this.listaPlanPagos = [];
     this.planPagosInfo = null;
+    this.paginaActualCuotas = 1;
 
     // Primero obtener información del crédito para verificar si es refinanciado por sistema
     this.creditosService.consultarPorId(idCredito).subscribe({
@@ -933,6 +978,7 @@ getPaginas(): number[] {
               this.cargandoPlanPagos = false;
               this.mostrarModalPlanPagos();
               this.cdr.detectChanges();
+              this.actualizarPaginacionCuotas();
             },
             error: () => {
               // Si no hay plan de pagos, usar valores por defecto
@@ -956,6 +1002,7 @@ getPaginas(): number[] {
               this.cargandoPlanPagos = false;
               this.mostrarModalPlanPagos();
               this.cdr.detectChanges();
+              this.actualizarPaginacionCuotas();
             }
           });
         } else {
@@ -973,11 +1020,13 @@ getPaginas(): number[] {
               this.cargandoPlanPagos = false;
               this.mostrarModalPlanPagos();
               this.cdr.detectChanges();
+              this.actualizarPaginacionCuotas();
             },
             error: (error) => {
               console.error('Error al cargar plan de pagos:', error);
               this.cargandoPlanPagos = false;
               this.cdr.detectChanges();
+              this.actualizarPaginacionCuotas();
               alert('Error al cargar el plan de pagos');
             }
           });
@@ -998,6 +1047,7 @@ getPaginas(): number[] {
             this.cargandoPlanPagos = false;
             this.mostrarModalPlanPagos();
             this.cdr.detectChanges();
+            this.actualizarPaginacionCuotas();
           },
           error: (error2) => {
             console.error('Error al cargar plan de pagos:', error2);
