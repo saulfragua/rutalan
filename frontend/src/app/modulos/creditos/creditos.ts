@@ -72,8 +72,12 @@ export class Creditos implements OnInit, OnDestroy {
     frecuencia_pago: 'diario',
     incluir_seguro: true,
     fecha_toma_credito: '',
-    hora_toma_credito: ''
+    hora_toma_credito: '',
+    tasa_interes: 24 //valor por defecto pero ahora editable
   };
+
+  // Tasa de usura vigente - actualizar mensualmente según certificación de la Superfinanciera
+  tasaUsuraMaxima: number = 48; // ajustar según la categoría de crédito que aplique (consumo, microcrédito, etc.)
 
   // Resumen calculado
   resumen: any = {
@@ -510,7 +514,8 @@ export class Creditos implements OnInit, OnDestroy {
               frecuencia_pago: credito.frecuencia_pago,
               incluir_seguro: parseFloat(credito.seguro) > 0,
               fecha_toma_credito: credito.fecha_toma_credito || new Date().toISOString().split('T')[0],
-              hora_toma_credito: credito.hora_toma_credito || new Date().toTimeString().split(' ')[0].substring(0, 5)
+              hora_toma_credito: credito.hora_toma_credito || new Date().toTimeString().split(' ')[0].substring(0, 5),
+              tasa_interes: parseFloat(credito.tasa_interes) || 24
             };
             this.calcularResumen();
             this.mostrarModal();
@@ -611,7 +616,7 @@ export class Creditos implements OnInit, OnDestroy {
    * @returns Tasa de interés
    */
   calcularTasaInteres(cuotas: number): number {
-    return cuotas === 70 ? 48 : 24;
+    return parseFloat(this.formularioCredito.tasa_interes) || 24;
   }
 
   /**
@@ -668,6 +673,7 @@ export class Creditos implements OnInit, OnDestroy {
     const montoCredito = parseFloat(this.formularioCredito.monto_credito);
     const cuotas = parseInt(this.formularioCredito.cuotas);
     const frecuenciaPago = this.formularioCredito.frecuencia_pago;
+    const tasaInteres = parseFloat(this.formularioCredito.tasa_interes);
 
     if (montoCredito <= 0) {
       alert('El monto del crédito debe ser mayor a 0');
@@ -685,7 +691,18 @@ export class Creditos implements OnInit, OnDestroy {
       return false;
     }
 
+    if (isNaN(tasaInteres) || tasaInteres <= 0) {
+      alert('Debe ingresar una tasa de interés válida');
+      return false;
+    }
+    if (tasaInteres > this.tasaUsuraMaxima) {
+      alert(`La tasa de interés no puede superar el ${this.tasaUsuraMaxima}% E.A. (tope de usura vigente). Verifique la certificación actual de la Superintendencia Financiera.`);
+      return false;
+    }
+
     return true;
+
+
   }
 
   /**
@@ -806,7 +823,8 @@ export class Creditos implements OnInit, OnDestroy {
       monto_credito: montoCredito,
       cuotas: cuotas,
       frecuencia_pago: this.formularioCredito.frecuencia_pago,
-      incluir_seguro: this.formularioCredito.incluir_seguro || false
+      incluir_seguro: this.formularioCredito.incluir_seguro || false,
+      tasa_interes: this.formularioCredito.tasa_interes
     };
 
     // Agregar id_usuario del usuario logueado (si es válido)
