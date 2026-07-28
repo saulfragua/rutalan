@@ -106,14 +106,16 @@ switch ($control) {
 
     case 'insertar':
         header("Content-Type: application/json");
-        
+
         try {
             $json = file_get_contents('php://input');
             $params = json_decode($json, true);
 
             // Validar campos obligatorios
-            if (empty($params['id_cliente']) || empty($params['monto_credito']) || 
-                empty($params['cuotas']) || empty($params['frecuencia_pago'])) {
+            if (
+                empty($params['id_cliente']) || empty($params['monto_credito']) ||
+                empty($params['cuotas']) || empty($params['frecuencia_pago'])
+            ) {
                 echo json_encode([
                     "resultado" => "error",
                     "mensaje" => "Faltan campos obligatorios"
@@ -152,10 +154,24 @@ switch ($control) {
                 $seguro = $creditos->calcularSeguro($montoCredito, $cuotas);
             }
 
-            // Calcular intereses y saldo
-            $tasaInteres = $creditos->calcularTasaInteres($cuotas);
+            // Usar la tasa de interés recibida del frontend (validada contra el tope de usura)
+            $tasaInteres = isset($params['tasa_interes']) && is_numeric($params['tasa_interes'])
+                ? floatval($params['tasa_interes'])
+                : $creditos->calcularTasaInteres($cuotas); // fallback si no llega el dato
+
             $intereses = $montoCredito * ($tasaInteres / 100);
             $saldoActual = $montoCredito + $intereses;
+
+            // Validar tope legal de usura (ajustar según certificación vigente de la Superfinanciera)
+            $tasaUsuraMaxima = 48; // actualizar mensualmente
+
+            if ($tasaInteres <= 0 || $tasaInteres > $tasaUsuraMaxima) {
+                echo json_encode([
+                    "resultado" => "error",
+                    "mensaje" => "La tasa de interés debe estar entre 0 y $tasaUsuraMaxima% (tope de usura vigente)"
+                ]);
+                exit;
+            }
 
             // Fechas
             $fechaTomaCredito = date('Y-m-d');
@@ -165,7 +181,7 @@ switch ($control) {
             // Validar y obtener id_usuario
             $idUsuario = null;
             $idCaja = null;
-            
+
             if (!empty($params['id_usuario'])) {
                 $idUsuarioParam = intval($params['id_usuario']);
                 // Verificar si el usuario existe en la base de datos
@@ -173,14 +189,14 @@ switch ($control) {
                 $stmtUsuario->bindParam(":id_usuario", $idUsuarioParam, PDO::PARAM_INT);
                 $stmtUsuario->execute();
                 $usuarioExiste = $stmtUsuario->fetch(PDO::FETCH_ASSOC);
-                
+
                 if ($usuarioExiste) {
                     $idUsuario = $idUsuarioParam;
-                    
+
                     // Obtener la caja abierta del usuario para asociar el crédito
                     $cajaAbierta = $cajas->obtenerCajaAbierta($idUsuario);
                     if ($cajaAbierta && isset($cajaAbierta['id_caja'])) {
-                        $idCaja = (int)$cajaAbierta['id_caja'];
+                        $idCaja = (int) $cajaAbierta['id_caja'];
                     }
                 } else {
                     // Si el usuario no existe, establecer a NULL (la columna permite NULL)
@@ -197,7 +213,7 @@ switch ($control) {
                 $stmtRuta->bindParam(":id_ruta", $idRutaParam, PDO::PARAM_INT);
                 $stmtRuta->execute();
                 $rutaExiste = $stmtRuta->fetch(PDO::FETCH_ASSOC);
-                
+
                 if ($rutaExiste) {
                     $idRuta = $idRutaParam;
                 } else {
@@ -210,9 +226,9 @@ switch ($control) {
                 $stmtClienteRuta->bindParam(":id_cliente", $params['id_cliente'], PDO::PARAM_INT);
                 $stmtClienteRuta->execute();
                 $clienteRuta = $stmtClienteRuta->fetch(PDO::FETCH_ASSOC);
-                
+
                 if ($clienteRuta && !empty($clienteRuta['id_ruta'])) {
-                    $idRuta = (int)$clienteRuta['id_ruta'];
+                    $idRuta = (int) $clienteRuta['id_ruta'];
                 }
             }
 
@@ -235,7 +251,7 @@ switch ($control) {
             try {
                 $resultado = $creditos->insertar($paramsCredito);
                 $idCredito = $creditos->obtenerUltimoId();
-                
+
                 if (!$idCredito || $idCredito <= 0) {
                     throw new Exception("Error al obtener el ID del crédito insertado");
                 }
@@ -266,20 +282,20 @@ switch ($control) {
                 // Enviar mensaje de WhatsApp si el crédito fue creado exitosamente
                 // IMPORTANTE: El modelo retorna 'success' cuando se inserta correctamente
                 // Verificar tanto 'ok' como 'success' para compatibilidad
-                $resultadoExitoso = isset($resultado['resultado']) && 
-                                   ($resultado['resultado'] === 'ok' || $resultado['resultado'] === 'success');
-                
+                $resultadoExitoso = isset($resultado['resultado']) &&
+                    ($resultado['resultado'] === 'ok' || $resultado['resultado'] === 'success');
+
                 if ($resultadoExitoso && $idCredito && $idCredito > 0) {
                     error_log("✅ CRÉDITO - Condiciones cumplidas para enviar WhatsApp");
                     error_log("🟢 CRÉDITO - Intentando enviar WhatsApp para crédito ID: " . $idCredito);
                     error_log("🟢 CRÉDITO - Tipo de crédito: común");
-                    
+
                     if ($whatsappService !== null) {
                         try {
                             error_log("📤 CRÉDITO - Llamando a enviarConfirmacionCredito($idCredito)");
                             // Intentar enviar el mensaje de confirmación
                             $enviado = $whatsappService->enviarConfirmacionCredito($idCredito);
-                            
+
                             if ($enviado) {
                                 error_log("✅ CRÉDITO - WhatsApp enviado exitosamente para crédito ID: " . $idCredito);
                             } else {
@@ -305,7 +321,7 @@ switch ($control) {
                     error_log("⚠️ CRÉDITO - ID Crédito válido: " . ($idCredito && $idCredito > 0 ? "SÍ ($idCredito)" : "NO"));
                     error_log("⚠️ CRÉDITO - Resultado del modelo: " . ($resultado['resultado'] ?? 'desconocido'));
                 }
-                
+
                 error_log("🟢 CRÉDITO - ===== FIN VERIFICACIÓN WHATSAPP =====");
 
                 echo json_encode($resultado);
@@ -326,7 +342,7 @@ switch ($control) {
 
     case 'editar':
         header("Content-Type: application/json");
-        
+
         try {
             $idCredito = $_GET['id'] ?? null;
             if (!$idCredito) {
@@ -384,7 +400,7 @@ switch ($control) {
             $fechaTomaCredito = isset($params['fecha_toma_credito']) && !empty($params['fecha_toma_credito'])
                 ? $params['fecha_toma_credito']
                 : $creditoOriginal['fecha_toma_credito'];
-            
+
             // Obtener hora_toma_credito: usar la nueva si se proporciona, sino mantener la original
             $horaTomaCredito = isset($params['hora_toma_credito']) && !empty($params['hora_toma_credito'])
                 ? $params['hora_toma_credito']
@@ -396,11 +412,25 @@ switch ($control) {
                 $seguro = $creditos->calcularSeguro($montoCredito, $cuotas);
             }
 
-            // Calcular intereses y saldo
-            $tasaInteres = $creditos->calcularTasaInteres($cuotas);
+            // Usar la tasa de interés recibida del frontend (validada contra el tope de usura)
+            $tasaInteres = isset($params['tasa_interes']) && is_numeric($params['tasa_interes'])
+                ? floatval($params['tasa_interes'])
+                : $creditos->calcularTasaInteres($cuotas);
+
             $intereses = $montoCredito * ($tasaInteres / 100);
             $saldoActual = $montoCredito + $intereses;
-            
+
+            // Validar tope legal de usura (ajustar según certificación vigente de la Superfinanciera)
+            $tasaUsuraMaxima = 48; // actualizar mensualmente
+
+            if ($tasaInteres <= 0 || $tasaInteres > $tasaUsuraMaxima) {
+                echo json_encode([
+                    "resultado" => "error",
+                    "mensaje" => "La tasa de interés debe estar entre 0 y $tasaUsuraMaxima% (tope de usura vigente)"
+                ]);
+                exit;
+            }
+
             // Calcular fecha_finaliza_credito basada en la nueva fecha_toma_credito
             $fechaFinalizaCredito = date('Y-m-d', strtotime($fechaTomaCredito . " +$cuotas days"));
 
@@ -452,11 +482,11 @@ switch ($control) {
 
     case 'cancelar':
         header("Content-Type: application/json");
-        
+
         try {
             $json = file_get_contents('php://input');
             $params = json_decode($json, true);
-            
+
             if (!isset($params['id_credito']) || !isset($params['id_usuario'])) {
                 echo json_encode([
                     "resultado" => "error",
@@ -464,16 +494,16 @@ switch ($control) {
                 ]);
                 exit;
             }
-            
-            $idCredito = (int)$params['id_credito'];
-            $idUsuario = (int)$params['id_usuario'];
-            
+
+            $idCredito = (int) $params['id_credito'];
+            $idUsuario = (int) $params['id_usuario'];
+
             // Validar que el usuario existe
             $stmtUsuario = $conexion->prepare("SELECT id_usuario FROM usuarios WHERE id_usuario = :id_usuario AND estado = 1");
             $stmtUsuario->bindParam(":id_usuario", $idUsuario, PDO::PARAM_INT);
             $stmtUsuario->execute();
             $usuarioExiste = $stmtUsuario->fetch(PDO::FETCH_ASSOC);
-            
+
             if (!$usuarioExiste) {
                 echo json_encode([
                     "resultado" => "error",
@@ -481,13 +511,13 @@ switch ($control) {
                 ]);
                 exit;
             }
-            
+
             // Validar que el crédito existe y está activo
             $stmtCredito = $conexion->prepare("SELECT id_credito, estado_credito FROM creditos WHERE id_credito = :id_credito AND activo = 1");
             $stmtCredito->bindParam(":id_credito", $idCredito, PDO::PARAM_INT);
             $stmtCredito->execute();
             $creditoExiste = $stmtCredito->fetch(PDO::FETCH_ASSOC);
-            
+
             if (!$creditoExiste) {
                 echo json_encode([
                     "resultado" => "error",
@@ -495,7 +525,7 @@ switch ($control) {
                 ]);
                 exit;
             }
-            
+
             if ($creditoExiste['estado_credito'] === 'cancelado') {
                 echo json_encode([
                     "resultado" => "error",
@@ -503,11 +533,11 @@ switch ($control) {
                 ]);
                 exit;
             }
-            
+
             // Cancelar el crédito
             $resultado = $creditos->cancelar($idCredito, $idUsuario);
             echo json_encode($resultado);
-            
+
         } catch (Exception $e) {
             echo json_encode([
                 "resultado" => "error",

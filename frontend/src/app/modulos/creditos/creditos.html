@@ -725,8 +725,8 @@
       <!-- INFORMACIÓN DEL CRÉDITO PROFESIONAL -->
       <div *ngIf="planPagosInfo" style="margin-bottom: 1.5rem;">
         <h3
-          style="font-size: 1.25rem; font-weight: 700; color: #02416d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #066699;">
-          <i class="fas fa-info-circle" style="color: #066699;"></i>
+          style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #0dbf6b;">
+          <i class="fas fa-info-circle" style="color: #ffffff;"></i>
           Información del Crédito
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -750,6 +750,17 @@
             </div>
             <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
               ${{ formatearMoneda(planPagosInfo.saldo_actual) }}
+            </div>
+          </div>
+          <div
+            style="background: linear-gradient(135deg, #ffffff 0%, #f8f8ec 100%); border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            <div
+              style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem;">
+              <i class="fas fa-percent" style="color: #066699; font-size: 0.625rem;"></i>
+              Tasa de interés
+            </div>
+            <div style="font-size: 1rem; color: #02416d; font-weight: 700;">
+              {{ planPagosInfo.tasa_interes }}%
             </div>
           </div>
           <div
