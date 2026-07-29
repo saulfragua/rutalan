@@ -1,29 +1,28 @@
 <!-- CONTENEDOR REFINANCIAR -->
-<div class="w-full h-full overflow-auto" style="background-color: #f8f8ec; padding: 1.5rem;">
+<div class="w-full h-full overflow-auto" style="background-color: #f8f8ec; padding: 0.5rem;">
 
-  <div class="bg-white rounded-xl shadow-xl border-2 border-[#e5e7eb] p-4 md:p-6 min-h-full max-w-4xl mx-auto"
-    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-
-    <!-- ENCABEZADO PROFESIONAL -->
-    <div class="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b-2 border-[#e5e7eb]">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-20 h-20 sm:w-16 sm:h-16 bg-[#0A2E5C] rounded-xl flex items-center justify-center shadow-md shrink-0">
-            <i class="fas fa-sync-alt text-[#ffffff] text-2xl sm:text-3xl"></i>
-          </div>
-          <div>
-            <h2 class=" text-xl sm:text-2xl font-bold text-[#0A2E5C] leading-tight">
-              Refinanciar o Liquidar Crédito
-            </h2>
-            <p class="text-xs sm:text-sm text-[#6b7280] mt-0.5 flex items-center gap-1.5">
-              <i class="fas fa-info-circle text-[#066699] text-xs"></i>
-              Gestión de refinanciación y liquidación de créditos
-            </p>
-          </div>
+  <!-- Encabezado -->
+  <div class="mb-4 bg-[#0a2e5c] rounded-xl shadow-xl border-2 border-[#e5e7eb] p-4 md:p-6 min-h-full max-w-6xl mx-auto"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-bottom: 4px solid #0dbf6b;">
+    <div class="p-3">
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+          <h2 class="mb-0"
+            style="color: #ffffff; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fas fa-hand-holding-usd"></i>
+            Refinanciar o Liquidar Crédito
+          </h2>
+          <p class="mb-0 mt-2" style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem;">
+            Gestión de refinanciación y liquidación de créditos
+          </p>
         </div>
       </div>
     </div>
+
+  </div>
+
+  <div class="bg-white rounded-xl shadow-xl border-2 border-[#e5e7eb] p-4 md:p-6 min-h-full max-w-6xl mx-auto"
+    style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
 
     <!-- FORMULARIO PROFESIONAL -->
     <form (ngSubmit)="refinanciar()" class="space-y-4">

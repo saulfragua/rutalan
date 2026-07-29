@@ -148,10 +148,12 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
         if (rutaParam) {
           this.seleccionarRuta(parseInt(rutaParam));
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.rutas = [];
         alert('Error al cargar las rutas. Por favor, recarga la página.');
+        this.cdr.detectChanges();
       }
     });
   }
@@ -233,6 +235,8 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
 
     // Cargar clientes de la ruta
     this.cargarClientesPorRuta(idRuta);
+// 
+    this.cdr.detectChanges();
   }
 
   /**

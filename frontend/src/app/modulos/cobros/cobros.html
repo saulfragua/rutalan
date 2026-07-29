@@ -65,6 +65,8 @@
       <!-- Botones -->
       <div class="flex flex-row justify-content-between w-full sm:w-auto mb-4">
         <button (click)="guardarOrden()"
+        title="Guardar el orden de cobranza actual"
+        style="background: #0DBF6B;"
           class="inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg  border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
           onmouseover="this.style.background='#0aad60'; this.style.transform='translateY(-2px)';"
           onmouseout="this.style.background='#0DBF6B'; this.style.transform='translateY(0)';">
@@ -73,13 +75,13 @@
         <!-- Botón Cobrar Ruta -->
         <div class="flex flex-row gap-2 w-full sm:w-auto">
           <!-- Botón Con Caja Abierta -->
-          <button *ngIf="rutaSeleccionada && tieneCajaAbierta" (click)="irAGestionPago(0)"
+          <button *ngIf="rutaSeleccionada && tieneCajaAbierta" (click)="irAGestionPago(0)" title="Iniciar proceso de cobro de la ruta seleccionada"
             class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0A2E5C] text-white cursor-pointer transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
             <i class="fas fa-hand-holding-usd"></i>
             <span>Cobrar Ruta</span>
           </button>
           <!-- Botón Sin Caja Abierta -->
-          <button *ngIf="!tieneCajaAbierta && rolUsuario === 'cobrador'" disabled
+          <button *ngIf="!tieneCajaAbierta && rolUsuario === 'cobrador'" disabled title="Debe abrir caja primero"
             class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-[#9ca3af] text-white border-2 border-[#9ca3af] cursor-not-allowed opacity-60 whitespace-nowrap">
             <i class="fas fa-exclamation-triangle"></i>
             <span>Debe abrir caja primero</span>
@@ -148,7 +150,7 @@
 
                 <!-- LISTA DE CLIENTES -->
                 <tr *ngFor="let cliente of clientesPaginados; let i = index; trackBy: trackByCreditoId"
-                  [attr.data-id]="cliente.id_credito" [class]="obtenerClaseFila(cliente)"
+                  [attr.data-id]="cliente.id_credito" [class]="obtenerClaseFila(cliente)" title="Arrastra para cambiar el orden de cobranza"
                   class="border-b border-[#e5e7eb] bg-white transition-colors duration-200 hover:bg-[rgba(174,221,43,0.05)] cursor-move">
                   <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold">
                     <div class="flex items-center gap-1 sm:gap-2">
@@ -176,8 +178,10 @@
                     class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-20 sm:max-w-30 md:max-w-none"
                     title="{{ cliente.direccion || '-' }}">{{ cliente.direccion || '-' }}</td>
                   <td
-                    class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
-                    {{ cliente.telefono || '-' }}</td>
+                    class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap"
+                    title="{{ cliente.telefono || '-' }}">
+                    {{ cliente.telefono || '-' }}
+                  </td>
                   <td
                     class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right font-bold text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
                     {{ formatearMonto(cliente.saldo_actual) }}</td>
