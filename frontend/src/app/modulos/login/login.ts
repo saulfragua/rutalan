@@ -18,6 +18,7 @@ export class Login implements AfterViewInit, OnDestroy {
 
   usuario: string = '';
   clave: string = '';
+  mostrarClave: boolean = false; 
   private isBrowser: boolean;
   private recaptchaWidgetId: number | null = null;
   private recaptchaListener: any;
@@ -226,5 +227,10 @@ export class Login implements AfterViewInit, OnDestroy {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(valor);
+  }
+
+  // Función para alternar la visibilidad de la contraseña
+  togglePasswordVisibility() {     
+    this.mostrarClave = !this.mostrarClave;
   }
 }

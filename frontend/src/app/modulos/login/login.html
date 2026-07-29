@@ -26,8 +26,15 @@
         <!-- CONTRASEÑA -->
         <div class="login-form-group">
           <label class="login-label">Contraseña</label>
-          <input type="password" name="clave" [(ngModel)]="clave" placeholder="Ingrese su contraseña"
-            class="login-input" required />
+          <div style="position: relative;">
+            <input [type]="mostrarClave ? 'text' : 'password'" name="clave" [(ngModel)]="clave"
+              placeholder="Ingrese su contraseña" class="login-input" style="padding-right: 2.5rem;" required />
+            <button type="button" (click)="togglePasswordVisibility()"
+              style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; padding: 0; display: flex; align-items: center;"
+              [attr.aria-label]="mostrarClave ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+              <i class="fas" [ngClass]="mostrarClave ? 'fa-eye-slash' : 'fa-eye'"></i>
+            </button>
+          </div>
         </div>
         
         <!-- reCAPTCHA -->
