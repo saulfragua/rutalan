@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -42,6 +42,14 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
   tieneCajaAbierta: boolean = false;
   idCaja: number | null = null;
 
+  // Paginación
+  paginaActual: number = 1;
+  clientesPorPagina: number = 5;
+  totalPaginas: number = 0;
+  clientesPaginados: any[] = [];
+  opcionesPorPagina: number[] = [5, 10, 25, 50, 100];
+  Math = Math;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -50,6 +58,7 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
     private usuarioRutaService: UsuarioRutaService,
     private cajaService: CajaService,
     private creditosService: CreditosService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -213,7 +222,7 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
    */
   seleccionarRuta(idRuta: number) {
     this.rutaSeleccionada = idRuta;
-    
+
     // Obtener nombre de la ruta
     const todasLasRutas = this.rolUsuario === 'admin' ? this.rutas : this.rutasUsuario;
     const ruta = todasLasRutas.find(r => r.id_ruta === idRuta);
@@ -243,6 +252,8 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
           // Si tienen el mismo orden, ordenar por id_credito
           return (a.id_credito || 0) - (b.id_credito || 0);
         });
+        this.paginaActual = 1;
+        this.actualizarPaginacion();
         this.cargando = false;
         // Inicializar Sortable después de cargar los clientes
         setTimeout(() => {
@@ -274,9 +285,7 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /**
-   * Crea la instancia de Sortable
-   */
+  /*Crea la instancia de Sortable*/
   crearSortable() {
     if (!this.tbodyClientes || !this.tbodyClientes.nativeElement) {
       return;
@@ -287,36 +296,25 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
         animation: 150,
         handle: '.fa-arrows-alt-v',
         onEnd: () => {
-          // Obtener el nuevo orden de las filas después del drag and drop
           const filas = Array.from(this.tbodyClientes.nativeElement.querySelectorAll('tr[data-id]'));
-          
-          // Actualizar orden_cobranza según la nueva posición (empezando desde 1)
+          const offset = (this.paginaActual - 1) * this.clientesPorPagina; // 👈 nuevo
+
+          // Actualizar orden_cobranza según la posición GLOBAL (offset + posición local)
           filas.forEach((tr: any, index: number) => {
             const idCredito = parseInt(tr.getAttribute('data-id'));
             const cliente = this.listaClientes.find(c => c.id_credito === idCredito);
             if (cliente) {
-              const nuevoOrden = index + 1;
+              const nuevoOrden = offset + index + 1;
               cliente.orden_cobranza = nuevoOrden;
-              // Actualizar también el valor del input
               const inputOrden = tr.querySelector('input[type="number"]') as HTMLInputElement;
               if (inputOrden) {
                 inputOrden.value = nuevoOrden.toString();
               }
             }
           });
-          
-          // Reordenar la lista de clientes basándose en el nuevo orden
-          const clientesOrdenados: any[] = [];
-          filas.forEach((tr: any) => {
-            const idCredito = parseInt(tr.getAttribute('data-id'));
-            const cliente = this.listaClientes.find(c => c.id_credito === idCredito);
-            if (cliente) {
-              clientesOrdenados.push(cliente);
-            }
-          });
-          
-          // Ordenar por orden_cobranza y luego por id_credito para asegurar consistencia
-          clientesOrdenados.sort((a, b) => {
+
+          // Reordenar listaClientes completa por orden_cobranza y luego por id_credito
+          this.listaClientes.sort((a, b) => {
             const ordenA = parseInt(a.orden_cobranza) || 0;
             const ordenB = parseInt(b.orden_cobranza) || 0;
             if (ordenA !== ordenB) {
@@ -324,8 +322,9 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
             }
             return (a.id_credito || 0) - (b.id_credito || 0);
           });
-          
-          this.listaClientes = clientesOrdenados;
+
+          // Refrescar clientesPaginados con la lista ya reordenada
+          this.actualizarPaginacion();
         }
       });
     }
@@ -348,11 +347,11 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
       alert('Debe seleccionar una ruta primero');
       return;
     }
-    this.router.navigate(['/gestion-pago'], { 
-      queryParams: { 
+    this.router.navigate(['/gestion-pago'], {
+      queryParams: {
         ruta: this.rutaSeleccionada,
-        indice: indice 
-      } 
+        indice: indice
+      }
     });
   }
 
@@ -377,17 +376,17 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
     if (cliente.tipo_credito === 'refinanciado_por_sistema') {
       return 'bg-red-600 text-white border-t border-red-700 hover:opacity-90 cursor-move';
     }
-    
+
     // Refinanciado manual: Amarillo claro
     if (cliente.tipo_credito === 'refinanciado') {
       return 'bg-yellow-100 border-t border-yellow-300 hover:opacity-90 cursor-move text-gray-800';
     }
-    
+
     // Común: Verde claro (según especificación)
     if (cliente.tipo_credito === 'comun' || !cliente.tipo_credito) {
       return 'bg-green-100 border-t border-green-300 hover:opacity-90 cursor-move text-gray-800';
     }
-    
+
     // Fallback: usar lógica de días sin pagar para otros casos
     return this.obtenerColorFondo(this.calcularDiasSinPagar(cliente.ultimo_pago), cliente.cuotas_vencidas);
   }
@@ -490,28 +489,57 @@ export class Cobros implements OnInit, OnDestroy, AfterViewInit {
    * Actualiza el orden manualmente cuando se edita el campo
    */
   actualizarOrdenManual(cliente: any) {
-    // Validar que el orden sea un número válido
     const nuevoOrden = parseInt(cliente.orden_cobranza) || 1;
     if (nuevoOrden < 1) {
       cliente.orden_cobranza = 1;
     } else {
       cliente.orden_cobranza = nuevoOrden;
     }
-    
-    // Reordenar la lista localmente por orden_cobranza y luego por id_credito
+
     this.listaClientes.sort((a, b) => {
       const ordenA = parseInt(a.orden_cobranza) || 0;
       const ordenB = parseInt(b.orden_cobranza) || 0;
       if (ordenA !== ordenB) {
         return ordenA - ordenB;
       }
-      // Si tienen el mismo orden, ordenar por id_credito
       return (a.id_credito || 0) - (b.id_credito || 0);
     });
-    
-    // Guardar automáticamente después de un pequeño delay
+
+    this.actualizarPaginacion();
+
     setTimeout(() => {
       this.guardarOrden();
     }, 500);
+  }
+
+  actualizarPaginacion() {
+    this.totalPaginas = Math.ceil(this.listaClientes.length / this.clientesPorPagina);
+    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
+    const fin = inicio + this.clientesPorPagina;
+    this.clientesPaginados = this.listaClientes.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacion();
+  }
+
+  cambiarPorPagina(cantidad: number) {
+    this.clientesPorPagina = Number(cantidad);
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  getPaginas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 }

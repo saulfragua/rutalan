@@ -212,3 +212,36 @@ tr[class*="bg-red"] td {
     margin-bottom: 0.75rem;
   }
 }
+
+/* ── Tabla estilo sobrio ─────────────────────────────────────────── */
+table thead,
+table thead tr {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: #ffffff !important;
+}
+
+table thead th {
+  background: transparent !important;
+  background-color: #ffffff !important;
+  color: #6b7280 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  border-top: none !important;
+}
+
+table tbody tr {
+  border-bottom: 1px solid #f3f4f6 !important;
+}
+
+table tbody tr:hover {
+  background-color: #f9fafb !important;
+}
+
+table tbody tr:hover td {
+  background-color: #f9fafb !important;
+}

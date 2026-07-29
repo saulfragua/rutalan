@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RefinanciarService } from '../../servicios/refinanciar';
 import { CajaService } from '../../servicios/caja';
@@ -51,6 +51,7 @@ export class Refinanciar implements OnInit {
     private route: ActivatedRoute,
     private refinanciarService: RefinanciarService,
     private cajaService: CajaService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -144,12 +145,14 @@ export class Refinanciar implements OnInit {
           alert('No se encontró el crédito');
           this.router.navigate(['/cobros']);
         }
+        this.cdr.detectChanges()
       },
       error: (error) => {
         console.error('Error al cargar crédito:', error);
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al cargar los datos del crédito';
         alert(mensajeError);
         this.router.navigate(['/cobros']);
+        this.cdr.detectChanges()
       }
     });
   }
@@ -188,12 +191,13 @@ export class Refinanciar implements OnInit {
     // Calcular fecha finalización
     const fechaFinalizacion = new Date();
     fechaFinalizacion.setDate(fechaFinalizacion.getDate() + cuotasNumero);
-    this.fechaFinalizacion = fechaFinalizacion.toLocaleDateString('es-CO', { 
+    this.fechaFinalizacion = fechaFinalizacion.toLocaleDateString('es-CO', {
       timeZone: 'America/Bogota',
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
+    this.cdr.detectChanges()
   }
 
   /**
@@ -265,12 +269,14 @@ export class Refinanciar implements OnInit {
         } else {
           alert(resp?.mensaje || 'Error al refinanciar el crédito');
         }
+        this.cdr.detectChanges()
       },
       error: (error) => {
         this.procesando = false;
         console.error('Error al refinanciar:', error);
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al refinanciar el crédito';
         alert(mensajeError);
+        this.cdr.detectChanges();
       }
     });
   }

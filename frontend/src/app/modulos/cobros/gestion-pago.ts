@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PagosService } from '../../servicios/pagos';
 import { CajaService } from '../../servicios/caja';
@@ -54,6 +54,7 @@ export class GestionPago implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private pagosService: PagosService,
     private cajaService: CajaService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -171,10 +172,12 @@ export class GestionPago implements OnInit, OnDestroy {
           alert('No hay clientes con saldo pendiente en esta ruta');
           this.router.navigate(['/cobros'], { queryParams: { ruta: this.idRuta } });
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.cargando = false;
         alert('Error al cargar los clientes');
+        this.cdr.detectChanges();
       }
     });
   }
@@ -202,6 +205,7 @@ export class GestionPago implements OnInit, OnDestroy {
       }
       // Si tiene foto, mantener el estado anterior (si estaba visible, seguir visible)
       // Esto permite que si el usuario quiere ver fotos, se mantenga la preferencia
+      this.cdr.detectChanges();
     }
   }
 
@@ -397,6 +401,7 @@ export class GestionPago implements OnInit, OnDestroy {
     if (this.isBrowser) {
       document.body.style.overflow = 'hidden';
     }
+    this.cdr.detectChanges();
   }
 
   /**
@@ -407,6 +412,7 @@ export class GestionPago implements OnInit, OnDestroy {
     if (this.isBrowser) {
       document.body.style.overflow = '';
     }
+    this.cdr.detectChanges();
   }
 
   /**
