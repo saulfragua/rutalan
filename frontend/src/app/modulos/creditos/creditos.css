@@ -1,11 +1,5 @@
 /* Estilos para el módulo de créditos */
 
-/* Contenedor principal */
-.w-full.h-full.overflow-auto {
-  background-color: #f8f8ec;
-  padding: 1.5rem;
-}
-
 /* ============================================
    MODAL PLAN DE PAGOS PROFESIONAL
    ============================================ */
@@ -62,6 +56,7 @@
   scrollbar-width: thin;
   scrollbar-color: #066699 #e5e7eb;
   -ms-overflow-style: scrollbar;
+  scrollbar-gutter: stable;
 }
 
 /* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
@@ -106,12 +101,108 @@
   background: #e5e7eb !important;
 }
 
-/* Forzar visibilidad del scrollbar incluso cuando no hay scroll */
-.modal-plan-pagos-body {
+/* ============================================
+   MODAL CRÉDITO PROFESIONAL
+   ============================================ */
+
+/* Backdrop del modal */
+.modal-credito-backdrop {
+  background: rgba(2, 65, 109, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+}
+
+/* Contenedor del modal */
+.modal-credito-container {
+  background: #ffffff;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: visible;
+}
+
+/* Header del modal */
+.modal-credito-header {
+  background: linear-gradient(135deg, #066699 0%, #0a5483 100%);
+  padding: 1.75rem 2rem;
+  border-bottom: 4px solid #aedd2b;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-credito-header h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.025em;
+}
+
+.modal-credito-header p {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+/* Body del modal */
+.modal-credito-body {
+  padding: 2rem;
+  background: #f8f8ec;
+  overflow-y: scroll !important;
+  overflow-x: auto !important;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(95vh - 200px);
+  scrollbar-width: thin;
+  scrollbar-color: #066699 #e5e7eb;
+  -ms-overflow-style: scrollbar;
   scrollbar-gutter: stable;
 }
 
-/* Animación para el modal */
+/* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
+.modal-credito-body::-webkit-scrollbar {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.modal-credito-body::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 8px !important;
+  border: 2px solid #d1d5db !important;
+  margin: 4px 0 !important;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.modal-credito-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #066699 0%, #0a5483 100%) !important;
+  border-radius: 8px !important;
+  border: 2px solid #e5e7eb !important;
+  min-height: 50px !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer !important;
+}
+
+.modal-credito-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0a5483 0%, #02416d 100%) !important;
+  border-color: #d1d5db !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.modal-credito-body::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #02416d 0%, #066699 100%) !important;
+}
+
+.modal-credito-body::-webkit-scrollbar-corner {
+  background: #e5e7eb !important;
+}
+
+/* Animación compartida por ambos modales */
 @keyframes modalSlideIn {
   from {
     opacity: 0;
@@ -123,7 +214,6 @@
   }
 }
 
-/* Animación para el modal de plan de pagos */
 @keyframes animate-scaleIn {
   from {
     opacity: 0;
@@ -187,209 +277,66 @@ label {
   font-size: 1rem !important;
 }
 
-/* Aumentar tamaño de fuente en placeholders */
 .input-dark::placeholder {
   font-size: 1rem;
 }
 
-/* Aumentar tamaño de fuente en selects */
 select.input-dark {
   font-size: 1rem;
-}
-
-/* Ajustes para ocupar todo el espacio */
-.w-full {
-  width: 100%;
-}
-
-.h-full {
-  min-height: 100%;
-}
-
-/* ============================================
-   MODAL CRÉDITO PROFESIONAL
-   ============================================ */
-
-/* Backdrop del modal */
-.modal-credito-backdrop {
-  background: rgba(2, 65, 109, 0.75);
-  backdrop-filter: blur(4px);
-  z-index: 1050;
-}
-
-/* Contenedor del modal */
-.modal-credito-container {
-  background: #ffffff;
-  max-height: 95vh;
-  display: flex;
-  flex-direction: column;
-  animation: modalSlideIn 0.3s ease-out;
-  overflow: visible;
-}
-
-/* Header del modal */
-.modal-credito-header {
-  background: linear-gradient(135deg, #066699 0%, #0a5483 100%);
-  padding: 1.75rem 2rem;
-  border-bottom: 4px solid #aedd2b;
-  border-radius: 0.75rem 0.75rem 0 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.modal-credito-header h3 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  letter-spacing: 0.025em;
-}
-
-.modal-credito-header p {
-  font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
-}
-
-/* Body del modal */
-.modal-credito-body {
-  padding: 2rem;
-  background: #f8f8ec;
-  overflow-y: scroll !important;
-  overflow-x: auto !important;
-  flex: 1;
-  min-height: 0;
-  max-height: calc(95vh - 200px);
-  scrollbar-width: thin;
-  scrollbar-color: #066699 #e5e7eb;
-  -ms-overflow-style: scrollbar;
-}
-
-/* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
-.modal-credito-body::-webkit-scrollbar {
-  width: 16px !important;
-  height: 16px !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-}
-
-.modal-credito-body::-webkit-scrollbar-track {
-  background: #e5e7eb !important;
-  border-radius: 8px !important;
-  border: 2px solid #d1d5db !important;
-  margin: 4px 0 !important;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05) !important;
-}
-
-.modal-credito-body::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #066699 0%, #0a5483 100%) !important;
-  border-radius: 8px !important;
-  border: 2px solid #e5e7eb !important;
-  min-height: 50px !important;
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
-  cursor: pointer !important;
-}
-
-.modal-credito-body::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #0a5483 0%, #02416d 100%) !important;
-  border-color: #d1d5db !important;
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.15) !important;
-}
-
-.modal-credito-body::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, #02416d 0%, #066699 100%) !important;
-}
-
-.modal-credito-body::-webkit-scrollbar-corner {
-  background: #e5e7eb !important;
-}
-
-/* Forzar visibilidad del scrollbar incluso cuando no hay scroll */
-.modal-credito-body {
-  scrollbar-gutter: stable;
-}
-
-/* Animación para el modal */
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 /* ============================================
    RESPONSIVE STYLES - MOBILE FIRST APPROACH
    ============================================ */
 
-/* Base styles (móvil) ya están aplicados con Tailwind */
-
-/* Mejoras de scroll suave en móviles */
 @media (max-width: 767px) {
-  /* Scroll horizontal optimizado para tablas en móvil */
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: #066699 #e5e7eb;
   }
-  
-  /* Estilos para scrollbar en Chrome/Safari móvil */
+
   .overflow-x-auto::-webkit-scrollbar {
     height: 8px;
   }
-  
+
   .overflow-x-auto::-webkit-scrollbar-track {
     background: #e5e7eb;
     border-radius: 4px;
   }
-  
+
   .overflow-x-auto::-webkit-scrollbar-thumb {
     background: #066699;
     border-radius: 4px;
   }
-  
+
   .overflow-x-auto::-webkit-scrollbar-thumb:hover {
     background: #0a5483;
   }
-  
-  /* Tabla sin ancho mínimo - se ajusta al contenido */
+
   table {
     width: 100%;
     table-layout: auto;
   }
-  
-  /* Padding muy reducido en móvil para aprovechar espacio */
+
   table th,
   table td {
     padding: 0.25rem 0.25rem;
-  }
-  
-  /* Asegurar que el texto no se corte */
-  table th,
-  table td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
-  /* Botones más compactos en móvil */
+
   table button {
     min-width: 28px;
     min-height: 28px;
     padding: 0.25rem 0.5rem;
   }
-  
-  /* Ajustar tamaño de fuente en móvil */
+
   table {
     font-size: 0.625rem;
   }
-  
-  /* Mejorar el padding en móviles muy pequeños */
+
   @media (max-width: 375px) {
     table th,
     table td {
@@ -398,26 +345,23 @@ select.input-dark {
   }
 }
 
-/* Tablet y superior (md: 768px+) */
 @media (min-width: 768px) {
   table {
     font-size: 0.875rem;
   }
-  
+
   table th,
   table td {
     padding: 0.75rem 1rem;
   }
 }
 
-/* Desktop pequeño (lg: 1024px+) */
 @media (min-width: 1024px) {
   table {
     font-size: 0.9375rem;
   }
 }
 
-/* Desktop grande (xl: 1280px+) */
 @media (min-width: 1280px) {
   table {
     font-size: 1rem;
@@ -430,15 +374,15 @@ select.input-dark {
     max-width: 95%;
     margin: 1rem;
   }
-  
+
   .modal-credito-header {
     padding: 1rem 1.5rem;
   }
-  
+
   .modal-credito-header h3 {
     font-size: 1.25rem !important;
   }
-  
+
   .modal-credito-body {
     padding: 1.5rem;
   }
@@ -447,23 +391,21 @@ select.input-dark {
     max-width: 95%;
     margin: 1rem;
   }
-  
+
   .modal-plan-pagos-header {
     padding: 1rem 1.5rem;
   }
-  
+
   .modal-plan-pagos-header h3 {
     font-size: 1.25rem !important;
   }
-  
+
   .modal-plan-pagos-body {
     padding: 1.5rem;
   }
 }
 
-/* Mejoras adicionales para inputs en móvil */
 @media (max-width: 640px) {
-  /* Evitar zoom automático en iOS al enfocar inputs */
   input[type="text"],
   input[type="tel"],
   input[type="email"],
@@ -471,14 +413,12 @@ select.input-dark {
   textarea {
     font-size: 16px !important;
   }
-  
-  /* Mejorar el tamaño de los botones en móvil */
+
   button {
-    min-height: 44px; /* Tamaño mínimo recomendado para touch */
+    min-height: 44px;
     padding: 0.75rem 1rem;
   }
-  
-  /* Mejorar espaciado en formularios móviles */
+
   .grid > div {
     margin-bottom: 0.75rem;
   }
@@ -530,12 +470,6 @@ table tbody tr:hover td {
   background-color: #f9fafb !important;
 }
 
-/* ── Botones de acción tabla ─────────────────────────────────────── */
-table .btn-editar,
-table button:has(+ button) {
-  /* no aplica bien con has, mejor por clase */
-}
-
 /* Botones de acción tabla */
 .btn-accion {
   display: inline-flex;
@@ -553,26 +487,33 @@ table button:has(+ button) {
 }
 
 .btn-ver-plan {
-  background-color: #0066FF;
-  color:#066699 ;
+  background-color: #0066ff;
+  color: #066699;
 }
-.btn-ver-plan:hover { background-color: #dde6f0; }
+.btn-ver-plan:hover {
+  background-color: #dde6f0;
+}
 
 .btn-editar {
   background-color: #f0f4f8;
-  color: #0A2E5C;
+  color: #0a2e5c;
 }
-.btn-editar:hover { background-color: #dde6f0; }
+.btn-editar:hover {
+  background-color: #dde6f0;
+}
 
 .btn-cancelar {
   background-color: #fef3f2;
   color: #9f1239;
 }
-.btn-cancelar:hover { background-color: #fee2e2; }
+.btn-cancelar:hover {
+  background-color: #fee2e2;
+}
 
-
-.btn-cancelado{
+.btn-cancelado {
   background-color: #f3f4f6;
   color: #6b7280;
 }
-.btn-cancelado:hover { background-color: #e5e7eb; }
+.btn-cancelado:hover {
+  background-color: #e5e7eb;
+}

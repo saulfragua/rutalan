@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -21,20 +21,20 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
   terminoBusqueda: string = '';
   cargando: boolean = false;
   private routerSubscription?: Subscription;
-  
+
   // Modal
   modoEdicion: boolean = false;
   gastoEditando: any = null;
-  
+
   // Rutas del usuario logueado
   rutasUsuario: any[] = [];
   // Todas las rutas activas (para administrador)
   todasLasRutas: any[] = [];
   isBrowser: boolean = false;
-  
+
   // Rol del usuario logueado
   rolUsuario: string = '';
-  
+
   // Formulario
   gastoForm: any = {
     id_ruta: '',
@@ -43,11 +43,20 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
     fecha_gasto: new Date().toISOString().split('T')[0]
   };
 
+  // Paginación
+  paginaActual: number = 1;
+  gastosPorPagina: number = 5;
+  totalPaginas: number = 0;
+  gastosPaginados: any[] = [];
+  opcionesPorPagina: number[] = [5, 10, 25, 50, 100];
+  Math = Math;
+
   constructor(
     private gastosService: GastosService,
     private usuarioRutaService: UsuarioRutaService,
     private rutasService: RutasService,
     private cajaService: CajaService,
+    private cdr: ChangeDetectorRef,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -76,12 +85,12 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     // Primero obtener el rol del usuario
     this.obtenerRolUsuario();
-    
+
     // Cargar rutas después de obtener el rol (usar setTimeout para asegurar que el rol esté disponible)
     setTimeout(() => {
       this.cargarRutasUsuario();
     }, 100);
-    
+
     // Luego cargar datos según el rol
     if (this.rolUsuario === 'admin') {
       this.cargarGastos();
@@ -97,20 +106,20 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       }, 100);
     }
   }
-  
+
   // Función para obtener el rol del usuario logueado
   obtenerRolUsuario() {
     if (!this.isBrowser || typeof localStorage === 'undefined') {
       this.rolUsuario = '';
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       this.rolUsuario = '';
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       this.rolUsuario = usuario.rol || '';
@@ -133,25 +142,25 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       this.cargando = false;
       return;
     }
-    
+
     this.cargando = true;
-    
+
     // Obtener usuario logueado
     if (!this.isBrowser || typeof localStorage === 'undefined') {
       this.cargando = false;
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       this.cargando = false;
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       const idUsuario = usuario.id_usuario;
-      
+
       if (idUsuario && !isNaN(parseInt(String(idUsuario)))) {
         this.gastosService.consultarPorUsuario(parseInt(String(idUsuario))).subscribe({
           next: (resp: any) => {
@@ -162,10 +171,12 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
               this.buscarGastos();
             }
             this.cargando = false;
+            this.actualizarPaginacion();
           },
           error: (error) => {
             console.error('Error al cargar gastos:', error);
             this.cargando = false;
+            this.actualizarPaginacion();
             alert('Error al cargar los gastos');
           }
         });
@@ -176,6 +187,40 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       console.error('Error al parsear datos del usuario:', error);
       this.cargando = false;
     }
+  }
+
+  // Paginación de créditos
+
+  actualizarPaginacion() {
+    const base = this.terminoBusqueda ? this.gastosFiltrados : this.listaGastos;
+    this.totalPaginas = Math.ceil(base.length / this.gastosPorPagina);
+    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.gastosPorPagina;
+    const fin = inicio + this.gastosPorPagina;
+    this.gastosPaginados = base.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacion();
+  }
+
+  cambiarPorPagina(cantidad: number) {
+    this.gastosPorPagina = Number(cantidad);
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  getPaginas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 
   /**
@@ -193,12 +238,15 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       const ruta = (gasto.nombre_ruta || '').toLowerCase();
       const usuario = (gasto.nombre_usuario || '').toLowerCase();
       const monto = (gasto.monto || '').toString().toLowerCase();
-      
-      return descripcion.includes(termino) || 
-             ruta.includes(termino) || 
-             usuario.includes(termino) ||
-             monto.includes(termino);
+
+      return descripcion.includes(termino) ||
+        ruta.includes(termino) ||
+        usuario.includes(termino) ||
+        monto.includes(termino);
     });
+
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
   }
 
   /**
@@ -207,6 +255,8 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
   limpiarBusqueda() {
     this.terminoBusqueda = '';
     this.gastosFiltrados = this.listaGastos;
+    this.paginaActual = 1;          // 👈 nuevo
+    this.actualizarPaginacion();
   }
 
   // Función para cargar rutas del usuario logueado o todas las rutas activas si es admin
@@ -214,22 +264,22 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
     if (!this.isBrowser || typeof localStorage === 'undefined') {
       return;
     }
-    
+
     // Asegurar que el rol esté actualizado
     if (!this.rolUsuario) {
       this.obtenerRolUsuario();
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       return;
     }
-    
+
     try {
       const usuario = JSON.parse(usuarioData);
       const idUsuario = usuario.id_usuario;
       const rolUsuario = this.rolUsuario || usuario.rol || '';
-      
+
       // Si es administrador, cargar todas las rutas activas del sistema
       if (rolUsuario === 'admin') {
         this.rutasService.consultar().subscribe({
@@ -242,10 +292,12 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
               return activo == 1 || activo === 1 || activo === '1' || activo === true || activo === 'true';
             });
             console.log('Admin - Rutas activas cargadas:', this.rutasUsuario.length, 'de', todasLasRutas.length);
+            this.actualizarPaginacion();
           },
           error: (error) => {
             console.error('Error al cargar rutas del sistema:', error);
             this.rutasUsuario = [];
+            this.actualizarPaginacion();
             alert('Error al cargar las rutas. Por favor, recarga la página.');
           }
         });
@@ -256,10 +308,12 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
             next: (resp: any) => {
               this.rutasUsuario = resp || [];
               console.log('Cobrador - Rutas asignadas cargadas:', this.rutasUsuario.length);
+              this.actualizarPaginacion();
             },
             error: (error) => {
               console.error('Error al cargar rutas del usuario:', error);
               this.rutasUsuario = [];
+              this.actualizarPaginacion();
             }
           });
         }
@@ -277,7 +331,7 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       alert('Error: No se puede acceder al almacenamiento local');
       return;
     }
-    
+
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
       alert('No hay sesión activa. Por favor, inicie sesión nuevamente.');
@@ -286,13 +340,14 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
 
     const usuario = JSON.parse(usuarioData);
     const idUsuario = usuario.id_usuario;
-    
+
     if (!idUsuario || isNaN(parseInt(idUsuario))) {
       alert('Error: No se pudo obtener el ID de usuario');
       return;
     }
 
     // Asegurar que el rol esté actualizado antes de cargar rutas
+    this.cdr.detectChanges();
     this.obtenerRolUsuario();
 
     // Preparar formulario
@@ -325,15 +380,17 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
           this.mostrarModal();
           return;
         }
-        
+
         // Abrir modal
         this.mostrarModal();
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al verificar caja:', error);
         alert('Error al verificar el estado de la caja');
         // Aún así intentar abrir el modal
         this.mostrarModal();
+        this.cdr.detectChanges();
       }
     });
   }
@@ -350,10 +407,12 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
           return activo == 1 || activo === 1 || activo === '1' || activo === true || activo === 'true';
         });
         console.log('Admin - Rutas activas cargadas:', this.todasLasRutas.length, 'de', todasLasRutas.length);
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar rutas del sistema:', error);
         this.todasLasRutas = [];
+        this.cdr.detectChanges();
         alert('Error al cargar las rutas. Por favor, recarga la página.');
       }
     });
@@ -375,10 +434,17 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       alert('No tiene permisos para editar gastos. Solo los administradores pueden realizar esta acción.');
       return;
     }
-    
+
     this.modoEdicion = true;
     this.gastoEditando = gasto;
-    
+
+    // Asegurar que las rutas estén cargadas para que el <select> pueda mostrar la seleccionada
+    if (this.rolUsuario === 'admin') {
+      this.cargarTodasLasRutasActivas();
+    } else {
+      this.cargarRutasUsuario();
+    }
+
     this.gastosService.consultarPorId(gasto.id_gasto).subscribe({
       next: (resp: any) => {
         if (resp) {
@@ -388,14 +454,16 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
             monto: resp.monto || '',
             fecha_gasto: resp.fecha_gasto || new Date().toISOString().split('T')[0]
           };
-          
+
           this.mostrarModal();
         } else {
           alert('Error al cargar los datos del gasto');
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar gasto:', error);
+        this.cdr.detectChanges();
         alert('Error al cargar los datos del gasto');
       }
     });
@@ -427,19 +495,19 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
   // Función para guardar gasto
   guardarGasto(event: Event) {
     event.preventDefault();
-    
+
     // Si está en modo edición, solo administradores pueden guardar
     if (this.modoEdicion && this.rolUsuario !== 'admin') {
       alert('No tiene permisos para editar gastos. Solo los administradores pueden realizar esta acción.');
       return;
     }
-    
+
     // Verificar que estamos en el navegador
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
       alert('Error: No se puede acceder al almacenamiento local');
       return;
     }
-    
+
     // Obtener usuario logueado del localStorage
     const usuarioData = localStorage.getItem('usuario');
     if (!usuarioData) {
@@ -490,9 +558,11 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
           } else {
             alert(resp?.mensaje || 'Error al actualizar el gasto');
           }
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Error al actualizar gasto:', error);
+          this.cdr.detectChanges();
           alert('Error al actualizar el gasto');
         }
       });
@@ -513,10 +583,12 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
           } else {
             alert(resp?.mensaje || 'Error al guardar el gasto');
           }
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Error al guardar gasto:', error);
           const mensajeError = error?.error?.mensaje || error?.message || 'Error al guardar el gasto';
+          this.cdr.detectChanges();
           alert(mensajeError);
         }
       });
@@ -530,7 +602,7 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
       alert('No tiene permisos para eliminar gastos. Solo los administradores pueden realizar esta acción.');
       return;
     }
-    
+
     if (!confirm(`¿Está seguro de eliminar el gasto "${gasto.descripcion}" por ${this.formatearMonto(gasto.monto)}?`)) {
       return;
     }
@@ -546,9 +618,11 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
         } else {
           alert(resp?.mensaje || 'Error al eliminar el gasto');
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al eliminar gasto:', error);
+        this.cdr.detectChanges();
         alert('Error al eliminar el gasto');
       }
     });
@@ -558,11 +632,11 @@ export class Gastos implements OnInit, AfterViewInit, OnDestroy {
   formatearFecha(fecha: string): string {
     if (!fecha) return '-';
     const date = new Date(fecha);
-    return date.toLocaleDateString('es-CO', { 
+    return date.toLocaleDateString('es-CO', {
       timeZone: 'America/Bogota',
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit' 
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
     });
   }
 

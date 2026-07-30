@@ -1,11 +1,5 @@
 /* Estilos para el módulo de Clientes */
 
-/* Contenedor principal */
-.w-full.h-full.overflow-auto {
-  background-color: #f8f8ec;
-  padding: 1.5rem;
-}
-
 /* Tabla de clientes - Asegurar fondo blanco */
 table {
   background-color: #ffffff !important;
@@ -32,65 +26,65 @@ table tbody tr:hover td {
   background-color: rgba(174, 221, 43, 0.05) !important;
 }
 
+.input-dark {
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  color: #02416d;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.input-dark:focus {
+  outline: none;
+  border-color: #aedd2b;
+  box-shadow: 0 0 0 3px rgba(174, 221, 43, 0.1);
+}
+
+/* Responsive para móviles */
+@media (max-width: 640px) {
   .input-dark {
-    background-color: #ffffff;
-    border: 2px solid #e5e7eb;
-    color: #02416d;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    width: 100%;
-    font-size: 0.875rem;
-    transition: all 0.2s;
-  }
-
-  .input-dark:focus {
-    outline: none;
-    border-color: #aedd2b;
-    box-shadow: 0 0 0 3px rgba(174, 221, 43, 0.1);
-  }
-
-  /* Responsive para móviles */
-  @media (max-width: 640px) {
-    .input-dark {
-      padding: 10px;
-      font-size: 16px; /* Evita zoom en iOS */
-    }
-
-    .upload-card {
-      padding: 8px;
-      max-width: 100%;
-    }
-
-    .preview-img {
-      max-width: 120px;
-      max-height: 120px;
-    }
-
-    .upload-text {
-      font-size: 0.75rem;
-    }
-
-    label {
-      font-size: 0.875rem !important;
-    }
+    padding: 10px;
+    font-size: 16px; /* Evita zoom en iOS */
   }
 
   .upload-card {
-    background-color: #ffffff;
-    border: 2px dashed #e5e7eb;
-    border-radius: 0.75rem;
-    padding: 1rem;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-    max-width: 200px;
-    margin: 0 auto;
+    padding: 8px;
+    max-width: 100%;
   }
 
-  .upload-card:hover {
-    border-color: #aedd2b;
-    background-color: rgba(174, 221, 43, 0.05);
+  .preview-img {
+    max-width: 120px;
+    max-height: 120px;
   }
+
+  .upload-text {
+    font-size: 0.75rem;
+  }
+
+  label {
+    font-size: 0.875rem !important;
+  }
+}
+
+.upload-card {
+  background-color: #ffffff;
+  border: 2px dashed #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.upload-card:hover {
+  border-color: #aedd2b;
+  background-color: rgba(174, 221, 43, 0.05);
+}
 
 .preview-img {
   width: 100%;
@@ -110,55 +104,41 @@ table tbody tr:hover td {
   transform: scale(1.02);
 }
 
-  .upload-text {
-    color: #02416d;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    display: block;
-    margin-top: 0.25rem;
-  }
-  
-  /* Aumentar tamaño de fuente en labels y textos de formularios */
-  label {
-    font-size: 1rem !important;
-  }
-  
-  /* Aumentar tamaño de fuente en placeholders */
-  .input-dark::placeholder {
-    font-size: 1rem;
-  }
-  
-  /* Aumentar tamaño de fuente en selects */
-  select.input-dark {
-    font-size: 1rem;
-  }
-
-/* Ajustes para ocupar todo el espacio */
-.w-full {
-  width: 100%;
+.upload-text {
+  color: #02416d;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: block;
+  margin-top: 0.25rem;
 }
 
-.h-full {
-  min-height: 100%;
+/* Aumentar tamaño de fuente en labels y textos de formularios */
+label {
+  font-size: 1rem !important;
+}
+
+.input-dark::placeholder {
+  font-size: 1rem;
+}
+
+select.input-dark {
+  font-size: 1rem;
 }
 
 /* ============================================
    RESPONSIVE STYLES - MOBILE FIRST APPROACH
    ============================================ */
 
-/* Base styles (móvil) ya están aplicados con Tailwind */
-
 /* Tablet y superior (md: 768px+) */
 @media (min-width: 768px) {
-  /* Mejoras para tablets */
   .modal-cliente-container {
     max-width: 90%;
   }
-  
+
   table {
     font-size: 0.875rem;
   }
-  
+
   table th,
   table td {
     padding: 0.75rem 1rem;
@@ -170,7 +150,7 @@ table tbody tr:hover td {
   .modal-cliente-container {
     max-width: 80%;
   }
-  
+
   table {
     font-size: 0.9375rem;
   }
@@ -185,7 +165,7 @@ table tbody tr:hover td {
   .modal-cliente-container {
     max-width: 70%;
   }
-  
+
   table {
     font-size: 1rem;
   }
@@ -193,86 +173,72 @@ table tbody tr:hover td {
 
 /* Mejoras de scroll suave en móviles */
 @media (max-width: 767px) {
-  /* Scroll horizontal optimizado para tablas en móvil */
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: #066699 #e5e7eb;
   }
-  
-  /* Estilos para scrollbar en Chrome/Safari móvil */
+
   .overflow-x-auto::-webkit-scrollbar {
     height: 8px;
   }
-  
+
   .overflow-x-auto::-webkit-scrollbar-track {
     background: #e5e7eb;
     border-radius: 4px;
   }
-  
+
   .overflow-x-auto::-webkit-scrollbar-thumb {
     background: #066699;
     border-radius: 4px;
   }
-  
+
   .overflow-x-auto::-webkit-scrollbar-thumb:hover {
     background: #0a5483;
   }
-  
-  /* Tabla sin ancho mínimo - se ajusta al contenido */
+
   table {
     width: 100%;
     table-layout: auto;
   }
-  
-  /* Padding muy reducido en móvil para aprovechar espacio */
+
   table th,
   table td {
     padding: 0.25rem 0.25rem;
-  }
-  
-  /* Asegurar que el texto no se corte */
-  table th,
-  table td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
-  /* Botones más compactos en móvil - solo iconos */
+
   table button {
     min-width: 28px;
     min-height: 28px;
     padding: 0.25rem 0.5rem;
   }
-  
-  /* Ajustar tamaño de fuente en móvil */
+
   table {
     font-size: 0.625rem;
   }
-  
-  /* Fotos más pequeñas en móvil */
+
   table img {
     max-width: 32px;
     max-height: 32px;
   }
-  
-  /* Asegurar que los modales ocupen todo el ancho en móvil */
+
   .modal-cliente-container {
     max-width: 100% !important;
     margin: 0.5rem;
   }
-  
-  /* Mejorar el padding en móviles muy pequeños */
+
   @media (max-width: 375px) {
     .modal-cliente-body {
       padding: 1rem !important;
     }
-    
+
     .modal-cliente-header {
       padding: 1rem !important;
     }
-    
+
     table th,
     table td {
       padding: 0.4rem 0.5rem;
@@ -336,6 +302,7 @@ table tbody tr:hover td {
   scrollbar-width: thin;
   scrollbar-color: #066699 #e5e7eb;
   -ms-overflow-style: scrollbar;
+  scrollbar-gutter: stable;
 }
 
 /* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
@@ -380,11 +347,6 @@ table tbody tr:hover td {
   background: #e5e7eb !important;
 }
 
-/* Forzar visibilidad del scrollbar incluso cuando no hay scroll */
-.modal-cliente-body {
-  scrollbar-gutter: stable;
-}
-
 /* Animación para el modal */
 @keyframes modalSlideIn {
   from {
@@ -415,7 +377,6 @@ table tbody tr:hover td {
 
 /* Mejoras adicionales para inputs en móvil */
 @media (max-width: 640px) {
-  /* Evitar zoom automático en iOS al enfocar inputs */
   input[type="text"],
   input[type="tel"],
   input[type="email"],
@@ -423,14 +384,12 @@ table tbody tr:hover td {
   textarea {
     font-size: 16px !important;
   }
-  
-  /* Mejorar el tamaño de los botones en móvil */
+
   button {
-    min-height: 44px; /* Tamaño mínimo recomendado para touch */
+    min-height: 44px;
     padding: 0.75rem 1rem;
   }
-  
-  /* Mejorar espaciado en formularios móviles */
+
   .grid > div {
     margin-bottom: 0.75rem;
   }
@@ -481,11 +440,11 @@ table tbody tr:hover td {
     width: 50px;
     height: 50px;
   }
-  
+
   .documento-imagen {
     min-height: 200px;
   }
-  
+
   .imagen-documento {
     max-height: 300px;
   }
@@ -493,11 +452,10 @@ table tbody tr:hover td {
   .modal-cliente-header {
     padding: 1rem 1.5rem;
   }
-  
+
   .modal-cliente-header h3 {
     font-size: 1.25rem !important;
   }
-  
 }
 
 /* Fix barra de búsqueda */
@@ -547,12 +505,6 @@ table tbody tr:hover td {
   background-color: #f9fafb !important;
 }
 
-/* ── Botones de acción tabla ─────────────────────────────────────── */
-table .btn-editar,
-table button:has(+ button) {
-  /* no aplica bien con has, mejor por clase */
-}
-
 /* Botones de acción tabla */
 .btn-accion {
   display: inline-flex;
@@ -571,26 +523,32 @@ table button:has(+ button) {
 
 .btn-editar {
   background-color: #f0f4f8;
-  color: #0A2E5C;
+  color: #0a2e5c;
 }
-.btn-editar:hover { background-color: #dde6f0; }
+.btn-editar:hover {
+  background-color: #dde6f0;
+}
 
 .btn-inactivar {
   background-color: #fefce8;
   color: #92400e;
 }
-.btn-inactivar:hover { background-color: #fef08a; }
+.btn-inactivar:hover {
+  background-color: #fef08a;
+}
 
 .btn-activar {
   background-color: #f0fdf4;
   color: #166534;
 }
-.btn-activar:hover { background-color: #bbf7d0; }
+.btn-activar:hover {
+  background-color: #bbf7d0;
+}
 
 .btn-eliminar {
   background-color: #fff1f2;
   color: #9f1239;
 }
-.btn-eliminar:hover { background-color: #fecdd3; }
-
-
+.btn-eliminar:hover {
+  background-color: #fecdd3;
+}
