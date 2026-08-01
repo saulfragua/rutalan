@@ -1,71 +1,80 @@
 <!-- CONTENEDOR CAJA - Mobile First -->
 <div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
   <div
-    class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 min-h-full">
+    class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 mb-4 sm:p-4 md:p-6 min-h-full">
     <!-- ENCABEZADO PROFESIONAL - Mobile First -->
-    <div class="mb-4 sm:mb-6 border-b-3 border-[#0aad60] pb-3 sm:pb-4 md:pb-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-        <div class="flex-1 w-full sm:w-auto">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
-            <div
-              class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-linear-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md shrink-0">
-              <i class="fas fa-cash-register text-white text-lg sm:text-xl md:text-2xl"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h2
-                class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
-                <i class="fas fa-chart-line text-[#0aad60] text-lg sm:text-xl md:text-2xl"></i>
-                <span class="truncate">Gestión de Cajas</span>
-              </h2>
-              <p class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2">
-                <i class="fas fa-info-circle text-[#066699] text-xs"></i>
-                Administración y control de cajas abiertas en el sistema
-              </p>
-            </div>
+    <div class="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b-2 border-[#e5e7eb]">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- LADO IZQUIERDO: Ícono + Info -->
+        <div class="flex items-center gap-4">
+          <!-- Ícono -->
+          <div
+            class="w-20 h-20 sm:w-16 sm:h-16 bg-[#0A2E5C] rounded-xl flex items-center justify-center shadow-md shrink-0">
+
+            <i class="fas fa-cash-register text-[#ffffff] text-2xl sm:text-3xl"></i>
+          </div>
+          <!-- Texto -->
+
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#0A2E5C] leading-tight">
+              Gestión de Cajas
+            </h2>
+            <p class="text-xs sm:text-sm text-[#6b7280] mt-0.5 flex items-center gap-1.5">
+              <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+              Administración y control de cajas abiertas en el sistema
+            </p>
           </div>
         </div>
       </div>
     </div>
-
     <!-- BOTONES DE ACCIÓN PROFESIONALES - Mobile First: 2 por bloque -->
     <div class="mb-4 sm:mb-6">
       <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
         <!-- Botón Abrir Nueva Caja -->
-        <button (click)="abrirModalAperturaCaja()" class="btn-accion btn-accion-primary">
+        <button (click)="abrirModalAperturaCaja()"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0A2E5C] text-white cursor-pointer transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+          <i class="fas fa-plus-circle"></i>
           <span>Abrir Nueva Caja</span>
         </button>
 
         <!-- Botón Ver Cajas Cerradas -->
-        <button (click)="abrirModalCajasCerradas()" class="btn-accion btn-accion-secondary">
+        <button (click)="abrirModalCajasCerradas()"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0A2E5C] text-white cursor-pointer transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+          <i class="fas fa-box-open"></i>
           <span>Ver Cajas Cerradas</span>
         </button>
 
         <!-- Botón Entrada de Dinero -->
-        <button (click)="abrirModalEntradaDinero()" class="btn-accion btn-accion-success">
+        <button (click)="abrirModalEntradaDinero()"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0A2E5C] text-white cursor-pointer transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+          <i class="fas fa-arrow-down"></i>
           <span>Entrada de Dinero</span>
         </button>
 
         <!-- Botón Salida de Dinero -->
-        <button (click)="abrirModalSalidaDinero()" class="btn-accion btn-accion-danger">
+        <button (click)="abrirModalSalidaDinero()"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0A2E5C] text-white cursor-pointer transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+
+          <i class="fas fa-arrow-up"></i>
           <span>Salida de Dinero</span>
         </button>
 
         <!-- Botón Historial Movimientos -->
         <button (click)="abrirModalHistorial()"
-          class="btn-accion btn-accion-info col-span-2 md:col-span-1 lg:col-span-1">
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0A2E5C] text-white cursor-pointer transition-all duration-200 hover:bg-[#0d3a73] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+          <i class="fas fa-history"></i>
           <span>Historial Movimientos</span>
         </button>
       </div>
     </div>
-
     <!-- TABLA CAJAS ABIERTAS PROFESIONAL - Mobile First -->
-    <div class="mb-3 sm:mb-4">
+    <div class="mb-2 mt-2 sm:mb-4 sm:mt-4">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
         <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-[#02416d] flex items-center gap-2 sm:gap-3">
           <i class="fas fa-table text-[#0aad60] text-base sm:text-lg md:text-xl"></i>
           <span>Cajas Abiertas</span>
         </h3>
-        <span
+        <span 
           class="bg-linear-to-r from-[#066699] to-[#0a5483] text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md flex items-center gap-2">
           <i class="fas fa-cash-register text-xs sm:text-sm"></i>
           <span>{{ listaCajasAbiertas.length }}
@@ -73,234 +82,234 @@
         </span>
       </div>
     </div>
+  </div>
 
-    <div
-      class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md sm:shadow-lg bg-white -webkit-overflow-scrolling-touch">
-      <div class="inline-block min-w-full align-middle">
-        <div class="overflow-hidden">
-          <table class="min-w-full bg-white">
-            <thead style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%)">
-              <tr>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  ID
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Cobrador
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Ruta Principal
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Rutas Cobradas
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Créditos
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Seguros
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  30% Seguros
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Cobros
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Descuentos
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Gastos
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Entradas
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Salidas
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Saldo Inicial
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Total
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Fecha
-                </th>
-                <th
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
-                  Acción
-                </th>
-              </tr>
-            </thead>
 
-            <tbody class="bg-white border-t-2 border-[#e5e7eb]">
-              <!-- CARGANDO -->
-              <tr *ngIf="cargando">
-                <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
-                  <div style="
+<!-- TABLA CAJAS ABIERTAS PROFESIONAL - Mobile First -->
+  <div class="mt-4 rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-lg bg-white">
+    <div class="overflow-x-auto">
+
+      <table class="min-w-full text-xs sm:text-sm md:text-base bg-white">
+        <thead class="bg-teal-950">
+          <tr>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              ID
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Cobrador
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Ruta Principal
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Rutas Cobradas
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Créditos
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Seguros
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              30% Seguros
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Cobros
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Descuentos
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Gastos
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Entradas
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Salidas
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Saldo Inicial
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-right text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Total
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Fecha
+            </th>
+            <th
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
+              Acción
+            </th>
+          </tr>
+        </thead>
+
+        <tbody class="bg-white border-t-2 border-[#e5e7eb]">
+          <!-- CARGANDO -->
+          <tr *ngIf="cargando">
+            <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
+              <div style="
                       display: flex;
                       flex-direction: column;
                       align-items: center;
                       justify-content: center;
                     ">
-                    <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3"
-                      style="border-color: #066699; border-top-color: transparent"></div>
-                    <span style="color: #02416d; font-size: 0.875rem; font-weight: 600">Cargando cajas...</span>
-                  </div>
-                </td>
-              </tr>
+                <div class="animate-spin rounded-full h-10 w-10 border-b-4 mb-3"
+                  style="border-color: #066699; border-top-color: transparent"></div>
+                <span style="color: #02416d; font-size: 0.875rem; font-weight: 600">Cargando cajas...</span>
+              </div>
+            </td>
+          </tr>
 
-              <!-- LISTA DE CAJAS -->
-              <tr *ngFor="let caja of listaCajasAbiertas; let i = index"
-                class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]">
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
-                  <span
-                    class="bg-linear-to-br from-[#0aad60] to-[#089153] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{
-                    caja.id_caja }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap">
-                  <span
-                    class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm truncate max-w-25 sm:max-w-37.5 md:max-w-none"
-                    title="{{ caja.nombre_usuario }}">{{ caja.nombre_usuario }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap">
-                  <span
-                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[#f8f8ec] text-[#02416d] text-[10px] sm:text-xs md:text-sm border border-[#e5e7eb] truncate max-w-20 sm:max-w-30ax-w-none"
-                    title="{{ caja.nombre_ruta || '-' }}">{{ caja.nombre_ruta || '-' }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap">
-                  <span *ngIf="caja.rutas_cobradas"
-                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)]">
-                    {{ caja.rutas_cobradas }}
-                  </span>
-                  <span *ngIf="!caja.rutas_cobradas" class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm">
-                    -
-                  </span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-center whitespace-nowrap">
-                  <div class="flex flex-col items-center">
-                    <span class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm">{{
-                      caja.total_creditos || 0
-                      }}</span>
-                    <span class="text-[#066699] font-semibold text-[9px] sm:text-[10px] md:text-xs">{{
-                      formatearMonto(caja.total_monto_creditos || 0) }}</span>
-                  </div>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span class="text-[#066699] font-semibold text-[10px] sm:text-xs md:text-sm">{{
-                    formatearMonto(caja.total_seguros || 0)
-                    }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span class="text-[#aedd2b] font-semibold text-[10px] sm:text-xs md:text-sm">{{
-                    formatearMonto(caja.seguros_cobrador || 0)
-                    }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span class="text-[#10b981] font-semibold text-[10px] sm:text-xs md:text-sm">{{
-                    formatearMonto(caja.total_cobros)
-                    }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span class="text-[#f59e0b] font-semibold text-[10px] sm:text-xs md:text-sm">{{
-                    formatearMonto(caja.total_descuentos || 0)
-                    }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span class="text-[#dc3545] font-semibold text-[10px] sm:text-xs md:text-sm">{{
-                    formatearMonto(caja.total_gastos)
-                    }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span
-                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(16,185,129,0.1)] text-[#10b981] font-semibold text-[10px] sm:text-xs md:text-sm border border-[rgba(16,185,129,0.3)]">
-                    +{{ formatearMonto(caja.total_entradas || 0) }}
-                  </span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span
-                    class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(220,53,69,0.1)] text-[#dc3545] font-semibold text-[10px] sm:text-xs md:text-sm border border-[rgba(220,53,69,0.3)]">
-                    -{{ formatearMonto(caja.total_salidas || 0) }}
-                  </span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm">{{
-                    formatearMonto(caja.saldo_inicial)
-                    }}</span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
-                  <span
-                    class="inline-flex items-center px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 rounded bg-linear-to-br from-[#0aad60] to-[#089153] text-[#02416d] font-bold text-[10px] sm:text-xs md:text-sm border-2 border-[#0aad60] shadow-sm">
-                    {{ formatearMonto(caja.total_recolectado) }}
-                  </span>
-                </td>
-                <td
-                  class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-left whitespace-nowrap">
-                  <span class="text-[9px] sm:text-[10px] md:text-xs">{{
-                    formatearFechaHora(caja.fecha_apertura)
-                    }}</span>
-                </td>
-                <!-- ACCIÓN -->
-                <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
-                  <button (click)="cerrarCaja(caja)"
-                    class="inline-flex items-center justify-center px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm font-semibold rounded bg-linear-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10">
-                    Cerrar
-                  </button>
-                </td>
-              </tr>
+          <!-- LISTA DE CAJAS -->
+          <tr *ngFor="let caja of listaCajasAbiertas; let i = index"
+            class="border-b border-[#e5e7eb] transition-all duration-200 bg-white hover:bg-[rgba(174,221,43,0.05)]">
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
+              <span
+                class="bg-linear-to-br from-[#0aad60] to-[#089153] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{
+                caja.id_caja }}</span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap">
+              <span
+                class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm truncate max-w-25 sm:max-w-37.5 md:max-w-none"
+                title="{{ caja.nombre_usuario }}">{{ caja.nombre_usuario }}</span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap">
+              <span
+                class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[#f8f8ec] text-[#02416d] text-[10px] sm:text-xs md:text-sm border border-[#e5e7eb] truncate max-w-20 sm:max-w-30ax-w-none"
+                title="{{ caja.nombre_ruta || '-' }}">{{ caja.nombre_ruta || '-' }}</span>
+            </td>
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] whitespace-nowrap">
+              <span *ngIf="caja.rutas_cobradas"
+                class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(174,221,43,0.1)] text-[#066699] text-[10px] sm:text-xs md:text-sm font-semibold border border-[rgba(174,221,43,0.3)]">
+                {{ caja.rutas_cobradas }}
+              </span>
+              <span *ngIf="!caja.rutas_cobradas" class="text-[#9ca3af] text-[10px] sm:text-xs md:text-sm">
+                -
+              </span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-center whitespace-nowrap">
+              <div class="flex flex-col items-center">
+                <span class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm">{{
+                  caja.total_creditos || 0
+                  }}</span>
+                <span class="text-[#066699] font-semibold text-[9px] sm:text-[10px] md:text-xs">{{
+                  formatearMonto(caja.total_monto_creditos || 0) }}</span>
+              </div>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span class="text-[#066699] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                formatearMonto(caja.total_seguros || 0)
+                }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span class="text-[#aedd2b] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                formatearMonto(caja.seguros_cobrador || 0)
+                }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span class="text-[#10b981] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                formatearMonto(caja.total_cobros)
+                }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span class="text-[#f59e0b] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                formatearMonto(caja.total_descuentos || 0)
+                }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span class="text-[#dc3545] font-semibold text-[10px] sm:text-xs md:text-sm">{{
+                formatearMonto(caja.total_gastos)
+                }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span
+                class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(16,185,129,0.1)] text-[#10b981] font-semibold text-[10px] sm:text-xs md:text-sm border border-[rgba(16,185,129,0.3)]">
+                +{{ formatearMonto(caja.total_entradas || 0) }}
+              </span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span
+                class="inline-flex items-center px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-[rgba(220,53,69,0.1)] text-[#dc3545] font-semibold text-[10px] sm:text-xs md:text-sm border border-[rgba(220,53,69,0.3)]">
+                -{{ formatearMonto(caja.total_salidas || 0) }}
+              </span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span class="font-bold text-[#02416d] text-[10px] sm:text-xs md:text-sm">{{
+                formatearMonto(caja.saldo_inicial)
+                }}</span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-right whitespace-nowrap">
+              <span
+                class="inline-flex items-center px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 rounded bg-linear-to-br from-[#0aad60] to-[#089153] text-[#02416d] font-bold text-[10px] sm:text-xs md:text-sm border-2 border-[#0aad60] shadow-sm">
+                {{ formatearMonto(caja.total_recolectado) }}
+              </span>
+            </td>
+            <td
+              class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#6b7280] text-left whitespace-nowrap">
+              <span class="text-[9px] sm:text-[10px] md:text-xs">{{
+                formatearFechaHora(caja.fecha_apertura)
+                }}</span>
+            </td>
+            <!-- ACCIÓN -->
+            <td class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
+              <button (click)="cerrarCaja(caja)"
+              title="Cerrar caja #{{ caja.id_caja }}"
+                class="btn-accion btn-eliminar hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+                <i class="fas fa-times-circle"></i>
+              </button>
+            </td>
+          </tr>
 
-              <!-- SIN REGISTROS -->
-              <tr *ngIf="!cargando && listaCajasAbiertas.length === 0">
-                <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
-                  <div style="
+          <!-- SIN REGISTROS -->
+          <tr *ngIf="!cargando && listaCajasAbiertas.length === 0">
+            <td [attr.colspan]="16" style="padding: 3rem; text-align: center">
+              <div style="
                       display: flex;
                       flex-direction: column;
                       align-items: center;
                       justify-content: center;
                     ">
-                    <i class="fas fa-inbox" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem"></i>
-                    <span style="color: #02416d; font-size: 0.9375rem; font-weight: 600">No hay cajas abiertas</span>
-                    <span style="color: #6b7280; font-size: 0.8125rem; margin-top: 0.5rem">Haz clic en "Abrir Nueva
-                      Caja" para comenzar</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem"></i>
+                <span style="color: #02416d; font-size: 0.9375rem; font-weight: 600">No hay cajas abiertas</span>
+                <span style="color: #6b7280; font-size: 0.8125rem; margin-top: 0.5rem">Haz clic en "Abrir Nueva
+                  Caja" para comenzar</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
+
+
 
 <!-- MODAL CIERRE DE CAJA PROFESIONAL - Mobile First -->
 <div *ngIf="modalCierreAbierto"

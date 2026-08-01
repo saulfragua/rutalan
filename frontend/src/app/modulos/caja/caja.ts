@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -39,6 +39,28 @@ export class Caja implements OnInit, OnDestroy {
   abriendoCaja: boolean = false;
   usuarioActual: any = null;
 
+  // Paginación
+  paginaActual: number = 1;
+  cajasPorPagina: number = 5;
+  totalPaginas: number = 0;
+  cajasPaginadas: any[] = [];
+  opcionesPorPagina: number[] = [5, 10, 25, 50, 100];
+  Math = Math;
+
+  // Paginacion de modal caja cerrada
+  paginaActualCajasCerradas: number = 1;
+  cajasCerradasPorPagina: number = 5;
+  totalPaginasCajasCerradas: number = 0;
+  cajasCerradasPaginadas: any[] = [];
+  opcionesPorPaginaCajasCerradas: number[] = [5, 10, 25, 50, 100];
+
+  //Paginación modal historial movimientos
+  paginaActualHistorial: number = 1;
+  historialPorPagina: number = 5;
+  totalPaginasHistorial: number = 0;
+  historialPaginado: any[] = [];
+  opcionesPorPaginaHistorial: number[] = [5, 10, 25, 50, 100];
+
   // Modal de entrada/salida de dinero
   modalMovimientoAbierto: boolean = false;
   tipoMovimiento: 'entrada' | 'salida' = 'entrada';
@@ -50,7 +72,7 @@ export class Caja implements OnInit, OnDestroy {
     observacion: ''
   };
   guardandoMovimiento: boolean = false;
-  
+
   // Historial de movimientos
   historialMovimientos: any[] = [];
   modalHistorialAbierto: boolean = false;
@@ -61,6 +83,7 @@ export class Caja implements OnInit, OnDestroy {
     private rutasService: RutasService,
     private movimientosCajaService: MovimientosCajaService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -90,7 +113,7 @@ export class Caja implements OnInit, OnDestroy {
         }
       }
     }
-    
+
     this.cargarCajasAbiertas();
     this.cargarUsuarioActual();
   }
@@ -135,6 +158,7 @@ export class Caja implements OnInit, OnDestroy {
           this.listaCajasAbiertas = [];
         }
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar cajas abiertas:', error);
@@ -142,10 +166,113 @@ export class Caja implements OnInit, OnDestroy {
         this.cargando = false;
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al cargar las cajas abiertas';
         alert(mensajeError);
+        this.cdr.detectChanges();
         this.listaCajasAbiertas = [];
       }
     });
   }
+
+  // Paginación de cajas
+
+  actualizarPaginacion() {
+    this.totalPaginas = Math.ceil(this.listaCajasAbiertas.length / this.cajasPorPagina);
+    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.cajasPorPagina;
+    const fin = inicio + this.cajasPorPagina;
+    this.cajasPaginadas = this.listaCajasAbiertas.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacion();
+  }
+
+  cambiarPorPagina(cantidad: number) {
+    this.cajasPorPagina = Number(cantidad);
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  getPaginas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
+  // Paginación de cajas cerradas
+
+  actualizarPaginacionCajasCerradas() {
+    this.totalPaginas = Math.ceil(this.listaCajasCerradas.length / this.cajasPorPagina);
+    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.cajasPorPagina;
+    const fin = inicio + this.cajasPorPagina;
+    this.cajasPaginadas = this.listaCajasCerradas.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPaginaCajasCerradas(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacionCajasCerradas();
+  }
+
+  cambiarPorPaginaCajasCerradas(cantidad: number) {
+    this.cajasPorPagina = Number(cantidad);
+    this.paginaActual = 1;
+    this.actualizarPaginacionCajasCerradas();
+  }
+
+  getPaginasCajasCerradas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
+
+  // Paginación de historial de movimientos
+
+  actualizarPaginacionHistorial() {
+    this.totalPaginasHistorial = Math.ceil(this.historialMovimientos.length / this.cajasPorPagina);
+    if (this.paginaActual > this.totalPaginasHistorial) this.paginaActual = 1;
+    const inicio = (this.paginaActual - 1) * this.cajasPorPagina;
+    const fin = inicio + this.cajasPorPagina;
+    this.cajasPaginadas = this.historialMovimientos.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPaginaHistorial(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginasHistorial) return;
+    this.paginaActual = pagina;
+    this.actualizarPaginacionHistorial();
+  }
+
+  cambiarPorPaginaHistorial(cantidad: number) {
+    this.cajasPorPagina = Number(cantidad);
+    this.paginaActual = 1;
+    this.actualizarPaginacionHistorial();
+  }
+
+  getPaginasHistorial(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActual - rango);
+      i <= Math.min(this.totalPaginasHistorial, this.paginaActual + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
+
 
   /**
    * Abre el modal para cerrar una caja
@@ -154,6 +281,7 @@ export class Caja implements OnInit, OnDestroy {
     this.cajaSeleccionada = caja;
     this.observacionesCierre = '';
     this.modalCierreAbierto = true;
+    this.cdr.detectChanges();
   }
 
   /**
@@ -163,6 +291,7 @@ export class Caja implements OnInit, OnDestroy {
     this.modalCierreAbierto = false;
     this.cajaSeleccionada = null;
     this.observacionesCierre = '';
+    this.cdr.detectChanges();
   }
 
   /**
@@ -183,7 +312,7 @@ export class Caja implements OnInit, OnDestroy {
         if (resp && resp.resultado === 'ok') {
           alert(resp.mensaje || 'Caja cerrada correctamente');
           this.cerrarModalCierre();
-          
+
           // Limpiar información de caja del localStorage
           if (this.isBrowser && typeof localStorage !== 'undefined') {
             const usuarioStr = localStorage.getItem('usuario');
@@ -194,16 +323,18 @@ export class Caja implements OnInit, OnDestroy {
               localStorage.setItem('usuario', JSON.stringify(usuario));
             }
           }
-          
+
           this.cargarCajasAbiertas();
         } else {
           alert(resp?.mensaje || 'Error al cerrar la caja');
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.cerrandoCaja = false;
         console.error('Error al cerrar caja:', error);
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al cerrar la caja';
+        this.cdr.detectChanges();
         alert(mensajeError);
       }
     });
@@ -215,10 +346,10 @@ export class Caja implements OnInit, OnDestroy {
   formatearFechaHora(fechaHora: string): string {
     if (!fechaHora) return '-';
     const date = new Date(fechaHora);
-    return date.toLocaleString('es-CO', { 
+    return date.toLocaleString('es-CO', {
       timeZone: 'America/Bogota',
-      year: 'numeric', 
-      month: '2-digit', 
+      year: 'numeric',
+      month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit'
@@ -244,6 +375,7 @@ export class Caja implements OnInit, OnDestroy {
   abrirModalCajasCerradas() {
     this.modalCajasCerradasAbierto = true;
     this.cargarCajasCerradas();
+    this.cdr.detectChanges();
   }
 
   /**
@@ -252,6 +384,7 @@ export class Caja implements OnInit, OnDestroy {
   cerrarModalCajasCerradas() {
     this.modalCajasCerradasAbierto = false;
     this.listaCajasCerradas = [];
+    this.cdr.detectChanges();
   }
 
   /**
@@ -271,6 +404,7 @@ export class Caja implements OnInit, OnDestroy {
           this.listaCajasCerradas = [];
         }
         this.cargandoCajasCerradas = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar cajas cerradas:', error);
@@ -278,6 +412,7 @@ export class Caja implements OnInit, OnDestroy {
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al cargar las cajas cerradas';
         alert(mensajeError);
         this.listaCajasCerradas = [];
+        this.cdr.detectChanges();
       }
     });
   }
@@ -304,6 +439,7 @@ export class Caja implements OnInit, OnDestroy {
         this.modalAperturaCajaAbierto = true;
         this.saldoInicial = 0;
         this.rutasSeleccionadas = [];
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al verificar caja:', error);
@@ -312,6 +448,7 @@ export class Caja implements OnInit, OnDestroy {
         this.modalAperturaCajaAbierto = true;
         this.saldoInicial = 0;
         this.rutasSeleccionadas = [];
+        this.cdr.detectChanges();
       }
     });
   }
@@ -323,9 +460,11 @@ export class Caja implements OnInit, OnDestroy {
     this.rutasService.consultar().subscribe({
       next: (resp: any) => {
         this.todasLasRutas = resp || [];
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar rutas:', error);
+        this.cdr.detectChanges();
         this.todasLasRutas = [];
       }
     });
@@ -338,6 +477,7 @@ export class Caja implements OnInit, OnDestroy {
     this.modalAperturaCajaAbierto = false;
     this.saldoInicial = 0;
     this.rutasSeleccionadas = [];
+    this.cdr.detectChanges();
   }
 
   /**
@@ -371,9 +511,9 @@ export class Caja implements OnInit, OnDestroy {
     // Validar que el saldo inicial sea un número válido y mayor o igual a 0
     // Convertir explícitamente a número y permitir 0
     const saldo = parseFloat(String(this.saldoInicial || 0));
-    
+
     console.log('Saldo inicial recibido:', this.saldoInicial, 'Convertido:', saldo);
-    
+
     if (isNaN(saldo) || saldo < 0) {
       alert('El monto inicial debe ser mayor o igual a 0');
       return;
@@ -386,7 +526,7 @@ export class Caja implements OnInit, OnDestroy {
       id_usuario: this.usuarioActual.id_usuario,
       id_rutas: this.rutasSeleccionadas.length > 0 ? this.rutasSeleccionadas : [],
       saldo_inicial: saldo,
-      nombre_caja: this.rutasSeleccionadas.length > 0 
+      nombre_caja: this.rutasSeleccionadas.length > 0
         ? 'Caja Admin ' + new Date().toLocaleDateString('es-CO', { timeZone: 'America/Bogota' })
         : 'Caja General ' + new Date().toLocaleDateString('es-CO', { timeZone: 'America/Bogota' })
     };
@@ -409,11 +549,13 @@ export class Caja implements OnInit, OnDestroy {
         } else {
           alert('Error al abrir caja: ' + (resp.mensaje || 'Error desconocido'));
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.abriendoCaja = false;
         console.error('Error al abrir caja:', error);
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al abrir caja. Intente nuevamente.';
+        this.cdr.detectChanges();
         alert(mensajeError);
       }
     });
@@ -512,6 +654,7 @@ export class Caja implements OnInit, OnDestroy {
           alert(mensaje);
           console.error('Respuesta del servidor:', resp);
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.guardandoMovimiento = false;
@@ -522,9 +665,10 @@ export class Caja implements OnInit, OnDestroy {
           error: error.error,
           message: error.message
         });
-        
+        this.cdr.detectChanges();
+
         let mensajeError = 'Error al registrar el movimiento';
-        
+
         // Si hay un error en el body, intentar parsearlo
         if (error.error) {
           if (typeof error.error === 'string') {
@@ -542,12 +686,12 @@ export class Caja implements OnInit, OnDestroy {
         } else if (error.message) {
           mensajeError = error.message;
         }
-        
+
         // Si el error es de parsing JSON, podría ser que la tabla no existe
         if (error.status === 200 && !error.ok) {
           mensajeError = 'Error al procesar la respuesta del servidor. Verifique que la tabla movimientos_caja existe en la base de datos.';
         }
-        
+
         alert(mensajeError);
       }
     });
@@ -574,6 +718,7 @@ export class Caja implements OnInit, OnDestroy {
   cerrarModalHistorial() {
     this.modalHistorialAbierto = false;
     this.historialMovimientos = [];
+    this.cdr.detectChanges();
   }
 
   /**
@@ -585,11 +730,13 @@ export class Caja implements OnInit, OnDestroy {
       next: (resp: any) => {
         this.historialMovimientos = resp || [];
         this.cargandoHistorial = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar historial:', error);
         this.cargandoHistorial = false;
         alert('Error al cargar el historial de movimientos');
+        this.cdr.detectChanges();
       }
     });
   }
@@ -613,10 +760,10 @@ export class Caja implements OnInit, OnDestroy {
   formatearFecha(fecha: string): string {
     if (!fecha) return '';
     const date = new Date(fecha);
-    return date.toLocaleDateString('es-CO', { 
+    return date.toLocaleDateString('es-CO', {
       timeZone: 'America/Bogota',
-      year: 'numeric', 
-      month: '2-digit', 
+      year: 'numeric',
+      month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit'
@@ -630,6 +777,7 @@ export class Caja implements OnInit, OnDestroy {
     const total = this.listaCajasAbiertas.reduce((sum, caja) => {
       return sum + (parseFloat(caja.total_recolectado) || 0);
     }, 0);
+    this.cdr.detectChanges();
     return this.formatearMonto(total);
   }
 
@@ -640,6 +788,7 @@ export class Caja implements OnInit, OnDestroy {
     const total = this.listaCajasAbiertas.reduce((sum, caja) => {
       return sum + (parseFloat(caja.total_entradas) || 0);
     }, 0);
+    this.cdr.detectChanges();
     return this.formatearMonto(total);
   }
 
@@ -650,6 +799,7 @@ export class Caja implements OnInit, OnDestroy {
     const total = this.listaCajasAbiertas.reduce((sum, caja) => {
       return sum + (parseFloat(caja.total_salidas) || 0);
     }, 0);
+    this.cdr.detectChanges();
     return this.formatearMonto(total);
   }
 }
