@@ -158,7 +158,8 @@ export class Caja implements OnInit, OnDestroy {
           this.listaCajasAbiertas = [];
         }
         this.cargando = false;
-        this.cdr.detectChanges();
+
+        this.actualizarPaginacion();
       },
       error: (error) => {
         console.error('Error al cargar cajas abiertas:', error);
@@ -166,7 +167,7 @@ export class Caja implements OnInit, OnDestroy {
         this.cargando = false;
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al cargar las cajas abiertas';
         alert(mensajeError);
-        this.cdr.detectChanges();
+        this.actualizarPaginacion();
         this.listaCajasAbiertas = [];
       }
     });
@@ -206,67 +207,64 @@ export class Caja implements OnInit, OnDestroy {
   }
 
   // Paginación de cajas cerradas
-
   actualizarPaginacionCajasCerradas() {
-    this.totalPaginas = Math.ceil(this.listaCajasCerradas.length / this.cajasPorPagina);
-    if (this.paginaActual > this.totalPaginas) this.paginaActual = 1;
-    const inicio = (this.paginaActual - 1) * this.cajasPorPagina;
-    const fin = inicio + this.cajasPorPagina;
-    this.cajasPaginadas = this.listaCajasCerradas.slice(inicio, fin);
+    this.totalPaginasCajasCerradas = Math.ceil(this.listaCajasCerradas.length / this.cajasCerradasPorPagina);
+    if (this.paginaActualCajasCerradas > this.totalPaginasCajasCerradas) this.paginaActualCajasCerradas = 1;
+    const inicio = (this.paginaActualCajasCerradas - 1) * this.cajasCerradasPorPagina;
+    const fin = inicio + this.cajasCerradasPorPagina;
+    this.cajasCerradasPaginadas = this.listaCajasCerradas.slice(inicio, fin);
     this.cdr.detectChanges();
   }
 
   cambiarPaginaCajasCerradas(pagina: number) {
-    if (pagina < 1 || pagina > this.totalPaginas) return;
-    this.paginaActual = pagina;
+    if (pagina < 1 || pagina > this.totalPaginasCajasCerradas) return;
+    this.paginaActualCajasCerradas = pagina;
     this.actualizarPaginacionCajasCerradas();
   }
 
   cambiarPorPaginaCajasCerradas(cantidad: number) {
-    this.cajasPorPagina = Number(cantidad);
-    this.paginaActual = 1;
+    this.cajasCerradasPorPagina = Number(cantidad);
+    this.paginaActualCajasCerradas = 1;
     this.actualizarPaginacionCajasCerradas();
   }
 
   getPaginasCajasCerradas(): number[] {
     const paginas: number[] = [];
     const rango = 2;
-    for (let i = Math.max(1, this.paginaActual - rango);
-      i <= Math.min(this.totalPaginas, this.paginaActual + rango); i++) {
+    for (let i = Math.max(1, this.paginaActualCajasCerradas - rango);
+      i <= Math.min(this.totalPaginasCajasCerradas, this.paginaActualCajasCerradas + rango); i++) {
       paginas.push(i);
     }
     return paginas;
   }
 
-
   // Paginación de historial de movimientos
-
   actualizarPaginacionHistorial() {
-    this.totalPaginasHistorial = Math.ceil(this.historialMovimientos.length / this.cajasPorPagina);
-    if (this.paginaActual > this.totalPaginasHistorial) this.paginaActual = 1;
-    const inicio = (this.paginaActual - 1) * this.cajasPorPagina;
-    const fin = inicio + this.cajasPorPagina;
-    this.cajasPaginadas = this.historialMovimientos.slice(inicio, fin);
+    this.totalPaginasHistorial = Math.ceil(this.historialMovimientos.length / this.historialPorPagina);
+    if (this.paginaActualHistorial > this.totalPaginasHistorial) this.paginaActualHistorial = 1;
+    const inicio = (this.paginaActualHistorial - 1) * this.historialPorPagina;
+    const fin = inicio + this.historialPorPagina;
+    this.historialPaginado = this.historialMovimientos.slice(inicio, fin);
     this.cdr.detectChanges();
   }
 
   cambiarPaginaHistorial(pagina: number) {
     if (pagina < 1 || pagina > this.totalPaginasHistorial) return;
-    this.paginaActual = pagina;
+    this.paginaActualHistorial = pagina;
     this.actualizarPaginacionHistorial();
   }
 
   cambiarPorPaginaHistorial(cantidad: number) {
-    this.cajasPorPagina = Number(cantidad);
-    this.paginaActual = 1;
+    this.historialPorPagina = Number(cantidad);
+    this.paginaActualHistorial = 1;
     this.actualizarPaginacionHistorial();
   }
 
   getPaginasHistorial(): number[] {
     const paginas: number[] = [];
     const rango = 2;
-    for (let i = Math.max(1, this.paginaActual - rango);
-      i <= Math.min(this.totalPaginasHistorial, this.paginaActual + rango); i++) {
+    for (let i = Math.max(1, this.paginaActualHistorial - rango);
+      i <= Math.min(this.totalPaginasHistorial, this.paginaActualHistorial + rango); i++) {
       paginas.push(i);
     }
     return paginas;
@@ -375,7 +373,7 @@ export class Caja implements OnInit, OnDestroy {
   abrirModalCajasCerradas() {
     this.modalCajasCerradasAbierto = true;
     this.cargarCajasCerradas();
-    this.cdr.detectChanges();
+    this.actualizarPaginacionCajasCerradas();
   }
 
   /**
@@ -384,7 +382,7 @@ export class Caja implements OnInit, OnDestroy {
   cerrarModalCajasCerradas() {
     this.modalCajasCerradasAbierto = false;
     this.listaCajasCerradas = [];
-    this.cdr.detectChanges();
+    this.actualizarPaginacionCajasCerradas();
   }
 
   /**
@@ -404,7 +402,7 @@ export class Caja implements OnInit, OnDestroy {
           this.listaCajasCerradas = [];
         }
         this.cargandoCajasCerradas = false;
-        this.cdr.detectChanges();
+        this.actualizarPaginacionCajasCerradas();
       },
       error: (error) => {
         console.error('Error al cargar cajas cerradas:', error);
@@ -412,7 +410,7 @@ export class Caja implements OnInit, OnDestroy {
         const mensajeError = error?.error?.mensaje || error?.message || 'Error al cargar las cajas cerradas';
         alert(mensajeError);
         this.listaCajasCerradas = [];
-        this.cdr.detectChanges();
+        this.actualizarPaginacionCajasCerradas();
       }
     });
   }
@@ -718,7 +716,7 @@ export class Caja implements OnInit, OnDestroy {
   cerrarModalHistorial() {
     this.modalHistorialAbierto = false;
     this.historialMovimientos = [];
-    this.cdr.detectChanges();
+    this.actualizarPaginacionHistorial();
   }
 
   /**
@@ -730,13 +728,13 @@ export class Caja implements OnInit, OnDestroy {
       next: (resp: any) => {
         this.historialMovimientos = resp || [];
         this.cargandoHistorial = false;
-        this.cdr.detectChanges();
+        this.actualizarPaginacionHistorial();
       },
       error: (error) => {
         console.error('Error al cargar historial:', error);
         this.cargandoHistorial = false;
         alert('Error al cargar el historial de movimientos');
-        this.cdr.detectChanges();
+        this.actualizarPaginacionHistorial();
       }
     });
   }
