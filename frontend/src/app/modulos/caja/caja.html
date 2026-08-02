@@ -375,13 +375,13 @@
         <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
           <div
             class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-linear-to-br from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.15)] rounded-lg sm:rounded-xl flex items-center justify-center border-2 border-[rgba(255,255,255,0.3)] shadow-md shrink-0">
-            <i class="fas fa-lock text-white text-base sm:text-xl md:text-2xl drop-shadow-md"></i>
+            <i class="fas fa-lock text-base sm:text-xl md:text-2xl drop-shadow-md" style="color: #ffffff;"></i>
           </div>
           <div class="flex-1 min-w-0">
             <h3
               class="text-base sm:text-xl md:text-2xl font-extrabold text-white m-0 drop-shadow-md tracking-wide flex items-center gap-1 sm:gap-2">
               <i class="fas fa-cash-register text-[#0aad60] text-sm sm:text-base md:text-lg"></i>
-              <span class="truncate">Cerrar Caja</span>
+              <span style="color: #ffffff;font-size: 24px; font-weight: bold;">Cerrar Caja</span>
             </h3>
             <p
               class="text-xs sm:text-sm md:text-base text-[rgba(255,255,255,0.95)] mt-1 sm:mt-1.5 font-medium hidden sm:flex items-center gap-2">
@@ -695,7 +695,7 @@
             </p>
           </div>
         </div>
-        <button (click)="cerrarModalCajasCerradas()" style="
+        <button (click)="cerrarModalCajasCerradas()" class="text-[#ffffff]" style="
             width: 40px;
             height: 40px;
             background: rgba(255, 255, 255, 0.15);
@@ -717,7 +717,9 @@
             this.style.background = 'rgba(255, 255, 255, 0.15)';
             this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
             this.style.transform = 'scale(1)';
-          "></button>
+          ">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
     </div>
 
@@ -1448,6 +1450,75 @@
         </div>
       </form>
     </div>
+    <!-- FOOTER CON BOTONES - SIEMPRE VISIBLE -->
+    <div style="
+    padding: 1.5rem 2rem;
+    background: #ffffff;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    border-radius: 0 0 0.75rem 0.75rem;
+    flex-shrink: 0;
+  ">
+      <button type="button" (click)="cerrarModalAperturaCaja()" style="
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      min-width: 140px;
+      background-color: #6b7280;
+      color: #ffffff;
+    ">
+        Cancelar
+      </button>
+      <button type="button" (click)="abrirCajaAdmin()" [disabled]="
+      abriendoCaja ||
+      saldoInicial === null ||
+      saldoInicial === undefined ||
+      (typeof saldoInicial === 'number' && saldoInicial < 0)
+    " [style.opacity]="
+      abriendoCaja ||
+      saldoInicial === null ||
+      saldoInicial === undefined ||
+      (typeof saldoInicial === 'number' && saldoInicial < 0)
+        ? '0.5'
+        : '1'
+    " [style.cursor]="
+      abriendoCaja ||
+      saldoInicial === null ||
+      saldoInicial === undefined ||
+      (typeof saldoInicial === 'number' && saldoInicial < 0)
+        ? 'not-allowed'
+        : 'pointer'
+    " style="
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      min-width: 140px;
+      background: linear-gradient(135deg, #0aad60 0%, #089153 100%);
+      color: #02416d;
+    ">
+        <span>{{ abriendoCaja ? 'Abriendo...' : 'Abrir Caja' }}</span>
+      </button>
+    </div>
 
 
   </div>
@@ -1549,7 +1620,9 @@
             this.style.background = 'rgba(255, 255, 255, 0.15)';
             this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
             this.style.transform = 'scale(1)';
-          "></button>
+          ">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
     </div>
 
@@ -1939,7 +2012,9 @@
             this.style.background = 'rgba(255, 255, 255, 0.15)';
             this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
             this.style.transform = 'scale(1)';
-          "></button>
+          ">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
     </div>
 
