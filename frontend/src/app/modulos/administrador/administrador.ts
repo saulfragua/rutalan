@@ -13,7 +13,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-administrador',
   standalone: false,
-  templateUrl: './administrador.html',
+  templateUrl:'./administrador.html',
   styleUrl: './administrador.css',
 })
 export class Administrador implements OnInit, OnDestroy {
