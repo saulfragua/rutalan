@@ -987,6 +987,112 @@ table tbody tr:hover td {
 }
 
 /* ============================================
+   MODAL DETALLES PROFESIONAL
+   ============================================ */
+
+/* Backdrop del modal */
+.modal-detalles-backdrop {
+  background: rgba(2, 65, 109, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+}
+
+/* Contenedor del modal */
+.modal-detalles-container {
+  background: #ffffff;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: visible;
+}
+
+/* Header del modal */
+.modal-detalles-header {
+  background: rgba(2,65,109,0.75);
+  padding: 1.75rem 2rem;
+  border-bottom: 4px solid #0aad60;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-detalles-header h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.025em;
+}
+
+.modal-detalles-header p {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+/* Body del modal */
+.modal-detalles-body {
+  padding: 1.5rem;
+  background: #f8f8ec;
+  overflow-y: scroll !important;
+  overflow-x: auto !important;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(95vh - 120px);
+  scrollbar-width: thin;
+  scrollbar-color: #066699 #e5e7eb;
+  -ms-overflow-style: scrollbar;
+}
+
+/* Scrollbar personalizado para el body del modal - Chrome, Edge, Safari */
+.modal-detalles-body::-webkit-scrollbar {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.modal-detalles-body::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 8px !important;
+  border: 2px solid #d1d5db !important;
+  margin: 4px 0 !important;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.modal-detalles-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #066699 0%, #0a5483 100%) !important;
+  border-radius: 8px !important;
+  border: 2px solid #e5e7eb !important;
+  min-height: 50px !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer !important;
+}
+
+.modal-detalles-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0a5483 0%, #02416d 100%) !important;
+  border-color: #d1d5db !important;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.modal-detalles-body::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #02416d 0%, #066699 100%) !important;
+}
+
+.modal-detalles-body::-webkit-scrollbar-corner {
+  background: #e5e7eb !important;
+}
+
+/* Forzar visibilidad del scrollbar incluso cuando no hay scroll */
+.modal-detalles-body {
+  scrollbar-gutter: stable;
+}
+
+
+/* ============================================
    MODAL CAJAS CERRADAS PROFESIONAL
    ============================================ */
 

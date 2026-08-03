@@ -78,6 +78,9 @@ export class Caja implements OnInit, OnDestroy {
   modalHistorialAbierto: boolean = false;
   cargandoHistorial: boolean = false;
 
+  // Nueva bandera de control
+  modalCajasCerradasEstabaAbierto: boolean = false;
+
   constructor(
     private cajaService: CajaService,
     private rutasService: RutasService,
@@ -171,6 +174,37 @@ export class Caja implements OnInit, OnDestroy {
         this.listaCajasAbiertas = [];
       }
     });
+  }
+
+  // Modal de detalle de caja (solo lectura)
+  modalDetalleAbierto: boolean = false;
+  cajaDetalle: any = null;
+
+  verDetalleCaja(caja: any) {
+    this.cajaDetalle = caja;
+
+    // Si viene desde el modal de Cajas Cerradas, lo cerramos temporalmente
+    // para no apilar dos backdrops con blur (evita el bug de repintado)
+    if (this.modalCajasCerradasAbierto) {
+      this.modalCajasCerradasEstabaAbierto = true;
+      this.modalCajasCerradasAbierto = false;
+    }
+
+    this.modalDetalleAbierto = true;
+    this.cdr.detectChanges();
+  }
+
+  cerrarModalDetalle() {
+    this.modalDetalleAbierto = false;
+    this.cajaDetalle = null;
+
+    // Si veníamos del modal de Cajas Cerradas, lo reabrimos
+    if (this.modalCajasCerradasEstabaAbierto) {
+      this.modalCajasCerradasAbierto = true;
+      this.modalCajasCerradasEstabaAbierto = false;
+    }
+
+    this.cdr.detectChanges();
   }
 
   // Paginación de cajas
