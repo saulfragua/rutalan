@@ -175,16 +175,16 @@
                           Clave
                         </button>
                         <button (click)="cambiarEstadoUsuario(u.id_usuario, u.estado)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]"
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9[40px]"
                           [ngClass]="u.estado === 1 ? 'bg-linear-to-br from-[#facc15] to-[#eab308] text-black' : 'bg-linear-to-br from-[#10b981] to-[#059669] text-white'">
                           {{ u.estado === 1 ? 'Inactivar' : 'Activar' }}
                         </button>
                         <button (click)="abrirModalEditarUsuario(u)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-linear-to-br from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10">
                           Editar
                         </button>
                         <button (click)="eliminarUsuario(u.id_usuario)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-linear-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10">
                           Eliminar
                         </button>
                       </div>
@@ -220,7 +220,7 @@
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
             <div class="flex items-center gap-2 sm:gap-4 flex-1 w-full sm:w-auto">
               <div
-                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-linear-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md shrink-0">
                 <i class="fas fa-route text-white text-lg sm:text-xl md:text-2xl"></i>
               </div>
               <div class="flex-1 min-w-0">
@@ -237,7 +237,7 @@
             </div>
             <div class="w-full sm:w-auto">
               <button (click)="abrirModalRuta()"
-                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[44px]">
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-semibold rounded-lg bg-linear-to-r from-[#aedd2b] to-[#9bc825] text-[#02416d] border-2 border-[#aedd2b] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-11">
                 <span>Nueva Ruta</span>
               </button>
             </div>
@@ -249,7 +249,7 @@
           <div class="inline-block min-w-full align-middle">
             <div class="overflow-hidden">
               <table class="min-w-full bg-white">
-                <thead class="bg-gradient-to-r from-[#0a5483] to-[#066699]">
+                <thead class="bg-linear-to-r from-[#0a5483] to-[#066699]">
                   <tr>
                     <th
                       class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-left text-[10px] sm:text-xs md:text-sm font-bold text-white uppercase whitespace-nowrap">
@@ -268,26 +268,26 @@
                     <td
                       class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] font-bold whitespace-nowrap">
                       <span
-                        class="bg-gradient-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{
+                        class="bg-linear-to-br from-[#aedd2b] to-[#9bc825] text-[#02416d] px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded text-[10px] sm:text-xs md:text-sm font-bold">#{{
                         ruta.id_ruta }}</span>
                     </td>
                     <td
-                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm font-semibold whitespace-nowrap truncate max-w-[150px] sm:max-w-[250px] md:max-w-none"
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm font-semibold whitespace-nowrap truncate max-w-37.5 sm:max-w-62.5 md:max-w-none"
                       title="{{ ruta.nombre_ruta }}">{{ ruta.nombre_ruta }}</td>
                     <td
                       class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-center whitespace-nowrap">
                       <div class="flex flex-wrap gap-1 sm:gap-1.5 md:gap-2 justify-center">
                         <button (click)="cambiarEstadoRuta(ruta.id_ruta, ruta.activo)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]"
-                          [ngClass]="ruta.activo == 1 ? 'bg-gradient-to-br from-[#10b981] to-[#059669] text-white' : 'bg-gradient-to-br from-[#facc15] to-[#eab308] text-black'">
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10"
+                          [ngClass]="ruta.activo == 1 ? 'bg-linear-to-br from-[#10b981] to-[#059669] text-white' : 'bg-linear-to-br from-[#facc15] to-[#eab308] text-black'">
                           {{ ruta.activo == 1 ? 'Inactivar' : 'Activar' }}
                         </button>
                         <button (click)="abrirModalEditar(ruta)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-linear-to-br from-[#066699] to-[#0a5483] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10">
                           Editar
                         </button>
                         <button (click)="eliminarRuta(ruta.id_ruta)"
-                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-gradient-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-[32px] sm:min-h-[36px] md:min-h-[40px]">
+                          class="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-semibold rounded bg-linear-to-br from-[#dc3545] to-[#c82333] text-white border-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap min-h-8 sm:min-h-9 md:min-h-10">
                           Eliminar
                         </button>
                       </div>
