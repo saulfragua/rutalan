@@ -101,11 +101,11 @@ export class Administrador implements OnInit, OnDestroy {
 
   // PaginaciónRuta
   paginaActualRutas: number = 1;
-  rutasPorPaginaRuta: number = 5;
+  rutasPorPagina: number = 5;
   totalPaginasRutas: number = 0;
   rutasPaginadas: any[] = [];
-  opcionesPorPaginaRuta: number[] = [5, 10, 25, 50, 100];
-  MathPaginaRuta = Math;
+  opcionesPorPaginaRutas: number[] = [5, 10, 25, 50, 100];
+  MathPaginaRutas = Math;
 
   // PaginaciónErrores
   paginaActualErrores: number = 1;
@@ -725,6 +725,7 @@ export class Administrador implements OnInit, OnDestroy {
                   rutas.map(r => r.nombre_ruta);
               }
             });
+            this.cdr.detectChanges();
         });
         this.actualizarPaginacion();
       },
@@ -796,22 +797,57 @@ export class Administrador implements OnInit, OnDestroy {
 
   abrirModalRuta() {
     this.modalRuta = true;
+    this.actualizarPaginacionRutas(); // Asegurar que la paginación se actualice al abrir el modal 
   }
 
   cerrarModalRuta() {
     this.modalRuta = false;
     this.nombreRuta = '';
+    this.actualizarPaginacionRutas
   }
 
   cargarRutas() {
     this.rutasService.consultar().subscribe({
       next: (resp: any) => {
         this.rutas = resp;
+        this.actualizarPaginacionRutas();
       },
       error: (error) => {
         console.error('Error al cargar rutas', error);
+        this.actualizarPaginacionRutas(); // Asegurar que la paginación se actualice incluso si hay error
       }
     });
+  }
+
+  actualizarPaginacionRutas() {
+    this.totalPaginasRutas = Math.ceil(this.rutas.length / this.rutasPorPagina);
+    if (this.paginaActualRutas > this.totalPaginasRutas) this.paginaActualRutas = 1;
+    const inicio = (this.paginaActualRutas - 1) * this.rutasPorPagina;
+    const fin = inicio + this.rutasPorPagina;
+    this.rutasPaginadas = this.rutas.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPaginaRutas(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginasRutas) return;
+    this.paginaActualRutas = pagina;
+    this.actualizarPaginacionRutas();
+  }
+
+  cambiarPorPaginaRutas(cantidad: number) {
+    this.rutasPorPagina = Number(cantidad);
+    this.paginaActualRutas = 1;
+    this.actualizarPaginacionRutas();
+  }
+
+  getPaginasRutas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActualRutas - rango);
+      i <= Math.min(this.totalPaginasRutas, this.paginaActualRutas + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 
   guardarRuta() {
@@ -828,9 +864,11 @@ export class Administrador implements OnInit, OnDestroy {
         alert(resp.mensaje);
         this.cerrarModalRuta();
         this.cargarRutas();
+        this.actualizarPaginacionRutas();
       },
       error: (error) => {
         console.error('Error al insertar la ruta', error);
+        this.actualizarPaginacionRutas();
         alert('Error al guardar la ruta');
       }
     });
@@ -846,9 +884,11 @@ export class Administrador implements OnInit, OnDestroy {
       next: (resp: any) => {
         alert(resp.mensaje);
         this.cargarRutas();
+        this.actualizarPaginacionRutas();
       },
       error: (error) => {
         console.error('Error al eliminar ruta', error);
+        this.actualizarPaginacionRutas(); 
         alert('Error al eliminar la ruta');
       }
     });
@@ -867,9 +907,11 @@ export class Administrador implements OnInit, OnDestroy {
       next: (resp: any) => {
         alert(resp.mensaje);
         this.cargarRutas();
+        this.actualizarPaginacionRutas();
       },
       error: (error) => {
         console.error('Error al cambiar estado', error);
+        this.actualizarPaginacionRutas(); 
         alert('Error al cambiar el estado de la ruta');
       }
     });
@@ -888,9 +930,12 @@ export class Administrador implements OnInit, OnDestroy {
       next: (resp: any) => {
         alert(resp.mensaje);
         this.cargarUsuarios(); // 🔄 refrescar tabla
+        this.actualizarPaginacion(); // 🔄 actualizar paginación
+        
       },
       error: (err) => {
         console.error('Error al cambiar estado', err);
+        this.actualizarPaginacion(); // 🔄 actualizar paginación incluso si hay error
         alert('No se pudo cambiar el estado del usuario');
       }
     });
@@ -927,9 +972,11 @@ export class Administrador implements OnInit, OnDestroy {
         alert(resp.mensaje);
         this.cerrarModalEditar();
         this.cargarRutas();
+        this.actualizarPaginacionRutas();
       },
       error: (error) => {
         console.error('Error al editar ruta', error);
+        this.actualizarPaginacionRutas();
         alert('Error al editar la ruta');
       }
     });
@@ -960,9 +1007,11 @@ export class Administrador implements OnInit, OnDestroy {
         alert(resp.mensaje);
         this.cancelarFormularioUsuarios();
         this.cargarUsuarios(); // refresca la tabla
+        this.actualizarPaginacion(); // 🔄 actualizar paginación
       },
       error: (error) => {
         console.error('Error al guardar usuario', error);
+        this.actualizarPaginacion(); // 🔄 actualizar paginación incluso si hay error
         alert('Error al guardar el usuario');
       }
     });
