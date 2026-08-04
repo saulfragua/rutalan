@@ -59,10 +59,10 @@
                 " />
             </div>
             <div class="flex items-center gap-2">
-              <span *ngIf="mostrarCheck" class="text-green-600 text-xl sm:text-2xl md:text-3xl flex-shrink-0">✅</span>
+              <span *ngIf="mostrarCheck" class="text-green-600 text-xl sm:text-2xl md:text-3xl shrink-0">✅</span>
               <!-- Botón Ver Foto del Cliente - Visible en todos los tamaños -->
               <button *ngIf="clienteActual.foto_cliente" (click)="abrirModalFoto()" type="button"
-                class="flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap flex-shrink-0"
+                class="flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg bg-linear-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap shrink-0"
                 title="Ver foto del cliente">
                 <span class="hidden sm:inline">Ver Foto</span>
               </button>
@@ -423,7 +423,7 @@
             </div>
             <!-- Segunda fila: Ver Foto (si tiene foto) -->
             <button *ngIf="clienteActual?.foto_cliente" type="button" (click)="abrirModalFoto()"
-              class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-lg bg-gradient-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+              class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-lg bg-linear-to-r from-[#066699] to-[#0a5483] text-white border-2 border-[#066699] cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
               <span>Ver Foto del Cliente</span>
             </button>
           </div>
@@ -493,7 +493,7 @@
       <!-- COLUMNA DERECHA: Foto del Cliente COMPACTO -->
       <div class="text-center hidden md:block">
         <div
-          class="bg-white rounded-lg p-2 md:p-4 min-h-[150px] md:min-h-[200px] flex flex-col justify-center border-2 border-[#e5e7eb] shadow-md"
+          class="bg-white rounded-lg p-2 md:p-4 min-h-37.5 md:min-h-50 flex flex-col justify-center border-2 border-[#e5e7eb] shadow-md"
           style="background-color: #ffffff">
           <!-- Foto visible -->
           <div *ngIf="mostrarFoto && clienteActual.foto_cliente" class="animate-fadeIn">
@@ -600,11 +600,11 @@
     (click)="$event.stopPropagation()" style="animation: scaleIn 0.2s ease-in-out;">
     <!-- ENCABEZADO DEL MODAL -->
     <div
-      class="flex-shrink-0 bg-gradient-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-b-4 border-[#aedd2b] rounded-t-lg sm:rounded-t-xl">
+      class="shrink-0 bg-linear-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-b-4 border-[#aedd2b] rounded-t-lg sm:rounded-t-xl">
       <div class="flex items-center justify-between gap-2 sm:gap-4">
         <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
           <div
-            class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.15)] rounded-lg sm:rounded-xl flex items-center justify-center border-2 border-[rgba(255,255,255,0.3)] shadow-md flex-shrink-0">
+            class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-linear-to-br from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.15)] rounded-lg sm:rounded-xl flex items-center justify-center border-2 border-[rgba(255,255,255,0.3)] shadow-md shrink-0">
             <i class="fas fa-user text-white text-base sm:text-xl md:text-2xl drop-shadow-md"></i>
           </div>
           <div class="flex-1 min-w-0">
@@ -621,7 +621,7 @@
           </div>
         </div>
         <button (click)="cerrarModalFoto()" type="button"
-          class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-[rgba(255,255,255,0.15)] border-2 border-[rgba(255,255,255,0.2)] rounded-lg sm:rounded-xl text-white text-lg sm:text-xl md:text-2xl cursor-pointer flex items-center justify-center transition-all duration-200 shadow-md hover:bg-[rgba(255,255,255,0.25)] hover:border-[rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 flex-shrink-0"
+          class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-[rgba(255,255,255,0.15)] border-2 border-[rgba(255,255,255,0.2)] rounded-lg sm:rounded-xl text-white text-lg sm:text-xl md:text-2xl cursor-pointer flex items-center justify-center transition-all duration-200 shadow-md hover:bg-[rgba(255,255,255,0.25)] hover:border-[rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 shrink-0"
           title="Cerrar">
           <i class="fas fa-times"></i>
         </button>
@@ -643,7 +643,7 @@
 
     <!-- PIE DEL MODAL -->
     <div
-      class="flex-shrink-0 bg-gradient-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-t-4 border-[#aedd2b] rounded-b-lg sm:rounded-b-xl">
+      class="shrink-0 bg-linear-to-r from-[#066699] to-[#0a5483] p-3 sm:p-4 md:p-6 border-t-4 border-[#aedd2b] rounded-b-lg sm:rounded-b-xl">
       <div class="flex justify-end gap-2 sm:gap-3">
         <button (click)="cerrarModalFoto()" type="button"
           class="inline-flex items-center justify-center gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold rounded-lg bg-white text-[#066699] border-2 border-white cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
