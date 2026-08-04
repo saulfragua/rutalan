@@ -169,11 +169,10 @@
                       title="{{ u.email || '—' }}">{{ u.email || '—' }}</td>
                     <!-- ACCIONES PROFESIONALES -->
                     <td
-                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap truncate max-w-25 sm:max-w-37.5 md:max-w-none">
-                      <div class="flex  gap-0.5 sm:gap-1 md:gap-1.5">
+                      class="px-1 sm:px-2 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 lg:py-3 text-[#02416d] text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+                      <div class="flex gap-0.5 sm:gap-1 md:gap-1.5">
                         <button (click)="abrirModalAsignarRuta(u)" class="btn-accion btn-ruta"
                           title="Asignar rutas al usuario">
-
                           <i class="fas fa-route hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"></i>
                         </button>
                         <button *ngIf="u.rol === 'cobrador'" (click)="abrirModalClaveDinamica(u)"
@@ -211,8 +210,10 @@
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
 
-            <!-- PAGINACIÓN -->
+        <!-- PAGINACIÓN -->
             <div
               class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t-2 border-[#e5e7eb]">
 
@@ -244,9 +245,7 @@
 
                 <!-- Páginas numeradas -->
                 <button *ngFor="let p of getPaginas()" (click)="cambiarPagina(p)"
-                  [class]="p === paginaActualUsuarios ? 
-        'px-3 py-1.5 rounded-lg text-sm font-semibold bg-[#0A2E5C] text-white border-2 border-[#0A2E5C]' : 
-        'px-3 py-1.5 rounded-lg text-sm font-medium bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white transition-all duration-200'">
+                  [class]="p === paginaActualUsuarios ? 'px-3 py-1.5 rounded-lg text-sm font-semibold bg-[#0A2E5C] text-white border-2 border-[#0A2E5C]' : 'px-3 py-1.5 rounded-lg text-sm font-medium bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white transition-all duration-200'">
                   {{ p }}
                 </button>
 
@@ -263,11 +262,7 @@
                   »
                 </button>
               </div>
-
             </div>
-
-          </div>
-        </div>
       </div>
 
 
@@ -820,7 +815,7 @@
         Cancelar
       </button>
       <button (click)="guardarRuta()"
-        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #aedd2b 0%, #9bc825 100%); color: #02416d;"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #0aad60 0%, #0aad60 100%); color: #02416d;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
         Guardar
@@ -885,7 +880,7 @@
         Cancelar
       </button>
       <button (click)="editarRuta()"
-        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: linear-gradient(135deg, #0A2E5C 0%, #0A2E5C 100%); color: #ffffff;"
+        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); min-width: 140px; background: #0aad60; color: #ffffff;"
         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)';"
         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)';">
         Guardar Cambios
@@ -896,7 +891,8 @@
 
 <!-- MODAL NUEVO USUARIO PROFESIONAL -->
 <div *ngIf="verFormularioUsuario" class="fixed inset-0 flex items-center justify-center z-50 p-4"
-  style="background: rgb(255, 255, 255); backdrop-filter: blur(4px);z-index: 1050" (click)="cancelarFormularioUsuarios()">
+  style="background: rgb(255, 255, 255); backdrop-filter: blur(4px);z-index: 1050"
+  (click)="cancelarFormularioUsuarios()">
 
   <div
     class="bg-white w-full max-w-4xl rounded-xl shadow-2xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
@@ -1087,7 +1083,7 @@
 
     <!-- ENCABEZADO PROFESIONAL -->
     <div
-      style="flex-shrink: 0; background: linear-gradient(135deg, #02416d 0%, #02416d 100%); padding: 1.5rem 2rem; border-bottom: 4px solid #0aad60; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      style="flex-shrink: 0; background: #0a2e5c; padding: 1.5rem 2rem; border-bottom: 4px solid #0aad60; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
@@ -1158,7 +1154,8 @@
 
 <!-- MODAL EDITAR USUARIO PROFESIONAL -->
 <div *ngIf="modalEditarUsuario" class="fixed inset-0 flex items-center justify-center z-50 p-4"
-  style="background: rgb(255, 255, 255); backdrop-filter: blur(4px); z-index: 1050" (click)="cerrarModalEditarUsuario()">
+  style="background: rgb(255, 255, 255); backdrop-filter: blur(4px); z-index: 1050"
+  (click)="cerrarModalEditarUsuario()">
 
   <div
     class="bg-white w-full max-w-4xl rounded-xl shadow-2xl max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
@@ -1166,7 +1163,7 @@
 
     <!-- ENCABEZADO PROFESIONAL -->
     <div
-      style="flex-shrink: 0; background: linear-gradient(135deg, #02416d 0%, #02416d 100%); padding: 1.75rem 2rem; border-bottom: 4px solid #0aad60; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      style="flex-shrink: 0; background: #0a2e5c; padding: 1.75rem 2rem; border-bottom: 4px solid #0aad60; border-radius: 0.75rem 0.75rem 0 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
@@ -1334,10 +1331,12 @@
 
 <!-- MODAL CLAVE DINÁMICA PROFESIONAL -->
 <div *ngIf="modalClaveDinamica" class="fixed inset-0 flex items-center justify-center z-50 p-4"
-  style="background: rgb(255, 255, 255); backdrop-filter: blur(4px);  z-index: 1050;" (click)="cerrarModalClaveDinamica()">
+  style="background: rgb(255, 255, 255); backdrop-filter: blur(4px);  z-index: 1050;"
+  (click)="cerrarModalClaveDinamica()">
 
-  <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
-  style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
+  <div
+    class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[95vh] flex flex-col transform transition-all animate-scaleIn"
+    style="display: flex; flex-direction: column;" (click)="$event.stopPropagation()">
 
     <!-- ENCABEZADO PROFESIONAL -->
     <div
@@ -1372,7 +1371,8 @@
     </div>
 
     <!-- CONTENIDO CON SCROLL -->
-    <div style="background-color: #f8f8ec; padding: 2rem; overflow-y: auto; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
+    <div
+      style="background-color: #f8f8ec; padding: 2rem; overflow-y: auto; flex: 1; min-height: 0; max-height: calc(95vh - 200px);">
 
       <!-- CLAVE GENERADA - DESTACADA -->
       <div style="margin-bottom: 1.5rem;">
