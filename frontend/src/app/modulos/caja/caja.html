@@ -3,7 +3,7 @@
   <div
     class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 mb-4 sm:p-4 md:p-6 min-h-full">
     <!-- ENCABEZADO PROFESIONAL - Mobile First -->
-    <div class="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b-2 border-[#e5e7eb]">
+    <div class=" sm:mb-6 sm:pb-6 border-b-2 border-[#e5e7eb]">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <!-- LADO IZQUIERDO: Ícono + Info -->
         <div class="flex items-center gap-4">
@@ -668,7 +668,7 @@
 
 <!-- MODAL CIERRE DE CAJA PROFESIONAL - Mobile First -->
 <div *ngIf="modalCierreAbierto"
-  class="fmodal-cierre-backdrop fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-[rgba(2,65,109,0.75)] backdrop-blur-sm"
+  class="fmodal-cierre-backdrop fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-[rgba(2,65,109,0.75)] backdrop-blur-sm" style="z-index: 1050;"
   (click)="cerrarModalCierre()">
   <div
     class="bg-white rounded-lg sm:rounded-xl shadow-2xl w-full max-w-4xl max-h-[95vh] flex flex-col transform transition-all"

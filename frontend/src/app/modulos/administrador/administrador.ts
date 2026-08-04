@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-administrador',
   standalone: false,
-  templateUrl:'./administrador.html',
+  templateUrl: './administrador.html',
   styleUrl: './administrador.css',
 })
 export class Administrador implements OnInit, OnDestroy {
@@ -21,23 +21,23 @@ export class Administrador implements OnInit, OnDestroy {
   /* =========================
      ESTADOS / VARIABLES
   ========================== */
-modalEditarUsuario = false;
+  modalEditarUsuario = false;
 
-modalEditar = false;
-usuarioEdit: any = {};
-nuevaClave: string = '';
-confirmarNuevaClave: string = '';
+  modalEditar = false;
+  usuarioEdit: any = {};
+  nuevaClave: string = '';
+  confirmarNuevaClave: string = '';
   // Asignar Rutas
 
   modalAsignarRuta = false;
-usuarioSeleccionado: any = null;
+  usuarioSeleccionado: any = null;
 
-rutasAsignadas: number[] = [];
-rutasSeleccionadas: number[] = [];
+  rutasAsignadas: number[] = [];
+  rutasSeleccionadas: number[] = [];
 
-rutasPorUsuario: { [key: number]: string[] } = {};
+  rutasPorUsuario: { [key: number]: string[] } = {};
 
-// rutas y usuarios
+  // rutas y usuarios
   rutas: any[] = [];
   usuarios: any[] = [];
 
@@ -80,15 +80,40 @@ rutasPorUsuario: { [key: number]: string[] } = {};
   modalEditarRuta: boolean = false;
   idRutaEditar: number = 0;
   nombreRutaEditar: string = '';
-  
+
   // Modal de clave dinámica
   modalClaveDinamica: boolean = false;
   claveGenerada: string = '';
   fechaVigencia: string = '';
   usuarioClave: any = null;
-  
+
   private routerSubscription?: Subscription;
   private isBrowser: boolean;
+
+
+  // PaginaciónUsuarios
+  paginaActualUsuarios: number = 1;
+  usuariosPorPagina: number = 5;
+  totalPaginasUsuarios: number = 0;
+  usuariosPaginados: any[] = [];
+  opcionesPorPaginaUsuarios: number[] = [5, 10, 25, 50, 100];
+  MathPagina = Math;
+
+  // PaginaciónRuta
+  paginaActualRutas: number = 1;
+  rutasPorPaginaRuta: number = 5;
+  totalPaginasRutas: number = 0;
+  rutasPaginadas: any[] = [];
+  opcionesPorPaginaRuta: number[] = [5, 10, 25, 50, 100];
+  MathPaginaRuta = Math;
+
+  // PaginaciónErrores
+  paginaActualErrores: number = 1;
+  erroresPorPagina: number = 5;
+  totalPaginasErrores: number = 0;
+  erroresPaginados: any[] = [];
+  opcionesPorPaginaErrores: number[] = [5, 10, 25, 50, 100];
+  MathPaginaErrores = Math;
 
   /* =========================
      CONSTRUCTOR
@@ -101,6 +126,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
     private clavesCobradorService: ClavesCobradorService,
     private router: Router,
     private http: HttpClient,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -132,7 +158,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
         }
       }
     }
-    
+
     this.cargarUsuarios();
     this.listarUsuarios();
     this.cargarRutas();
@@ -152,15 +178,15 @@ rutasPorUsuario: { [key: number]: string[] } = {};
   ========================== */
 
   listarUsuarios() {
-  this.usuariosService.consultar().subscribe({
-    next: (data: any) => {
-      this.usuarios = data;
-    },
-    error: () => {
-      console.error('Error al listar usuarios');
-    }
-  });
-}
+    this.usuariosService.consultar().subscribe({
+      next: (data: any) => {
+        this.usuarios = data;
+      },
+      error: () => {
+        console.error('Error al listar usuarios');
+      }
+    });
+  }
 
   abrirTab(tab: string) {
     this.tabActiva = tab;
@@ -221,14 +247,14 @@ rutasPorUsuario: { [key: number]: string[] } = {};
       })
       .then(statusData => {
         console.log('Estado del servicio WhatsApp:', statusData);
-        
+
         // Si WhatsApp está deshabilitado en desarrollo, mostrar mensaje informativo
         if (statusData.disabled) {
           this.cargandoQR = false;
           alert(`⚠️ WhatsApp está deshabilitado en modo desarrollo.\n\nPara habilitarlo:\n1. Establece la variable de entorno: ENABLE_WHATSAPP=true\n2. Reinicia el servicio de WhatsApp`);
           return;
         }
-        
+
         // Si el servicio no está disponible o no tiene cliente, inicializar
         if (!statusData.clientExists) {
           console.log('Cliente no existe, inicializando...');
@@ -248,7 +274,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
       })
       .then(response => {
         if (!response) return; // Ya se manejó en el paso anterior
-        
+
         // Manejar 404 específicamente para el endpoint QR
         if (!response.ok) {
           if (response.status === 404) {
@@ -308,15 +334,15 @@ rutasPorUsuario: { [key: number]: string[] } = {};
         console.error('Error al obtener QR:', error);
         this.cargandoQR = false;
         this.whatsappConectado = false;
-        
+
         // Mensaje de error más descriptivo y específico
         let mensajeError = '';
-        
+
         // Si el servicio no está disponible (404 o error de conexión)
-        if (error.message === 'SERVICIO_NO_DISPONIBLE' || 
-            error.message.includes('Failed to fetch') || 
-            error.message.includes('NetworkError') ||
-            error.message.includes('404')) {
+        if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
+          error.message.includes('Failed to fetch') ||
+          error.message.includes('NetworkError') ||
+          error.message.includes('404')) {
           mensajeError = `⚠️ El servicio de WhatsApp no está disponible.\n\n`;
           mensajeError += `URL del servicio: ${environment.whatsappApiUrl}\n\n`;
           mensajeError += `Para solucionar esto:\n`;
@@ -334,7 +360,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
           mensajeError += `URL intentada: ${environment.whatsappApiUrl}\n\n`;
           mensajeError += `Error: ${error.message}`;
         }
-        
+
         // Solo mostrar alert si el usuario está en la pestaña de WhatsApp
         if (this.tabActiva === 'whatsapp') {
           alert(mensajeError);
@@ -350,10 +376,10 @@ rutasPorUsuario: { [key: number]: string[] } = {};
     }
 
     console.log('🔄 Iniciando verificación automática de estado...');
-    
+
     // Verificar inmediatamente
     this.verificarEstadoWhatsApp();
-    
+
     // Luego verificar cada 3 segundos (más frecuente para detectar conexión más rápido)
     this.intervaloQR = setInterval(() => {
       this.verificarEstadoWhatsApp();
@@ -381,17 +407,17 @@ rutasPorUsuario: { [key: number]: string[] } = {};
       })
       .then(data => {
         if (!data) return; // Servicio no disponible
-        
+
         console.log('📊 Estado verificado:', {
           ready: data.ready,
           hasQR: data.hasQR,
           clientExists: data.clientExists,
           clientState: data.clientState || 'no disponible'
         });
-        
+
         // Verificar si está conectado por el estado real del cliente también
         const estaConectado = data.ready || (data.clientState === 'CONNECTED');
-        
+
         // Actualizar estado de conexión
         if (estaConectado) {
           console.log('✅ WhatsApp está conectado! (ready:', data.ready, ', state:', data.clientState, ')');
@@ -415,7 +441,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
           console.log('📲 Hay QR disponible, obteniéndolo...');
           this.obtenerQRWhatsApp();
         }
-        
+
         // Si no hay QR y no está conectado, podría estar inicializando o escaneando
         if (!data.hasQR && !estaConectado && data.clientExists) {
           if (data.clientState === 'CONNECTING' || data.clientState === 'OPENING') {
@@ -473,7 +499,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
       .then((data) => {
         console.log('✅ Sesión reiniciada en el servidor:', data);
         console.log('⏳ Esperando a que se destruya la sesión y se genere nuevo QR...');
-        
+
         // Esperar más tiempo para que el servidor:
         // 1. Destruya el cliente
         // 2. Elimine los archivos de sesión
@@ -490,11 +516,11 @@ rutasPorUsuario: { [key: number]: string[] } = {};
         console.error('❌ Error al reiniciar sesión:', error);
         this.cargandoQR = false;
         this.whatsappConectado = false;
-        
+
         let mensajeError = '';
-        if (error.message === 'SERVICIO_NO_DISPONIBLE' || 
-            error.message.includes('Failed to fetch') || 
-            error.message.includes('404')) {
+        if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
+          error.message.includes('Failed to fetch') ||
+          error.message.includes('404')) {
           mensajeError = 'El servicio de WhatsApp no está disponible.\n\n';
           mensajeError += `Verifica que el servicio esté corriendo en: ${environment.whatsappApiUrl}\n\n`;
           mensajeError += `Para iniciar el servicio:\n`;
@@ -513,7 +539,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
         } else {
           mensajeError = `No se pudo reiniciar la sesión de WhatsApp.\n\nError: ${error.message}`;
         }
-        
+
         alert(mensajeError);
       });
   }
@@ -552,7 +578,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
       .then((data) => {
         console.log('✅ Servicios reiniciados en el servidor:', data);
         console.log('⏳ Esperando a que se reinicien los servicios y se genere nuevo QR...');
-        
+
         // Esperar más tiempo para que el servidor:
         // 1. Reinicie completamente los servicios
         // 2. Destruya el cliente
@@ -572,11 +598,11 @@ rutasPorUsuario: { [key: number]: string[] } = {};
         this.reiniciandoServicio = false;
         this.cargandoQR = false;
         this.whatsappConectado = false;
-        
+
         let mensajeError = '';
-        if (error.message === 'SERVICIO_NO_DISPONIBLE' || 
-            error.message.includes('Failed to fetch') || 
-            error.message.includes('404')) {
+        if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
+          error.message.includes('Failed to fetch') ||
+          error.message.includes('404')) {
           mensajeError = 'El servicio de WhatsApp no está disponible.\n\n';
           mensajeError += `Verifica que el servicio esté corriendo en: ${environment.whatsappApiUrl}\n\n`;
           mensajeError += `Para iniciar el servicio:\n`;
@@ -595,7 +621,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
         } else {
           mensajeError = `No se pudieron reiniciar los servicios de WhatsApp.\n\nError: ${error.message}`;
         }
-        
+
         alert(mensajeError);
       });
   }
@@ -609,12 +635,14 @@ rutasPorUsuario: { [key: number]: string[] } = {};
     // Asegurar que todas las rutas estén cargadas cuando se abre el formulario
     if (this.rutas.length === 0) {
       this.cargarRutas();
+      this.actualizarPaginacion(); // Actualizar paginación después de cargar rutas
     }
   }
 
   cancelarFormularioUsuarios() {
     this.verFormularioUsuario = false;
     this.limpiarFormulario();
+    this.actualizarPaginacion();
   }
 
   guardarUsuario() {
@@ -636,7 +664,7 @@ rutasPorUsuario: { [key: number]: string[] } = {};
                 id_usuario: idUsuario,
                 id_ruta: this.usuario.id_ruta
               };
-              
+
               this.usuarioRutaService.insertar(datosAsignacion).subscribe({
                 next: (respRuta: any) => {
                   alert(resp.mensaje + '. Ruta asignada correctamente.');
@@ -671,43 +699,47 @@ rutasPorUsuario: { [key: number]: string[] } = {};
           alert(resp.mensaje);
           this.limpiarFormulario();
           this.cargarUsuarios();
+          this.actualizarPaginacion();
         },
         error: (error) => {
           console.error('Error al guardar usuario', error);
+          this.actualizarPaginacion();
           alert('Error al guardar el usuario');
         }
       });
     }
   }
 
-cargarUsuarios() {
-  this.usuariosService.consultar().subscribe({
-    next: (usuarios: any[]) => {
-      this.usuarios = usuarios;
+  cargarUsuarios() {
+    this.usuariosService.consultar().subscribe({
+      next: (usuarios: any[]) => {
+        this.usuarios = usuarios;
 
-      // 🔹 Por cada usuario, cargar sus rutas
-      usuarios.forEach(u => {
-        this.usuarioRutaService
-          .rutasPorUsuario(u.id_usuario)
-          .subscribe({
-            next: (rutas: any[]) => {
-              this.rutasPorUsuario[u.id_usuario] =
-                rutas.map(r => r.nombre_ruta);
-            }
-          });
-      });
-    },
-    error: (error) => {
-      console.error('Error al cargar usuarios', error);
-    }
-  });
-}
+        // 🔹 Por cada usuario, cargar sus rutas
+        usuarios.forEach(u => {
+          this.usuarioRutaService
+            .rutasPorUsuario(u.id_usuario)
+            .subscribe({
+              next: (rutas: any[]) => {
+                this.rutasPorUsuario[u.id_usuario] =
+                  rutas.map(r => r.nombre_ruta);
+              }
+            });
+        });
+        this.actualizarPaginacion();
+      },
+      error: (error) => {
+        console.error('Error al cargar usuarios', error);
+        this.actualizarPaginacion(); // Asegurar que la paginación se actualice incluso si hay error
+      }
+    });
+  }
 
 
 
   cancelarFormulario() {
     this.limpiarFormulario();
-    
+
   }
 
   limpiarFormulario() {
@@ -725,6 +757,37 @@ cargarUsuarios() {
     if (this.rutas.length === 0) {
       this.cargarRutas();
     }
+  }
+
+  actualizarPaginacion() {
+    this.totalPaginasUsuarios = Math.ceil(this.usuarios.length / this.usuariosPorPagina);
+    if (this.paginaActualUsuarios > this.totalPaginasUsuarios) this.paginaActualUsuarios = 1;
+    const inicio = (this.paginaActualUsuarios - 1) * this.usuariosPorPagina;
+    const fin = inicio + this.usuariosPorPagina;
+    this.usuariosPaginados = this.usuarios.slice(inicio, fin);
+    this.cdr.detectChanges();
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginasUsuarios) return;
+    this.paginaActualUsuarios = pagina;
+    this.actualizarPaginacion();
+  }
+
+  cambiarPorPagina(cantidad: number) {
+    this.usuariosPorPagina = Number(cantidad);
+    this.paginaActualUsuarios = 1;
+    this.actualizarPaginacion();
+  }
+
+  getPaginas(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActualUsuarios - rango);
+      i <= Math.min(this.totalPaginasUsuarios, this.paginaActualUsuarios + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 
   /* =========================
@@ -812,26 +875,26 @@ cargarUsuarios() {
     });
   }
 
-cambiarEstadoUsuario(id: number, estadoActual: number) {
+  cambiarEstadoUsuario(id: number, estadoActual: number) {
 
-  const nuevoEstado = estadoActual === 1 ? 0 : 1;
-  const accion = nuevoEstado === 1 ? 'activar' : 'inactivar';
+    const nuevoEstado = estadoActual === 1 ? 0 : 1;
+    const accion = nuevoEstado === 1 ? 'activar' : 'inactivar';
 
-  if (!confirm(`¿Desea ${accion} este usuario?`)) {
-    return;
-  }
-
-  this.usuariosService.cambiarEstado(id, nuevoEstado).subscribe({
-    next: (resp: any) => {
-      alert(resp.mensaje);
-      this.cargarUsuarios(); // 🔄 refrescar tabla
-    },
-    error: (err) => {
-      console.error('Error al cambiar estado', err);
-      alert('No se pudo cambiar el estado del usuario');
+    if (!confirm(`¿Desea ${accion} este usuario?`)) {
+      return;
     }
-  });
-}
+
+    this.usuariosService.cambiarEstado(id, nuevoEstado).subscribe({
+      next: (resp: any) => {
+        alert(resp.mensaje);
+        this.cargarUsuarios(); // 🔄 refrescar tabla
+      },
+      error: (err) => {
+        console.error('Error al cambiar estado', err);
+        alert('No se pudo cambiar el estado del usuario');
+      }
+    });
+  }
 
 
 
@@ -874,271 +937,275 @@ cambiarEstadoUsuario(id: number, estadoActual: number) {
 
   insertar() {
 
-  // 1️⃣ Validar contraseñas
-  if (this.usuario.clave !== this.confirmarClave) {
-    alert('Las contraseñas no coinciden');
-    return;
-  }
-
-  // 2️⃣ Validar rol
-  if (this.usuario.rol !== 'admin' && this.usuario.rol !== 'cobrador') {
-    alert('Rol no permitido');
-    return;
-  }
-
-  // 3️⃣ Si no es cobrador, id_ruta debe ir NULL
-  if (this.usuario.rol !== 'cobrador') {
-    this.usuario.id_ruta = null;
-  }
-
-  // 4️⃣ Enviar al backend
-  this.usuariosService.insertar(this.usuario).subscribe({
-    next: (resp: any) => {
-      alert(resp.mensaje);
-      this.cancelarFormularioUsuarios();
-      this.cargarUsuarios(); // refresca la tabla
-    },
-    error: (error) => {
-      console.error('Error al guardar usuario', error);
-      alert('Error al guardar el usuario');
-    }
-  });
-}
-
-abrirModalAsignarRuta(usuario: any) {
-  this.usuarioSeleccionado = usuario;
-  this.modalAsignarRuta = true;
-
-  // 1. Todas las rutas
-  this.rutasService.consultar().subscribe({
-    next: (rutas: any) => {
-      this.rutas = rutas;
-    }
-  });
-
-  // 2. Rutas ya asignadas
-  this.usuarioRutaService.rutasPorUsuario(usuario.id_usuario).subscribe({
-    next: (resp: any) => {
-      this.rutasAsignadas = resp.map((r: any) => r.id_ruta);
-
-      // Copia para checklist
-      this.rutasSeleccionadas = [...this.rutasAsignadas];
-    }
-  });
-}
-
-cerrarModalAsignarRuta() {
-  this.modalAsignarRuta = false;
-  this.usuarioSeleccionado = null;
-  this.rutasAsignadas = [];
-  this.rutasSeleccionadas = [];
-}
-
-toggleRutaSeleccionada(id_ruta: number, checked: boolean) {
-
-  if (checked) {
-    if (!this.rutasSeleccionadas.includes(id_ruta)) {
-      this.rutasSeleccionadas.push(id_ruta);
-    }
-  } else {
-    this.rutasSeleccionadas =
-      this.rutasSeleccionadas.filter(r => r !== id_ruta);
-  }
-}
-
-guardarAsignacionRutas() {
-
-  const id_usuario = this.usuarioSeleccionado.id_usuario;
-
-  // ➕ Rutas nuevas
-  const nuevas = this.rutasSeleccionadas.filter(
-    r => !this.rutasAsignadas.includes(r)
-  );
-
-  // ➖ Rutas quitadas
-  const quitadas = this.rutasAsignadas.filter(
-    r => !this.rutasSeleccionadas.includes(r)
-  );
-
-  // Asignar nuevas
-  nuevas.forEach(id_ruta => {
-    this.usuarioRutaService.asignar({
-      id_usuario,
-      id_ruta
-    }).subscribe();
-  });
-
-  // Quitar desmarcadas
-  quitadas.forEach(id_ruta => {
-    this.usuarioRutaService.quitar({
-      id_usuario,
-      id_ruta
-    }).subscribe();
-  });
-
-  alert('Rutas actualizadas correctamente');
-  this.cerrarModalAsignarRuta();
-}
-
-
-cerrarModal() {
-  this.modalEditar = false;
-}
-
-guardarEdicion() {
-  this.usuariosService.editar(this.usuarioEdit.id_usuario, this.usuarioEdit)
-    .subscribe({
-      next: (resp: any) => {
-        alert(resp.resultado);
-        this.modalEditar = false;
-        this.listarUsuarios(); // recarga tabla
-      },
-      error: () => {
-        alert('Error al editar usuario');
-      }
-    });
-}
-
-abrirModalEditarUsuario(usuario: any) {
-  this.usuarioEdit = { ...usuario }; // copia segura
-  this.nuevaClave = '';
-  this.confirmarNuevaClave = '';
-  this.modalEditarUsuario = true;
-}
-
-cerrarModalEditarUsuario() {
-  this.modalEditarUsuario = false;
-  this.usuarioEdit = {};
-  this.nuevaClave = '';
-  this.confirmarNuevaClave = '';
-}
-
-guardarEdicionUsuario() {
-  // Validar que las contraseñas coincidan si se proporcionaron
-  if (this.nuevaClave || this.confirmarNuevaClave) {
-    if (this.nuevaClave !== this.confirmarNuevaClave) {
+    // 1️⃣ Validar contraseñas
+    if (this.usuario.clave !== this.confirmarClave) {
       alert('Las contraseñas no coinciden');
       return;
     }
-    if (this.nuevaClave.trim() === '') {
-      alert('La contraseña no puede estar vacía');
+
+    // 2️⃣ Validar rol
+    if (this.usuario.rol !== 'admin' && this.usuario.rol !== 'cobrador') {
+      alert('Rol no permitido');
       return;
     }
-    // Agregar la clave al objeto de edición
-    this.usuarioEdit.clave = this.nuevaClave;
-  }
 
-  // Preparar datos para enviar (sin incluir la clave si está vacía)
-  const datosEdicion = { ...this.usuarioEdit };
-  if (!this.nuevaClave || this.nuevaClave.trim() === '') {
-    delete datosEdicion.clave;
-  }
+    // 3️⃣ Si no es cobrador, id_ruta debe ir NULL
+    if (this.usuario.rol !== 'cobrador') {
+      this.usuario.id_ruta = null;
+    }
 
-  this.usuariosService
-    .editar(this.usuarioEdit.id_usuario, datosEdicion)
-    .subscribe({
+    // 4️⃣ Enviar al backend
+    this.usuariosService.insertar(this.usuario).subscribe({
       next: (resp: any) => {
-        alert(resp.mensaje || resp.resultado);
-        this.cerrarModalEditarUsuario();
-        this.cargarUsuarios(); // refresca tabla
+        alert(resp.mensaje);
+        this.cancelarFormularioUsuarios();
+        this.cargarUsuarios(); // refresca la tabla
       },
-      error: () => {
-        alert('Error al editar usuario');
+      error: (error) => {
+        console.error('Error al guardar usuario', error);
+        alert('Error al guardar el usuario');
       }
     });
-}
+  }
+
+  abrirModalAsignarRuta(usuario: any) {
+    this.usuarioSeleccionado = usuario;
+    this.modalAsignarRuta = true;
+
+    // 1. Todas las rutas
+    this.rutasService.consultar().subscribe({
+      next: (rutas: any) => {
+        this.rutas = rutas;
+      }
+    });
+
+    // 2. Rutas ya asignadas
+    this.usuarioRutaService.rutasPorUsuario(usuario.id_usuario).subscribe({
+      next: (resp: any) => {
+        this.rutasAsignadas = resp.map((r: any) => r.id_ruta);
+
+        // Copia para checklist
+        this.rutasSeleccionadas = [...this.rutasAsignadas];
+      }
+    });
+  }
+
+  cerrarModalAsignarRuta() {
+    this.modalAsignarRuta = false;
+    this.usuarioSeleccionado = null;
+    this.rutasAsignadas = [];
+    this.rutasSeleccionadas = [];
+  }
+
+  toggleRutaSeleccionada(id_ruta: number, checked: boolean) {
+
+    if (checked) {
+      if (!this.rutasSeleccionadas.includes(id_ruta)) {
+        this.rutasSeleccionadas.push(id_ruta);
+      }
+    } else {
+      this.rutasSeleccionadas =
+        this.rutasSeleccionadas.filter(r => r !== id_ruta);
+    }
+  }
+
+  guardarAsignacionRutas() {
+
+    const id_usuario = this.usuarioSeleccionado.id_usuario;
+
+    // ➕ Rutas nuevas
+    const nuevas = this.rutasSeleccionadas.filter(
+      r => !this.rutasAsignadas.includes(r)
+    );
+
+    // ➖ Rutas quitadas
+    const quitadas = this.rutasAsignadas.filter(
+      r => !this.rutasSeleccionadas.includes(r)
+    );
+
+    // Asignar nuevas
+    nuevas.forEach(id_ruta => {
+      this.usuarioRutaService.asignar({
+        id_usuario,
+        id_ruta
+      }).subscribe();
+    });
+
+    // Quitar desmarcadas
+    quitadas.forEach(id_ruta => {
+      this.usuarioRutaService.quitar({
+        id_usuario,
+        id_ruta
+      }).subscribe();
+    });
+
+    alert('Rutas actualizadas correctamente');
+    this.cerrarModalAsignarRuta();
+  }
+
+
+  cerrarModal() {
+    this.modalEditar = false;
+  }
+
+  guardarEdicion() {
+    this.usuariosService.editar(this.usuarioEdit.id_usuario, this.usuarioEdit)
+      .subscribe({
+        next: (resp: any) => {
+          alert(resp.resultado);
+          this.modalEditar = false;
+          this.listarUsuarios(); // recarga tabla
+        },
+        error: () => {
+          alert('Error al editar usuario');
+        }
+      });
+  }
+
+  abrirModalEditarUsuario(usuario: any) {
+    this.usuarioEdit = { ...usuario }; // copia segura
+    this.nuevaClave = '';
+    this.confirmarNuevaClave = '';
+    this.modalEditarUsuario = true;
+  }
+
+  cerrarModalEditarUsuario() {
+    this.modalEditarUsuario = false;
+    this.usuarioEdit = {};
+    this.nuevaClave = '';
+    this.confirmarNuevaClave = '';
+  }
+
+  guardarEdicionUsuario() {
+    // Validar que las contraseñas coincidan si se proporcionaron
+    if (this.nuevaClave || this.confirmarNuevaClave) {
+      if (this.nuevaClave !== this.confirmarNuevaClave) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+      if (this.nuevaClave.trim() === '') {
+        alert('La contraseña no puede estar vacía');
+        return;
+      }
+      // Agregar la clave al objeto de edición
+      this.usuarioEdit.clave = this.nuevaClave;
+    }
+
+    // Preparar datos para enviar (sin incluir la clave si está vacía)
+    const datosEdicion = { ...this.usuarioEdit };
+    if (!this.nuevaClave || this.nuevaClave.trim() === '') {
+      delete datosEdicion.clave;
+    }
+
+    this.usuariosService
+      .editar(this.usuarioEdit.id_usuario, datosEdicion)
+      .subscribe({
+        next: (resp: any) => {
+          alert(resp.mensaje || resp.resultado);
+          this.cerrarModalEditarUsuario();
+          this.cargarUsuarios(); // refresca tabla
+        },
+        error: () => {
+          alert('Error al editar usuario');
+        }
+      });
+  }
 
   //  ELIMINAR USUARIO
 
 
-eliminarUsuario(id: number) {
+  eliminarUsuario(id: number) {
 
-  if (!confirm('¿Está seguro de eliminar este usuario?')) {
-    return;
-  }
-
-  this.usuariosService.eliminar(id).subscribe({
-    next: (resp: any) => {
-      alert(resp.mensaje || resp.resultado);
-      this.cargarUsuarios(); // refresca la tabla
-    },
-    error: (error) => {
-      console.error('Error al eliminar usuario', error);
-      alert('No se pudo eliminar el usuario');
+    if (!confirm('¿Está seguro de eliminar este usuario?')) {
+      return;
     }
-  });
-}
 
-/* =========================
-   CLAVE DINÁMICA
-========================== */
-
-/**
- * Abre el modal para generar clave dinámica
- * Solo disponible para cobradores
- */
-abrirModalClaveDinamica(usuario: any) {
-  if (usuario.rol !== 'cobrador') {
-    alert('Las claves dinámicas solo están disponibles para cobradores');
-    return;
+    this.usuariosService.eliminar(id).subscribe({
+      next: (resp: any) => {
+        alert(resp.mensaje || resp.resultado);
+        this.cargarUsuarios(); // refresca la tabla
+      },
+      error: (error) => {
+        console.error('Error al eliminar usuario', error);
+        alert('No se pudo eliminar el usuario');
+      }
+    });
   }
 
-  this.usuarioClave = usuario;
-  
-  // Verificar si ya tiene una clave activa del día
-  this.clavesCobradorService.obtenerClaveActiva(usuario.id_usuario).subscribe({
-    next: (resp: any) => {
-      if (resp.resultado === 'ok' && resp.clave) {
-        // Ya tiene una clave activa
-        this.claveGenerada = resp.clave.clave;
-        this.fechaVigencia = resp.clave.fecha;
-        this.modalClaveDinamica = true;
-      } else {
-        // No tiene clave activa, generar una nueva
+  /* =========================
+     CLAVE DINÁMICA
+  ========================== */
+
+  /**
+   * Abre el modal para generar clave dinámica
+   * Solo disponible para cobradores
+   */
+  abrirModalClaveDinamica(usuario: any) {
+    if (usuario.rol !== 'cobrador') {
+      alert('Las claves dinámicas solo están disponibles para cobradores');
+      return;
+    }
+
+    this.usuarioClave = usuario;
+
+    // Verificar si ya tiene una clave activa del día
+    this.clavesCobradorService.obtenerClaveActiva(usuario.id_usuario).subscribe({
+      next: (resp: any) => {
+        if (resp.resultado === 'ok' && resp.clave) {
+          // Ya tiene una clave activa
+          this.claveGenerada = resp.clave.clave;
+          this.fechaVigencia = resp.clave.fecha;
+          this.modalClaveDinamica = true;
+          this.cdr.detectChanges();
+        } else {
+          // No tiene clave activa, generar una nueva
+          this.generarNuevaClave(usuario.id_usuario);
+        }
+      },
+      error: () => {
+        // Error al consultar, generar nueva clave
         this.generarNuevaClave(usuario.id_usuario);
+        this.cdr.detectChanges();
       }
-    },
-    error: () => {
-      // Error al consultar, generar nueva clave
-      this.generarNuevaClave(usuario.id_usuario);
-    }
-  });
-}
+    });
+  }
 
-/**
- * Genera una nueva clave dinámica
- */
-generarNuevaClave(idUsuario: number) {
-  this.clavesCobradorService.generarClave(idUsuario).subscribe({
-    next: (resp: any) => {
-      if (resp.resultado === 'ok') {
-        this.claveGenerada = resp.clave;
-        this.fechaVigencia = resp.fecha;
-        this.modalClaveDinamica = true;
-      } else {
-        alert(resp.mensaje || 'Error al generar la clave');
+  /**
+   * Genera una nueva clave dinámica
+   */
+  generarNuevaClave(idUsuario: number) {
+    this.clavesCobradorService.generarClave(idUsuario).subscribe({
+      next: (resp: any) => {
+        if (resp.resultado === 'ok') {
+          this.claveGenerada = resp.clave;
+          this.fechaVigencia = resp.fecha;
+          this.modalClaveDinamica = true;
+          this.cdr.detectChanges();
+        } else {
+          alert(resp.mensaje || 'Error al generar la clave');
+        }
+      },
+      error: (error) => {
+        console.error('Error al generar clave:', error);
+        alert('Error al generar la clave dinámica');
       }
-    },
-    error: (error) => {
-      console.error('Error al generar clave:', error);
-      alert('Error al generar la clave dinámica');
-    }
-  });
-}
+    });
+  }
 
-/**
- * Cierra el modal de clave dinámica
- */
-cerrarModalClaveDinamica() {
-  this.modalClaveDinamica = false;
-  this.claveGenerada = '';
-  this.fechaVigencia = '';
-  this.usuarioClave = null;
-}
+  /**
+   * Cierra el modal de clave dinámica
+   */
+  cerrarModalClaveDinamica() {
+    this.modalClaveDinamica = false;
+    this.claveGenerada = '';
+    this.fechaVigencia = '';
+    this.usuarioClave = null;
+    this.cdr.detectChanges();
+  }
 
-/**
- * Copia la clave al portapapeles
- */
+  /**
+   * Copia la clave al portapapeles
+   */
   copiarClave() {
     if (this.claveGenerada) {
       navigator.clipboard.writeText(this.claveGenerada).then(() => {
@@ -1157,7 +1224,7 @@ cerrarModalClaveDinamica() {
     this.cargandoErrores = true;
     this.mensajeError = '';
     const url = `${environment.apiUrl}/controllers/erroresControlador.php?control=obtenerErrores&limite=${this.limiteErrores}&offset=${this.offsetErrores}`;
-    
+
     this.http.get<any>(url).subscribe({
       next: (resp) => {
         this.cargandoErrores = false;
@@ -1165,12 +1232,12 @@ cerrarModalClaveDinamica() {
           this.errores = resp.errores || [];
           this.totalErrores = resp.total || 0;
           this.archivoLog = resp.archivo_log || '';
-          
+
           // Mostrar información de debug en consola
           if (resp.debug && resp.debug.length > 0) {
             console.log('Debug - Información del log:', resp.debug);
           }
-          
+
           // Si no hay errores pero hay mensaje, mostrarlo
           if (this.errores.length === 0 && resp.mensaje) {
             this.mensajeError = resp.mensaje;
@@ -1221,7 +1288,7 @@ cerrarModalClaveDinamica() {
 
     this.cargandoErrores = true;
     const url = `${environment.apiUrl}/controllers/erroresControlador.php?control=limpiarErrores`;
-    
+
     this.http.post<any>(url, {}).subscribe({
       next: (resp) => {
         this.cargandoErrores = false;
@@ -1244,7 +1311,7 @@ cerrarModalClaveDinamica() {
   escribirErrorPrueba() {
     this.cargandoErrores = true;
     const url = `${environment.apiUrl}/controllers/erroresControlador.php?control=escribirErrorPrueba`;
-    
+
     this.http.get<any>(url).subscribe({
       next: (resp) => {
         this.cargandoErrores = false;
