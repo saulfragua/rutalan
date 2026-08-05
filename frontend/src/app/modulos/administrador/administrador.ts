@@ -725,7 +725,7 @@ export class Administrador implements OnInit, OnDestroy {
                   rutas.map(r => r.nombre_ruta);
               }
             });
-            this.cdr.detectChanges();
+          this.cdr.detectChanges();
         });
         this.actualizarPaginacion();
       },
@@ -888,7 +888,7 @@ export class Administrador implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al eliminar ruta', error);
-        this.actualizarPaginacionRutas(); 
+        this.actualizarPaginacionRutas();
         alert('Error al eliminar la ruta');
       }
     });
@@ -911,7 +911,7 @@ export class Administrador implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al cambiar estado', error);
-        this.actualizarPaginacionRutas(); 
+        this.actualizarPaginacionRutas();
         alert('Error al cambiar el estado de la ruta');
       }
     });
@@ -931,7 +931,7 @@ export class Administrador implements OnInit, OnDestroy {
         alert(resp.mensaje);
         this.cargarUsuarios(); // 🔄 refrescar tabla
         this.actualizarPaginacion(); // 🔄 actualizar paginación
-        
+
       },
       error: (err) => {
         console.error('Error al cambiar estado', err);
