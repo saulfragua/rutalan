@@ -803,7 +803,7 @@ export class Administrador implements OnInit, OnDestroy {
   cerrarModalRuta() {
     this.modalRuta = false;
     this.nombreRuta = '';
-    this.actualizarPaginacionRutas
+    this.actualizarPaginacionRutas();
   }
 
   cargarRutas() {
@@ -1303,6 +1303,7 @@ export class Administrador implements OnInit, OnDestroy {
           this.errores = [];
           this.totalErrores = 0;
           this.archivoLog = '';
+          this.actualizarPaginacionErrores();
         }
       },
       error: (error) => {
@@ -1312,23 +1313,56 @@ export class Administrador implements OnInit, OnDestroy {
         this.errores = [];
         this.totalErrores = 0;
         this.archivoLog = '';
+        this.actualizarPaginacionErrores();
       }
     });
   }
 
-  cargarErroresSiguientes() {
-    if (this.offsetErrores + this.limiteErrores < this.totalErrores) {
-      this.offsetErrores += this.limiteErrores;
-      this.cargarErrores();
-    }
+  actualizarPaginacionErrores() {
+    this.totalPaginasErrores = Math.ceil(this.errores.length / this.erroresPorPagina);
+    if (this.paginaActualErrores > this.totalPaginasErrores) this.paginaActualErrores = 1;
+    const inicio = (this.paginaActualErrores - 1) * this.erroresPorPagina;
+    const fin = inicio + this.erroresPorPagina;
+    this.erroresPaginados = this.errores.slice(inicio, fin);
+    this.cdr.detectChanges();
   }
 
-  cargarErroresAnteriores() {
-    if (this.offsetErrores > 0) {
-      this.offsetErrores = Math.max(0, this.offsetErrores - this.limiteErrores);
-      this.cargarErrores();
-    }
+  cambiarPaginaErrores(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginasErrores) return;
+    this.paginaActualErrores = pagina;
+    this.actualizarPaginacionErrores();
   }
+
+  cambiarPorPaginaErrores(cantidad: number) {
+    this.erroresPorPagina = Number(cantidad);
+    this.paginaActualErrores = 1;
+    this.actualizarPaginacionErrores();
+  }
+
+  getPaginasErrores(): number[] {
+    const paginas: number[] = [];
+    const rango = 2;
+    for (let i = Math.max(1, this.paginaActualErrores - rango);
+      i <= Math.min(this.totalPaginasErrores, this.paginaActualErrores + rango); i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
+
+  // cargarErroresSiguientes() {
+  //   if (this.offsetErrores + this.limiteErrores < this.totalErrores) {
+  //     this.offsetErrores += this.limiteErrores;
+  //     this.cargarErrores();
+  //   }
+  // }
+
+  // cargarErroresAnteriores() {
+  //   if (this.offsetErrores > 0) {
+  //     this.offsetErrores = Math.max(0, this.offsetErrores - this.limiteErrores);
+  //     this.cargarErrores();
+  //   }
+  // }
 
   limpiarErrores() {
     if (!confirm('¿Está seguro de que desea limpiar todos los errores? Se creará un backup antes de limpiar.')) {
@@ -1345,6 +1379,7 @@ export class Administrador implements OnInit, OnDestroy {
           alert('Errores limpiados correctamente. ' + (resp.mensaje || ''));
           this.offsetErrores = 0;
           this.cargarErrores();
+          this.actualizarPaginacionErrores();
         } else {
           alert('Error al limpiar errores: ' + (resp.mensaje || 'Error desconocido'));
         }
@@ -1352,6 +1387,7 @@ export class Administrador implements OnInit, OnDestroy {
       error: (error) => {
         this.cargandoErrores = false;
         console.error('Error HTTP al limpiar errores:', error);
+        this.actualizarPaginacionErrores();
         alert('Error de conexión al limpiar errores');
       }
     });
@@ -1373,10 +1409,12 @@ export class Administrador implements OnInit, OnDestroy {
         } else {
           alert('Error al escribir mensaje de prueba: ' + (resp.mensaje || 'Error desconocido'));
         }
+        this.actualizarPaginacionErrores();
       },
       error: (error) => {
         this.cargandoErrores = false;
         console.error('Error HTTP al escribir mensaje de prueba:', error);
+        this.actualizarPaginacionErrores();
         alert('Error de conexión al escribir mensaje de prueba');
       }
     });
