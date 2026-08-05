@@ -591,29 +591,36 @@
         </div>
       </div>
 
+
       <!-- ERRORES PROFESIONAL -->
       <div *ngIf="tabActiva === 'errores'"
-        style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-        <div style="border-bottom: 3px solid #0aad60; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
-          <div class="flex items-center gap-4 mb-3">
-            <div
-              style="width: 64px; height: 64px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
-              <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffffff;"></i>
-            </div>
-            <div>
-              <h2
-                style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-chart-line" style="color: #0aad60; font-size: 1.75rem;"></i>
-                Log de Errores del Sistema
-              </h2>
-              <p
-                style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas fa-info-circle" style="color: #066699; font-size: 0.875rem;"></i>
-                Visualiza todos los errores y eventos registrados en el sistema
-              </p>
+        class="dg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 h-full">
+        <!-- ENCABEZADO -->
+        <div class="sm:mb-6  sm:pb-6 border-b-2 border-[#e5e7eb]">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
+            <!-- TITULO Y DESCRIPCION -->
+            <div class="flex items-center gap-4">
+              <!-- Icono Responsive -->
+              <div
+                class="w-20 h-20 sm:w-16 sm:h-16  rounded-xl flex bg-[#0A2E5C] items-center justify-center shadow-md shrink-0">
+                <i class="fas fa-exclamation-triangle text-[#ffffff] text-2xl sm:text-3xl"></i>
+              </div>
+              <div>
+                <!-- Titulo -->
+                <h2 class="text-xl sm:text-2xl font-bold text-[#0A2E5C] leading-tight">
+                  Log de Errores del Sistema
+                </h2>
+                <p class="text-xs sm:text-sm text-[#6b7280] mt-0.5 flex items-center gap-1.5">
+                  <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+                  Visualiza todos los errores y eventos registrados en el sistema
+                </p>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div *ngIf="tabActiva === 'errores'" class="mt-3 sm:mt-4 md:mt-6">
 
         <!-- CONTROLES Y ESTADÍSTICAS -->
         <div class="mb-4 flex gap-3 flex-wrap items-center"
