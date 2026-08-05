@@ -1293,6 +1293,7 @@ export class Administrador implements OnInit, OnDestroy {
           } else {
             this.mensajeError = '';
           }
+          this.actualizarPaginacionErrores();
         } else {
           console.error('Error al cargar errores:', resp.mensaje);
           console.error('Debug info:', resp.debug);
