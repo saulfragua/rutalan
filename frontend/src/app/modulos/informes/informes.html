@@ -76,13 +76,52 @@
           <span *ngIf="tipoInforme === 'gastos'">Gastos realizados</span>
           <span class="text-sm font-normal text-[#6b7280]">({{ lista.length }} registros)</span>
         </h3>
-        <div *ngIf="lista.length" class="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-white shadow-md" style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%);">
-          <i class="fas fa-calculator"></i>
-          <span *ngIf="tipoInforme === 'pagos'">Total pagos:</span>
-          <span *ngIf="tipoInforme === 'creditos'">Total créditos:</span>
-          <span *ngIf="tipoInforme === 'gastos'">Total gastos:</span>
-          <span>{{ formatearMonto(totalInforme) }}</span>
-        </div>
+<div
+  *ngIf="lista.length"
+  class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3"
+>
+  <!-- TOTAL DEL INFORME -->
+  <div
+    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold text-white shadow-md"
+    style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%);"
+  >
+    <i class="fas fa-calculator"></i>
+
+    <span *ngIf="tipoInforme === 'pagos'">Total pagos:</span>
+    <span *ngIf="tipoInforme === 'creditos'">Total créditos:</span>
+    <span *ngIf="tipoInforme === 'gastos'">Total gastos:</span>
+
+    <span>${{ formatearMonto(totalInforme) }}</span>
+  </div>
+
+  <!-- BOTÓN EXCEL -->
+  <button
+    type="button"
+    (click)="descargarExcel()"
+    [disabled]="cargando || !lista.length"
+    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+           bg-green-600 hover:bg-green-700 text-white font-semibold
+           shadow-md transition-all disabled:opacity-50
+           disabled:cursor-not-allowed"
+  >
+    <i class="fas fa-file-excel"></i>
+    <span>Descargar Excel</span>
+  </button>
+
+  <!-- BOTÓN PDF -->
+  <button
+    type="button"
+    (click)="descargarPDF()"
+    [disabled]="cargando || !lista.length"
+    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+           bg-red-600 hover:bg-red-700 text-white font-semibold
+           shadow-md transition-all disabled:opacity-50
+           disabled:cursor-not-allowed"
+  >
+    <i class="fas fa-file-pdf"></i>
+    <span>Descargar PDF</span>
+  </button>
+</div>
       </div>
 
       <div class="overflow-x-auto rounded-lg sm:rounded-xl border-2 border-[#e5e7eb] shadow-md bg-white -webkit-overflow-scrolling-touch">
