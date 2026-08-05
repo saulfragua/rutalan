@@ -57,13 +57,13 @@
     <div class="p-3 sm:p-4 md:p-6 bg-[#f8f8ec] min-h-full">
       <!-- CONTENIDO DE LA PESTAÑA DE USUARIOS -->
       <div *ngIf="tabActiva === 'usuarios'"
-        class="g-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 h-full">
+        class="dg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 h-full">
 
         <!-- ENCABEZADO PROFESIONAL - Mobile First -->
         <div class=" sm:mb-6  sm:pb-6 border-b-2 border-[#e5e7eb]">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
             <!-- TÍTULO Y DESCRIPCIÓN - Lado a lado -->
-            <div class="flex items-center gap-4 ">
+            <div class="flex items-center gap-4">
               <!-- Icono - Responsive -->
               <div
                 class="w-20 h-20 sm:w-16 sm:h-16 bg-[#0A2E5C] rounded-xl flex items-center justify-center shadow-md shrink-0">
@@ -430,29 +430,35 @@
 
       <!-- WHATSAPP PROFESIONAL -->
       <div *ngIf="tabActiva === 'whatsapp'"
-        style="background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-        <div style="border-bottom: 3px solid #0aad60; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
-          <div class="flex items-center gap-4 mb-3">
-            <div
-              style="width: 64px; height: 64px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);">
-              <i class="fab fa-whatsapp" style="font-size: 2rem; color: #ffffff;"></i>
+        class="dg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 h-full">
+        <!-- ENCABEZADO -->
+        <div class="sm:mb-6  sm:pb-6 border-b-2 border-[#e5e7eb]">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
+            <!-- TITULO Y DESCRIPCION -->
+            <div class="flex items-center gap-4">
+              <!-- Icono Responsive -->
+              <div style=" background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);"
+                class="w-20 h-20 sm:w-16 sm:h-16  rounded-xl flex items-center justify-center shadow-md shrink-0">
+                <i class="fab fa-whatsapp text-[#ffffff] text-2xl sm:text-3xl"></i>
+              </div>
+              <div>
+                <!-- Titulo -->
+                <h2 class="text-xl sm:text-2xl font-bold text-[#0A2E5C] leading-tight">
+                  Configuración de WhatsApp
+                </h2>
+                <p class="text-xs sm:text-sm text-[#6b7280] mt-0.5 flex items-center gap-1.5">
+                  <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+                  Escanea el código QR para habilitar el envío de notificaciones automáticas
+                </p>
+              </div>
             </div>
-            <div>
-              <h2
-                style="font-size: 2rem; font-weight: 800; color: #02416d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-chart-line" style="color: #0aad60; font-size: 1.75rem;"></i>
-                Configuración de WhatsApp
-              </h2>
-              <p
-                style="color: #6b7280; font-size: 0.9375rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas fa-info-circle" style="color: #066699; font-size: 0.875rem;"></i>
-                Escanea el código QR para habilitar el envío de notificaciones automáticas
-              </p>
-            </div>
+
           </div>
         </div>
+      </div>
 
-        <!-- ESTADO DE CONEXIÓN -->
+      <!-- ESTADO DE CONEXIÓN -->
+      <div *ngIf="tabActiva === 'whatsapp'" class="mt-3 sm:mt-4 md:mt-6">
         <div class="mb-6 p-4 rounded-lg border-2"
           [style.background]="whatsappConectado ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%)' : 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%)'"
           [style.borderColor]="whatsappConectado ? '#10b981' : '#f59e0b'"
