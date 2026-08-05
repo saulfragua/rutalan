@@ -3,7 +3,7 @@
   border-bottom-width: 3px;
 }
 
-* ── Tabla estilo sobrio ─────────────────────────────────────────── */
+/* ── Tabla estilo sobrio ─────────────────────────────────────────── */
 table thead,
 table thead tr {
   background: transparent !important;
