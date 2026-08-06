@@ -1,10 +1,36 @@
 <!-- Dashboard Mobile First - 2 tarjetas por fila en celular -->
 <div class="container-fluid p-2 sm:p-3 md:p-4" style="background-color: #f8f8ec; min-height: 100vh;">
-  <!-- Título -->
-  <div class="mb-3 sm:mb-4">
-    <h2 class="text-lg sm:text-xl md:text-2xl font-bold" style="color: #02416d;">Dashboard</h2>
-    <p class="text-xs sm:text-sm md:text-base" style="color: #066699;">Seguimiento y estadísticas del sistema</p>
+
+  <div
+    class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 mb-4 sm:p-4 md:p-6 h-full">
+
+    <!-- ENCABEZADO ESTILO IDRD -->
+    <div class="sm:mb-6 sm:pb-6 border-b-2 border-[#e5e7eb]">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+
+        <!-- LADO IZQUIERDO: Ícono + Info -->
+        <div class="flex items-center gap-4">
+          <!-- Ícono estilo IDRD -->
+          <div
+            class="w-20 h-20 sm:w-16 sm:h-16 bg-[#0A2E5C] rounded-xl flex items-center justify-center shadow-md shrink-0">
+            <i class="fas fa-tachometer-alt text-[#ffffff] text-2xl sm:text-3xl"></i>
+          </div>
+          <!-- Texto -->
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#0A2E5C] leading-tight">
+              Dashboard
+            </h2>
+            <p class="text-xs sm:text-sm text-[#6b7280] mt-0.5 flex items-center gap-1.5">
+              <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+              Seguimiento y estadísticas del sistema
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  
 
   <!-- Filtros de período - Mobile First -->
   <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 mb-3 sm:mb-4" style="border: 2px solid #e5e7eb;">
