@@ -1,33 +1,43 @@
 <!-- CONTENEDOR INFORMES - Mobile First -->
 <div class="w-full h-full overflow-auto bg-[#f8f8ec] p-3 sm:p-4 md:p-6">
-  <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 min-h-full">
-    <!-- ENCABEZADO -->
-    <div class="mb-4 sm:mb-6 border-b-3 border-[#aedd2b] pb-3 sm:pb-4 md:pb-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
-        <div class="flex-1 w-full sm:w-auto">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-linear-to-br from-[#066699] to-[#0a5483] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md shrink-0">
-              <i class="fas fa-chart-bar text-white text-lg sm:text-xl md:text-2xl"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#02416d] mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
-                <i class="fas fa-file-alt text-[#aedd2b] text-lg sm:text-xl md:text-2xl"></i>
-                <span class="truncate">Informes</span>
-              </h2>
-              <p class="text-[#6b7280] text-xs sm:text-sm md:text-base font-medium hidden sm:flex items-center gap-2">
-                <i class="fas fa-info-circle text-[#066699] text-xs"></i>
-                Pagos, créditos y gastos por rango de fechas
-              </p>
-            </div>
+
+  <div
+    class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 mb-4 sm:p-4 md:p-6 h-full">
+
+    <!-- ENCABEZADO ESTILO IDRD -->
+    <div class="sm:mb-6 sm:pb-6 border-b-2 border-[#e5e7eb]">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+
+        <!-- LADO IZQUIERDO: Ícono + Info -->
+        <div class="flex items-center gap-4">
+          <!-- Ícono estilo IDRD -->
+          <div
+            class="w-20 h-20 sm:w-16 sm:h-16 bg-[#0A2E5C] rounded-xl flex items-center justify-center shadow-md shrink-0">
+            <i class="fas fa-chart-bar text-[#ffffff] text-2xl sm:text-3xl"></i>
+          </div>
+          <!-- Texto -->
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#0A2E5C] leading-tight">
+              Informes
+            </h2>
+            <p class="text-xs sm:text-sm text-[#6b7280] mt-0.5 flex items-center gap-1.5">
+              <i class="fas fa-info-circle text-[#066699] text-xs"></i>
+              Pagos, créditos y gastos por rango de fechas
+            </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
+  
+  <div class="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl border-2 border-[#e5e7eb] p-3 sm:p-4 md:p-6 min-h-full">
+    
     <!-- FILTRO: RANGO DE FECHAS Y TIPO DE INFORME -->
     <div class="mb-4 sm:mb-6 p-4 sm:p-5 rounded-xl border-2 border-[#e5e7eb] bg-[#f8f8ec]">
       <h3 class="text-base sm:text-lg font-bold text-[#02416d] mb-3 sm:mb-4 flex items-center gap-2">
-        <i class="fas fa-filter text-[#aedd2b]"></i>
+        <i class="fas fa-filter text-[#0DBF6B]"></i>
         Filtros del informe
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-end">
@@ -52,8 +62,7 @@
         </div>
         <div class="flex items-end">
           <button (click)="generarInforme()" [disabled]="cargando"
-            class="w-full sm:w-auto px-4 py-2.5 rounded-lg font-semibold text-white shadow-md transition-all flex items-center justify-center gap-2"
-            style="background: linear-gradient(135deg, #066699 0%, #0a5483 100%);"
+              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all  rounded-lg bg-[#0DBF6B] text-white cursor-pointer duration-200 hover:bg-[#0aad60] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
           >
             <i class="fas" [ngClass]="cargando ? 'fa-spinner fa-spin' : 'fa-file-export'"></i>
             <span>{{ cargando ? 'Cargando...' : 'Generar informe' }}</span>
@@ -82,8 +91,8 @@
 >
   <!-- TOTAL DEL INFORME -->
   <div
-    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold text-white shadow-md"
-    style="background: linear-gradient(135deg, #0a5483 0%, #066699 100%);"
+    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold shadow-md"
+    style="background: #0A2E5C; color:#ffffff;"
   >
     <i class="fas fa-calculator"></i>
 
@@ -99,10 +108,7 @@
     type="button"
     (click)="descargarExcel()"
     [disabled]="cargando || !lista.length"
-    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg
-           bg-green-600 hover:bg-green-700 text-white font-semibold
-           shadow-md transition-all disabled:opacity-50
-           disabled:cursor-not-allowed"
+    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#0DBF6B] text-white cursor-pointer transition-all duration-200 hover:bg-[#0aad60] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
   >
     <i class="fas fa-file-excel"></i>
     <span>Descargar Excel</span>
@@ -113,10 +119,7 @@
     type="button"
     (click)="descargarPDF()"
     [disabled]="cargando || !lista.length"
-    class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg
-           bg-red-600 hover:bg-red-700 text-white font-semibold
-           shadow-md transition-all disabled:opacity-50
-           disabled:cursor-not-allowed"
+    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-[#dc2626] text-white cursor-pointer transition-all duration-200 hover:bg-[#dc2626] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
   >
     <i class="fas fa-file-pdf"></i>
     <span>Descargar PDF</span>
@@ -140,7 +143,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of lista" class="border-b border-[#e5e7eb] hover:bg-[#f8f8ec]">
+            <tr *ngFor="let item of pagosPaginados" class="border-b border-[#e5e7eb] hover:bg-[#f8f8ec]">
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm whitespace-nowrap">{{ item.fecha_pago }} {{ formatearHora(item.hora_pago) }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.nombre_completo_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.documento_cliente || '-' }}</td>
@@ -169,7 +172,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of lista" class="border-b border-[#e5e7eb] hover:bg-[#f8f8ec]">
+            <tr *ngFor="let item of creditosPaginados" class="border-b border-[#e5e7eb] hover:bg-[#f8f8ec]">
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm whitespace-nowrap">{{ item.fecha_toma_credito }} {{ formatearHora(item.hora_toma_credito) }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.nombre_completo_cliente || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.documento_cliente || '-' }}</td>
@@ -195,7 +198,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of lista" class="border-b border-[#e5e7eb] hover:bg-[#f8f8ec]">
+            <tr *ngFor="let item of gastosPaginados" class="border-b border-[#e5e7eb] hover:bg-[#f8f8ec]">
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm whitespace-nowrap">{{ item.fecha_gasto }} {{ formatearHora(item.hora_gasto) }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm">{{ item.descripcion || '-' }}</td>
               <td class="px-2 py-2 text-[#02416d] text-xs sm:text-sm text-right font-semibold">{{ formatearMonto(item.monto) }}</td>
@@ -216,6 +219,145 @@
           </p>
         </div>
       </div>
+
+      <!-- PAGINACIÓN - PAGOS -->
+      <div *ngIf="tipoInforme === 'pagos' && lista.length"
+        class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t-2 border-[#e5e7eb]">
+
+        <!-- Info + selector por página -->
+        <div class="flex items-center gap-3 text-sm text-[#6b7280]">
+          <span>
+            Mostrando {{ (paginaActualPagos - 1) * pagosPorPagina + 1 }} -
+            {{ Math.min(paginaActualPagos * pagosPorPagina, lista.length) }}
+            de {{ lista.length }} registros
+          </span>
+          <select [ngModel]="pagosPorPagina" (ngModelChange)="cambiarPorPaginaPagos($event)"
+            class="px-2 py-1 border-2 border-[#e5e7eb] rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B] shadow-sm">
+            <option *ngFor="let op of opcionesPorPaginaPagos" [value]="op">{{ op }} por página</option>
+          </select>
+        </div>
+
+        <!-- Botones de página -->
+        <div class="flex items-center gap-1">
+          <button (click)="cambiarPaginaPagos(1)" [disabled]="paginaActualPagos === 1"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            «
+          </button>
+          <button (click)="cambiarPaginaPagos(paginaActualPagos - 1)" [disabled]="paginaActualPagos === 1"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            ‹
+          </button>
+
+          <button *ngFor="let p of getPaginasPagos()" (click)="cambiarPaginaPagos(p)"
+            [class]="p === paginaActualPagos ? 'px-3 py-1.5 rounded-lg text-sm font-semibold bg-[#0A2E5C] text-white border-2 border-[#0A2E5C]' : 'px-3 py-1.5 rounded-lg text-sm font-medium bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white transition-all duration-200'">
+            {{ p }}
+          </button>
+
+          <button (click)="cambiarPaginaPagos(paginaActualPagos + 1)"
+            [disabled]="paginaActualPagos === totalPaginasPagos"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            ›
+          </button>
+          <button (click)="cambiarPaginaPagos(totalPaginasPagos)"
+            [disabled]="paginaActualPagos === totalPaginasPagos"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            »
+          </button>
+        </div>
+      </div>
+
+      <!-- PAGINACIÓN - CRÉDITOS -->
+      <div *ngIf="tipoInforme === 'creditos' && lista.length"
+        class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t-2 border-[#e5e7eb]">
+
+        <!-- Info + selector por página -->
+        <div class="flex items-center gap-3 text-sm text-[#6b7280]">
+          <span>
+            Mostrando {{ (paginaActualCreditos - 1) * creditosPorPagina + 1 }} -
+            {{ Math.min(paginaActualCreditos * creditosPorPagina, lista.length) }}
+            de {{ lista.length }} registros
+          </span>
+          <select [ngModel]="creditosPorPagina" (ngModelChange)="cambiarPorPaginaCreditos($event)"
+            class="px-2 py-1 border-2 border-[#e5e7eb] rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B] shadow-sm">
+            <option *ngFor="let op of opcionesPorPaginaCreditos" [value]="op">{{ op }} por página</option>
+          </select>
+        </div>
+
+        <!-- Botones de página -->
+        <div class="flex items-center gap-1">
+          <button (click)="cambiarPaginaCreditos(1)" [disabled]="paginaActualCreditos === 1"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            «
+          </button>
+          <button (click)="cambiarPaginaCreditos(paginaActualCreditos - 1)" [disabled]="paginaActualCreditos === 1"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            ‹
+          </button>
+
+          <button *ngFor="let p of getPaginasCreditos()" (click)="cambiarPaginaCreditos(p)"
+            [class]="p === paginaActualCreditos ? 'px-3 py-1.5 rounded-lg text-sm font-semibold bg-[#0A2E5C] text-white border-2 border-[#0A2E5C]' : 'px-3 py-1.5 rounded-lg text-sm font-medium bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white transition-all duration-200'">
+            {{ p }}
+          </button>
+
+          <button (click)="cambiarPaginaCreditos(paginaActualCreditos + 1)"
+            [disabled]="paginaActualCreditos === totalPaginasCreditos"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            ›
+          </button>
+          <button (click)="cambiarPaginaCreditos(totalPaginasCreditos)"
+            [disabled]="paginaActualCreditos === totalPaginasCreditos"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            »
+          </button>
+        </div>
+      </div>
+
+      <!-- PAGINACIÓN - GASTOS -->
+      <div *ngIf="tipoInforme === 'gastos' && lista.length"
+        class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t-2 border-[#e5e7eb]">
+
+        <!-- Info + selector por página -->
+        <div class="flex items-center gap-3 text-sm text-[#6b7280]">
+          <span>
+            Mostrando {{ (paginaActualGastos - 1) * gastosPorPagina + 1 }} -
+            {{ Math.min(paginaActualGastos * gastosPorPagina, lista.length) }}
+            de {{ lista.length }} registros
+          </span>
+          <select [ngModel]="gastosPorPagina" (ngModelChange)="cambiarPorPaginaGastos($event)"
+            class="px-2 py-1 border-2 border-[#e5e7eb] rounded-lg text-[#02416d] text-sm focus:outline-none focus:border-[#0DBF6B] shadow-sm">
+            <option *ngFor="let op of opcionesPorPaginaGastos" [value]="op">{{ op }} por página</option>
+          </select>
+        </div>
+
+        <!-- Botones de página -->
+        <div class="flex items-center gap-1">
+          <button (click)="cambiarPaginaGastos(1)" [disabled]="paginaActualGastos === 1"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            «
+          </button>
+          <button (click)="cambiarPaginaGastos(paginaActualGastos - 1)" [disabled]="paginaActualGastos === 1"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            ‹
+          </button>
+
+          <button *ngFor="let p of getPaginasGastos()" (click)="cambiarPaginaGastos(p)"
+            [class]="p === paginaActualGastos ? 'px-3 py-1.5 rounded-lg text-sm font-semibold bg-[#0A2E5C] text-white border-2 border-[#0A2E5C]' : 'px-3 py-1.5 rounded-lg text-sm font-medium bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white transition-all duration-200'">
+            {{ p }}
+          </button>
+
+          <button (click)="cambiarPaginaGastos(paginaActualGastos + 1)"
+            [disabled]="paginaActualGastos === totalPaginasGastos"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            ›
+          </button>
+          <button (click)="cambiarPaginaGastos(totalPaginasGastos)"
+            [disabled]="paginaActualGastos === totalPaginasGastos"
+            class="px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-white border-2 border-[#e5e7eb] text-[#02416d] hover:border-[#0A2E5C] hover:bg-[#0A2E5C] hover:text-white">
+            »
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

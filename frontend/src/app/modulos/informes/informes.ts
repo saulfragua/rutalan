@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { InformesService } from '../../servicios/informes';
@@ -21,11 +21,34 @@ export class Informes implements OnInit {
   lista: any[] = [];
   error: string | null = null;
 
+  // Paginación pagos
+  paginaActualPagos: number = 1;
+  pagosPorPagina: number = 5;
+  totalPaginasPagos: number = 0;
+  pagosPaginados: any[] = [];
+  opcionesPorPaginaPagos: number[] = [5, 10, 25, 50, 100];
+  Math = Math;
+
+  // Paginación creditos
+  paginaActualCreditos: number = 1;
+  creditosPorPagina: number = 5;
+  totalPaginasCreditos: number = 0;
+  creditosPaginados: any[] = [];
+  opcionesPorPaginaCreditos: number[] = [5, 10, 25, 50, 100];
+
+  // Paginación gastos
+  paginaActualGastos: number = 1;
+  gastosPorPagina: number = 5;
+  totalPaginasGastos: number = 0;
+  gastosPaginados: any[] = [];
+  opcionesPorPaginaGastos: number[] = [5, 10, 25, 50, 100];
+
   private isBrowser: boolean;
 
   constructor(
     private informesService: InformesService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -79,13 +102,136 @@ export class Informes implements OnInit {
         } else {
           this.error = resp?.mensaje || 'No se obtuvieron datos.';
         }
+        this.actualizarPaginacionSegunTipo();
       },
       error: (err) => {
         this.cargando = false;
         this.error = err?.error?.mensaje || err?.message || 'Error al generar el informe.';
+        this.actualizarPaginacionSegunTipo();
       },
     });
   }
+
+
+  /**
+ * Llama a la actualización de paginación correcta según el tipo de informe activo.
+ */
+private actualizarPaginacionSegunTipo(): void {
+  if (this.tipoInforme === 'pagos') {
+    this.actualizarPaginacionPagos();
+  } else if (this.tipoInforme === 'creditos') {
+    this.actualizarPaginacionCreditos();
+  } else {
+    this.actualizarPaginacionGastos();
+  }
+}
+
+/* =========================
+   PAGINACIÓN - PAGOS
+========================== */
+
+actualizarPaginacionPagos() {
+  this.totalPaginasPagos = Math.ceil(this.lista.length / this.pagosPorPagina);
+  if (this.paginaActualPagos > this.totalPaginasPagos) this.paginaActualPagos = 1;
+  const inicio = (this.paginaActualPagos - 1) * this.pagosPorPagina;
+  const fin = inicio + this.pagosPorPagina;
+  this.pagosPaginados = this.lista.slice(inicio, fin);
+  this.cdr.detectChanges();
+}
+
+cambiarPaginaPagos(pagina: number) {
+  if (pagina < 1 || pagina > this.totalPaginasPagos) return;
+  this.paginaActualPagos = pagina;
+  this.actualizarPaginacionPagos();
+}
+
+cambiarPorPaginaPagos(cantidad: number) {
+  this.pagosPorPagina = Number(cantidad);
+  this.paginaActualPagos = 1;
+  this.actualizarPaginacionPagos();
+}
+
+getPaginasPagos(): number[] {
+  const paginas: number[] = [];
+  const rango = 2;
+  for (let i = Math.max(1, this.paginaActualPagos - rango);
+    i <= Math.min(this.totalPaginasPagos, this.paginaActualPagos + rango); i++) {
+    paginas.push(i);
+  }
+  return paginas;
+}
+
+/* =========================
+   PAGINACIÓN - CRÉDITOS
+========================== */
+
+actualizarPaginacionCreditos() {
+  this.totalPaginasCreditos = Math.ceil(this.lista.length / this.creditosPorPagina);
+  if (this.paginaActualCreditos > this.totalPaginasCreditos) this.paginaActualCreditos = 1;
+  const inicio = (this.paginaActualCreditos - 1) * this.creditosPorPagina;
+  const fin = inicio + this.creditosPorPagina;
+  this.creditosPaginados = this.lista.slice(inicio, fin);
+  this.cdr.detectChanges();
+}
+
+cambiarPaginaCreditos(pagina: number) {
+  if (pagina < 1 || pagina > this.totalPaginasCreditos) return;
+  this.paginaActualCreditos = pagina;
+  this.actualizarPaginacionCreditos();
+}
+
+cambiarPorPaginaCreditos(cantidad: number) {
+  this.creditosPorPagina = Number(cantidad);
+  this.paginaActualCreditos = 1;
+  this.actualizarPaginacionCreditos();
+}
+
+getPaginasCreditos(): number[] {
+  const paginas: number[] = [];
+  const rango = 2;
+  for (let i = Math.max(1, this.paginaActualCreditos - rango);
+    i <= Math.min(this.totalPaginasCreditos, this.paginaActualCreditos + rango); i++) {
+    paginas.push(i);
+  }
+  return paginas;
+}
+
+/* =========================
+   PAGINACIÓN - GASTOS
+========================== */
+
+actualizarPaginacionGastos() {
+  this.totalPaginasGastos = Math.ceil(this.lista.length / this.gastosPorPagina);
+  if (this.paginaActualGastos > this.totalPaginasGastos) this.paginaActualGastos = 1;
+  const inicio = (this.paginaActualGastos - 1) * this.gastosPorPagina;
+  const fin = inicio + this.gastosPorPagina;
+  this.gastosPaginados = this.lista.slice(inicio, fin);
+  this.cdr.detectChanges();
+}
+
+cambiarPaginaGastos(pagina: number) {
+  if (pagina < 1 || pagina > this.totalPaginasGastos) return;
+  this.paginaActualGastos = pagina;
+  this.actualizarPaginacionGastos();
+}
+
+cambiarPorPaginaGastos(cantidad: number) {
+  this.gastosPorPagina = Number(cantidad);
+  this.paginaActualGastos = 1;
+  this.actualizarPaginacionGastos();
+}
+
+getPaginasGastos(): number[] {
+  const paginas: number[] = [];
+  const rango = 2;
+  for (let i = Math.max(1, this.paginaActualGastos - rango);
+    i <= Math.min(this.totalPaginasGastos, this.paginaActualGastos + rango); i++) {
+    paginas.push(i);
+  }
+  return paginas;
+}
+
+
 
   formatearMonto(val: number | string | null | undefined): string {
     if (val == null || val === '') return '0';
