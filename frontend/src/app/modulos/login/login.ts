@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../../servicios/login';
 import { CajaService } from '../../servicios/caja';
@@ -18,7 +18,8 @@ export class Login implements AfterViewInit, OnDestroy {
 
   usuario: string = '';
   clave: string = '';
-  mostrarClave: boolean = false; 
+  mostrarClave: boolean = false;
+  iniciandoSesion: boolean = false;
   private isBrowser: boolean;
   private recaptchaWidgetId: number | null = null;
   private recaptchaListener: any;
@@ -34,6 +35,7 @@ export class Login implements AfterViewInit, OnDestroy {
     private loginService: LoginService,
     private cajaService: CajaService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -69,6 +71,9 @@ export class Login implements AfterViewInit, OnDestroy {
 
   iniciarSesion() {
 
+    if (this.iniciandoSesion) return;
+
+
     if (!this.usuario || !this.clave) {
       alert('Debe ingresar usuario y contraseña');
       return;
@@ -92,9 +97,13 @@ export class Login implements AfterViewInit, OnDestroy {
       return;
     }
 
+    this.iniciandoSesion = true;
+
     this.loginService.login(this.usuario, this.clave, token)
       .subscribe({
         next: (resp: any) => {
+          this.iniciandoSesion = false;
+          this.cdr.detectChanges();
           // Verificar si la respuesta tiene el formato esperado
           if (!resp) {
             alert('Error: No se recibió respuesta del servidor');
@@ -121,6 +130,7 @@ export class Login implements AfterViewInit, OnDestroy {
               // Asegurar que el saldo inicial siempre esté en 0 para nueva apertura
               this.saldoInicial = 0;
               this.mostrarModalAperturaCaja = true;
+              this.cdr.detectChanges();
               return; // No redirigir aún
             }
 
@@ -139,6 +149,8 @@ export class Login implements AfterViewInit, OnDestroy {
 
         },
         error: (error) => {
+          this.iniciandoSesion = false;
+          this.cdr.detectChanges();
           let mensajeError = 'Error de conexión con el servidor';
 
           if (error?.message) {
@@ -230,7 +242,7 @@ export class Login implements AfterViewInit, OnDestroy {
   }
 
   // Función para alternar la visibilidad de la contraseña
-  togglePasswordVisibility() {     
+  togglePasswordVisibility() {
     this.mostrarClave = !this.mostrarClave;
   }
 }
