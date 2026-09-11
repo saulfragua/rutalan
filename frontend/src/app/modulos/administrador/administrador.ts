@@ -266,6 +266,7 @@ export class Administrador implements OnInit, OnDestroy {
           this.whatsappConectado = true;
           this.qrCodeDataUrl = '';
           this.cargandoQR = false;
+          this.cdr.detectChanges();
           return;
         }
 
@@ -297,6 +298,7 @@ export class Administrador implements OnInit, OnDestroy {
           console.log('📲 QR obtenido correctamente');
           this.qrCodeDataUrl = data.qr;
           this.whatsappConectado = false;
+          this.cdr.detectChanges();
           // Iniciar verificación automática para detectar cuando se escanea el QR
           this.iniciarVerificacionEstado();
           return;
@@ -307,6 +309,7 @@ export class Administrador implements OnInit, OnDestroy {
           this.whatsappConectado = true;
           this.qrCodeDataUrl = '';
           this.cargandoQR = false;
+          this.cdr.detectChanges();
           // Detener verificación si está activa
           if (this.intervaloQR) {
             clearInterval(this.intervaloQR);
@@ -334,6 +337,7 @@ export class Administrador implements OnInit, OnDestroy {
         console.error('Error al obtener QR:', error);
         this.cargandoQR = false;
         this.whatsappConectado = false;
+        this.cdr.detectChanges();
 
         // Mensaje de error más descriptivo y específico
         let mensajeError = '';
@@ -424,6 +428,7 @@ export class Administrador implements OnInit, OnDestroy {
           this.whatsappConectado = true;
           this.qrCodeDataUrl = ''; // Ocultar QR cuando está conectado
           this.cargandoQR = false;
+          this.cdr.detectChanges();
           // Detener verificación automática cuando está conectado
           if (this.intervaloQR) {
             clearInterval(this.intervaloQR);
@@ -434,6 +439,7 @@ export class Administrador implements OnInit, OnDestroy {
           // Si no está listo, actualizar estado
           console.log('⏳ WhatsApp no está conectado aún... (ready:', data.ready, ', state:', data.clientState, ')');
           this.whatsappConectado = false;
+          this.cdr.detectChanges();
         }
 
         // Si hay QR disponible y no lo tenemos, obtenerlo
@@ -462,6 +468,7 @@ export class Administrador implements OnInit, OnDestroy {
           }
           this.whatsappConectado = false;
           this.qrCodeDataUrl = '';
+          this.cdr.detectChanges();
         }
       });
   }
@@ -484,6 +491,7 @@ export class Administrador implements OnInit, OnDestroy {
     this.cargandoQR = true;
     this.qrCodeDataUrl = '';
     this.whatsappConectado = false;
+    this.cdr.detectChanges();
 
     // Llamar al endpoint de reinicio
     fetch(`${environment.whatsappApiUrl}/api/restart`, { method: 'POST' })
@@ -516,6 +524,7 @@ export class Administrador implements OnInit, OnDestroy {
         console.error('❌ Error al reiniciar sesión:', error);
         this.cargandoQR = false;
         this.whatsappConectado = false;
+        this.cdr.detectChanges();
 
         let mensajeError = '';
         if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
@@ -563,6 +572,7 @@ export class Administrador implements OnInit, OnDestroy {
     this.cargandoQR = true;
     this.qrCodeDataUrl = '';
     this.whatsappConectado = false;
+    this.cdr.detectChanges();
 
     // Llamar al endpoint de reinicio de servicios
     fetch(`${environment.whatsappApiUrl}/api/restart-service`, { method: 'POST' })
@@ -589,6 +599,7 @@ export class Administrador implements OnInit, OnDestroy {
           console.log('🔄 Intentando obtener nuevo QR después del reinicio de servicios...');
           this.reiniciandoServicio = false;
           this.cargandoQR = false;
+          this.cdr.detectChanges();
           // Obtener nuevo QR después del reinicio
           this.obtenerQRWhatsApp();
         }, 4000); // 4 segundos para dar tiempo al reinicio completo
@@ -598,6 +609,7 @@ export class Administrador implements OnInit, OnDestroy {
         this.reiniciandoServicio = false;
         this.cargandoQR = false;
         this.whatsappConectado = false;
+        this.cdr.detectChanges();
 
         let mensajeError = '';
         if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
@@ -670,12 +682,14 @@ export class Administrador implements OnInit, OnDestroy {
                   alert(resp.mensaje + '. Ruta asignada correctamente.');
                   this.limpiarFormulario();
                   this.cargarUsuarios();
+                  this.cdr.detectChanges();
                 },
                 error: (errorRuta: any) => {
                   console.error('Error al asignar ruta:', errorRuta);
                   alert(resp.mensaje + '. Pero hubo un error al asignar la ruta.');
                   this.limpiarFormulario();
                   this.cargarUsuarios();
+                  this.cdr.detectChanges();
                 }
               });
             } else {
