@@ -26,10 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS - Configuración para producción y desarrollo
-const isProduction = process.env.NODE_ENV === 'production' || 
-                     process.env.PRODUCTION === 'true' ||
-                     process.cwd().includes('production') ||
-                     (process.env.HOST && process.env.HOST.includes('rutalan.cloud'));
+const isProduction = process.env.NODE_ENV === 'production' ||
+  process.env.PRODUCTION === 'true' ||
+  process.cwd().includes('production') ||
+  (process.env.HOST && process.env.HOST.includes('rutalan.cloud'));
 
 app.use((req, res, next) => {
   // En producción, permitir solo los dominios específicos
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
       'http://rutalan.cloud',
       'http://www.rutalan.cloud'
     ];
-    
+
     if (origin && allowedOrigins.includes(origin)) {
       res.header("Access-Control-Allow-Origin", origin);
     } else {
@@ -52,11 +52,11 @@ app.use((req, res, next) => {
     // En desarrollo, permitir todo
     res.header("Access-Control-Allow-Origin", "*");
   }
-  
+
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");
-  
+
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
@@ -78,10 +78,10 @@ function inicializarClienteWhatsApp() {
     console.log("⚠️ Ya hay una inicialización en curso, esperando...");
     return;
   }
-  
+
   try {
     estaInicializando = true;
-    
+
     // Destruir cliente anterior si existe
     if (client) {
       try {
@@ -95,19 +95,19 @@ function inicializarClienteWhatsApp() {
         client = null;
       }
     }
-    
+
     // Limpiar estado
     qrCodeData = null;
     clientReady = false;
-    
+
     console.log("⏳ Esperando 3 segundos antes de inicializar nuevo cliente...");
     console.log("   Esto permite que los archivos de sesión se liberen");
-    
+
     // Esperar más tiempo para asegurar que los archivos se liberen
     setTimeout(() => {
       continuarInicializacion();
     }, 3000);
-    
+
     return;
   } catch (error) {
     console.error("❌ Error al preparar inicialización:", error.message);
@@ -157,10 +157,10 @@ function continuarInicializacion() {
         clientId: "rutalan-whatsapp"
       }),
       // Configuración adicional del cliente
-      webVersionCache: {
-        type: 'remote',
-        remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2413.51-beta.html',
-      }
+      // webVersionCache: {
+      //   type: 'remote',
+      //   remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2413.51-beta.html',
+      // }
     });
 
     client.on("qr", (qr) => {
@@ -195,7 +195,7 @@ function continuarInicializacion() {
       intentosInicializacion = 0; // Resetear contador al estar listo
       estaInicializando = false; // Permitir nuevas inicializaciones
       console.log("✅ Estado actualizado: ready=true, qrCodeData=null");
-      
+
       // Verificar estado del cliente para confirmar
       client.getState().then(state => {
         console.log("✅ Estado confirmado del cliente:", state);
@@ -213,7 +213,7 @@ function continuarInicializacion() {
       qrCodeData = null;
       client = null;
       estaInicializando = false;
-      
+
       // Intentar reconectar después de 5 segundos
       setTimeout(() => {
         console.log("🔄 Intentando reconectar...");
@@ -236,19 +236,12 @@ function continuarInicializacion() {
 
     client.on("change_state", (state) => {
       console.log(`🔄 Cambio de estado: ${state}`);
-      // Si el estado cambia a CONNECTED, actualizar clientReady
-      if (state === 'CONNECTED') {
-        console.log("✅ Estado cambiado a CONNECTED, actualizando clientReady...");
-        clientReady = true;
-        qrCodeData = null;
-        estaInicializando = false;
-      } else if (state === 'DISCONNECTED' || state === 'CONNECTING') {
-        // No actualizar clientReady aquí, esperar al evento 'ready'
-        console.log(`⏳ Estado: ${state}, esperando evento 'ready'...`);
-      } else if (state === 'UNPAIRED' || state === 'UNPAIRED_IDLE') {
+      if (state === 'UNPAIRED' || state === 'UNPAIRED_IDLE') {
         console.log(`⚠️ Estado: ${state}, puede requerir nuevo QR`);
         clientReady = false;
         qrCodeData = null;
+      } else {
+        console.log(`ℹ️ Estado: ${state} (esperando evento 'ready' para confirmar)`);
       }
     });
 
@@ -275,7 +268,7 @@ function continuarInicializacion() {
     console.log("   - Timeout configurado: 60 segundos");
     console.log("   - Modo headless: true");
     console.log("   - Esperando eventos: qr, ready, authenticated...");
-    
+
     // Manejar errores de inicialización con reintentos
     client.initialize().catch((error) => {
       console.error("❌ ========================================");
@@ -286,18 +279,18 @@ function continuarInicializacion() {
       clientReady = false;
       qrCodeData = null;
       limpiarTimeout();
-      
+
       // Limpiar cliente completamente
       if (client) {
         try {
-          client.destroy().catch(() => {});
+          client.destroy().catch(() => { });
         } catch (e) {
           console.log("⚠️ Error al destruir cliente:", e.message);
         }
       }
       client = null;
       estaInicializando = false;
-      
+
       // Reintentar si no hemos alcanzado el máximo
       if (intentosInicializacion < maxIntentosInicializacion) {
         console.log(`⚠️ Reintentando en 5 segundos... (${intentosInicializacion}/${maxIntentosInicializacion})`);
@@ -316,18 +309,18 @@ function continuarInicializacion() {
     console.error("   Stack:", error.stack);
     clientReady = false;
     qrCodeData = null;
-    
+
     // Limpiar cliente si existe
     if (client) {
       try {
-        client.destroy().catch(() => {});
+        client.destroy().catch(() => { });
       } catch (e) {
         console.log("⚠️ Error al destruir cliente en catch:", e.message);
       }
     }
     client = null;
     estaInicializando = false;
-    
+
     // Reintentar si no hemos alcanzado el máximo
     if (intentosInicializacion < maxIntentosInicializacion) {
       setTimeout(() => {
@@ -346,12 +339,12 @@ function continuarInicializacion() {
 app.get("/api/qr", async (req, res) => {
   try {
     // Verificar si WhatsApp está habilitado
-    const isDevelopment = process.env.NODE_ENV === 'development' || 
-                          process.cwd().includes('htdocs') || 
-                          process.cwd().includes('xampp');
+    const isDevelopment = process.env.NODE_ENV === 'development' ||
+      process.cwd().includes('htdocs') ||
+      process.cwd().includes('xampp');
     const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.ENABLE_WHATSAPP === undefined;
     const whatsappEnabled = ENABLE_WHATSAPP || !isDevelopment;
-    
+
     if (!whatsappEnabled) {
       return res.json({
         success: false,
@@ -361,7 +354,7 @@ app.get("/api/qr", async (req, res) => {
         disabled: true
       });
     }
-    
+
     // Si el cliente no existe, inicializarlo
     if (!client && !estaInicializando) {
       console.log('🔄 Cliente no existe, inicializando...');
@@ -406,12 +399,12 @@ app.get("/api/qr", async (req, res) => {
 app.get("/api/status", async (req, res) => {
   try {
     // Verificar si WhatsApp está habilitado
-    const isDevelopment = process.env.NODE_ENV === 'development' || 
-                          process.cwd().includes('htdocs') || 
-                          process.cwd().includes('xampp');
+    const isDevelopment = process.env.NODE_ENV === 'development' ||
+      process.cwd().includes('htdocs') ||
+      process.cwd().includes('xampp');
     const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.ENABLE_WHATSAPP === undefined;
     const whatsappEnabled = ENABLE_WHATSAPP || !isDevelopment;
-    
+
     if (!whatsappEnabled) {
       return res.json({
         ready: false,
@@ -422,7 +415,7 @@ app.get("/api/status", async (req, res) => {
         timestamp: new Date().toISOString()
       });
     }
-    
+
     // Si el cliente no existe, inicializarlo
     if (!client && !estaInicializando) {
       console.log('🔄 Cliente no existe, inicializando desde /status...');
@@ -437,7 +430,6 @@ app.get("/api/status", async (req, res) => {
         // Si el estado es CONNECTED pero clientReady es false, actualizarlo
         if (estadoReal === 'CONNECTED' && !clientReady) {
           console.log("⚠️ Estado del cliente es CONNECTED pero clientReady es false, actualizando...");
-          clientReady = true;
           qrCodeData = null; // Limpiar QR cuando está conectado
           estaInicializando = false;
         }
@@ -460,7 +452,7 @@ app.get("/api/status", async (req, res) => {
     if (estadoReal) {
       console.log("   - estado real del cliente:", estadoReal);
     }
-    
+
     res.json({
       ready: clientReady,
       hasQR: !!qrCodeData,
@@ -481,12 +473,12 @@ app.get("/api/status", async (req, res) => {
 app.post("/api/send-message", async (req, res) => {
   try {
     // Verificar si WhatsApp está habilitado
-    const isDevelopment = process.env.NODE_ENV === 'development' || 
-                          process.cwd().includes('htdocs') || 
-                          process.cwd().includes('xampp');
+    const isDevelopment = process.env.NODE_ENV === 'development' ||
+      process.cwd().includes('htdocs') ||
+      process.cwd().includes('xampp');
     const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.ENABLE_WHATSAPP === undefined;
     const whatsappEnabled = ENABLE_WHATSAPP || !isDevelopment;
-    
+
     if (!whatsappEnabled) {
       return res.status(503).json({
         success: false,
@@ -521,13 +513,16 @@ app.post("/api/send-message", async (req, res) => {
     try {
       estadoReal = await client.getState();
       console.log("   - Estado del cliente:", estadoReal);
-      
-      // Si el estado es CONNECTED pero clientReady es false, actualizarlo
+
+      // Si el estado es CONNECTED pero clientReady es false, aún está sincronizando
       if (estadoReal === 'CONNECTED' && !clientReady) {
-        console.log("⚠️ Estado real es CONNECTED pero clientReady es false, actualizando...");
-        clientReady = true;
+        console.log("⚠️ Estado real es CONNECTED pero clientReady es false (aún sincronizando)");
+        return res.status(503).json({
+          success: false,
+          error: "WhatsApp se está terminando de sincronizar. Intenta nuevamente en unos segundos."
+        });
       }
-      
+
       // Si el estado no es CONNECTED, verificar si realmente está desconectado
       if (estadoReal !== 'CONNECTED') {
         console.error("❌ Cliente no está en estado CONNECTED. Estado actual:", estadoReal);
@@ -561,7 +556,7 @@ app.post("/api/send-message", async (req, res) => {
     } else {
       // Asegurarse de que el número solo contenga dígitos
       const numeroLimpio = to.replace(/[^0-9]/g, '');
-      
+
       // Validar que el número tenga al menos 10 dígitos
       if (numeroLimpio.length < 10) {
         console.error("❌ Número de teléfono inválido:", numeroLimpio);
@@ -570,12 +565,12 @@ app.post("/api/send-message", async (req, res) => {
           error: "Número de teléfono inválido. Debe tener al menos 10 dígitos."
         });
       }
-      
+
       chatId = `${numeroLimpio}@c.us`;
     }
 
     console.log("📤 Enviando mensaje a chatId:", chatId);
-    
+
     // Verificar que el cliente tenga el método sendMessage disponible
     if (typeof client.sendMessage !== 'function') {
       console.error("❌ El método sendMessage no está disponible en el cliente");
@@ -584,37 +579,36 @@ app.post("/api/send-message", async (req, res) => {
         error: "El cliente de WhatsApp no está completamente inicializado. Método sendMessage no disponible."
       });
     }
-    
+
     // SOLUCIÓN DEFINITIVA: Código limpio y directo
     // Obtener el chat y enviar el mensaje directamente
     // No necesitamos marcar como leído para mensajes automáticos
     try {
-      const chat = await client.getChatById(chatId);
-      await chat.sendMessage(message, {
-        sendSeen: false  // No marcar como leído automáticamente
+      await client.sendMessage(chatId, message, {
+        sendSeen: false
       });
-      
+
       console.log("✅ Mensaje enviado exitosamente a:", chatId);
-      
+
       return res.json({
         success: true,
         to: chatId,
         message: "Mensaje enviado correctamente"
       });
-      
+
     } catch (error) {
       console.error("❌ Error al enviar mensaje:", error.message);
-      
+
       // Manejar errores específicos
       const errorMsg = error.message || String(error);
-      
+
       if (errorMsg.includes('not found') || errorMsg.includes('404')) {
         return res.status(404).json({
           success: false,
           error: `El número no está registrado en WhatsApp o no es válido. Verifica que el número sea correcto.`
         });
       }
-      
+
       return res.status(500).json({
         success: false,
         error: error.message || "Error al enviar mensaje"
@@ -625,11 +619,11 @@ app.post("/api/send-message", async (req, res) => {
     console.error("   - Tipo:", error.constructor ? error.constructor.name : typeof error);
     console.error("   - Mensaje:", error.message || String(error));
     console.error("   - Stack:", error.stack || 'No disponible');
-    
+
     // Determinar el código de estado apropiado
     let statusCode = 500;
     let errorMessage = error.message || String(error) || "Error desconocido al enviar mensaje";
-    
+
     // Mensajes de error comunes de whatsapp-web.js
     if (errorMessage.includes("Timeout") || errorMessage.includes("timeout")) {
       statusCode = 504; // Gateway Timeout
@@ -648,11 +642,11 @@ app.post("/api/send-message", async (req, res) => {
       statusCode = 503;
       errorMessage = "Error temporal al enviar mensaje. Intenta nuevamente en unos segundos. Si el problema persiste, verifica que el número sea correcto.";
     }
-    
+
     // Asegurarse de que la respuesta se envíe correctamente
     if (!res.headersSent) {
-      res.status(statusCode).json({ 
-        success: false, 
+      res.status(statusCode).json({
+        success: false,
         error: errorMessage
       });
     } else {
@@ -664,26 +658,26 @@ app.post("/api/send-message", async (req, res) => {
 // Endpoint para reiniciar sesión y generar nuevo QR
 app.post("/api/restart", async (req, res) => {
   let responseSent = false;
-  
+
   try {
     console.log("🔄 ========================================");
     console.log("🔄 REINICIANDO SESIÓN DE WHATSAPP");
     console.log("🔄 ========================================");
-    
+
     // Guardar referencia al cliente antes de limpiarlo
     const clientToDestroy = client;
-    
+
     // Limpiar estado primero para evitar condiciones de carrera
     qrCodeData = null;
     clientReady = false;
     estaInicializando = false;
     intentosInicializacion = 0;
     client = null; // Establecer null inmediatamente
-    
+
     // Destruir cliente si existe (de forma segura y sin bloquear)
     if (clientToDestroy) {
       console.log("🗑️ Destruyendo cliente de WhatsApp...");
-      
+
       // Intentar logout de forma segura (no crítico si falla, ejecutar en background)
       if (typeof clientToDestroy.logout === 'function') {
         // Ejecutar logout en background sin esperar
@@ -693,7 +687,7 @@ app.post("/api/restart", async (req, res) => {
           console.log("⚠️ Error al hacer logout (no crítico):", logoutError.message);
         });
       }
-      
+
       // Destruir el cliente de forma segura (no crítico si falla, ejecutar en background)
       if (typeof clientToDestroy.destroy === 'function') {
         // Ejecutar destroy en background sin esperar
@@ -704,16 +698,16 @@ app.post("/api/restart", async (req, res) => {
         });
       }
     }
-    
+
     // Limpiar archivos de sesión si es posible
     try {
       const fs = require('fs');
       const path = require('path');
       const sessionPath = path.join(__dirname, '.wwebjs_auth');
-      
+
       if (fs.existsSync(sessionPath)) {
         console.log("🗑️ Eliminando archivos de sesión...");
-        
+
         // Usar método compatible con versiones antiguas de Node.js
         try {
           // Intentar con rmSync primero (Node.js 14.14.0+)
@@ -747,16 +741,16 @@ app.post("/api/restart", async (req, res) => {
       console.log("   Continuando sin eliminar archivos de sesión...");
       // No es crítico, continuar de todas formas
     }
-    
+
     // Responder inmediatamente antes de inicializar nuevo cliente
     if (!responseSent && !res.headersSent) {
       responseSent = true;
-      res.json({ 
-        success: true, 
-        message: "Sesión reiniciada correctamente. Se generará un nuevo código QR en breve." 
+      res.json({
+        success: true,
+        message: "Sesión reiniciada correctamente. Se generará un nuevo código QR en breve."
       });
     }
-    
+
     // Esperar antes de reiniciar
     console.log("⏳ Esperando 5 segundos antes de inicializar nuevo cliente...");
     setTimeout(() => {
@@ -768,7 +762,7 @@ app.post("/api/restart", async (req, res) => {
     console.error("   Tipo:", error.constructor ? error.constructor.name : typeof error);
     console.error("   Mensaje:", error.message);
     console.error("   Stack:", error.stack);
-    
+
     // Asegurarse de limpiar el estado incluso si hay error
     try {
       qrCodeData = null;
@@ -779,12 +773,12 @@ app.post("/api/restart", async (req, res) => {
     } catch (cleanupError) {
       console.error("⚠️ Error al limpiar estado:", cleanupError.message);
     }
-    
+
     // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
     if (!responseSent && !res.headersSent) {
       responseSent = true;
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: error.message || "Error desconocido al reiniciar sesión",
         message: "El reinicio puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente."
       });
@@ -805,12 +799,12 @@ app.get("/status", (req, res) => {
     .then(data => res.json(data))
     .catch(() => {
       // Si falla, usar el mismo código que /api/status
-      const isDevelopment = process.env.NODE_ENV === 'development' || 
-                            process.cwd().includes('htdocs') || 
-                            process.cwd().includes('xampp');
+      const isDevelopment = process.env.NODE_ENV === 'development' ||
+        process.cwd().includes('htdocs') ||
+        process.cwd().includes('xampp');
       const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.ENABLE_WHATSAPP === undefined;
       const whatsappEnabled = ENABLE_WHATSAPP || !isDevelopment;
-      
+
       if (!whatsappEnabled) {
         return res.json({
           ready: false,
@@ -821,7 +815,7 @@ app.get("/status", (req, res) => {
           timestamp: new Date().toISOString()
         });
       }
-      
+
       res.json({
         ready: clientReady,
         hasQR: !!qrCodeData,
@@ -833,12 +827,12 @@ app.get("/status", (req, res) => {
 
 app.get("/qr", async (req, res) => {
   // Redirigir a /api/qr usando el mismo código
-  const isDevelopment = process.env.NODE_ENV === 'development' || 
-                        process.cwd().includes('htdocs') || 
-                        process.cwd().includes('xampp');
+  const isDevelopment = process.env.NODE_ENV === 'development' ||
+    process.cwd().includes('htdocs') ||
+    process.cwd().includes('xampp');
   const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.ENABLE_WHATSAPP === undefined;
   const whatsappEnabled = ENABLE_WHATSAPP || !isDevelopment;
-  
+
   if (!whatsappEnabled) {
     return res.json({
       success: false,
@@ -848,12 +842,12 @@ app.get("/qr", async (req, res) => {
       disabled: true
     });
   }
-  
+
   if (!client && !estaInicializando) {
     console.log('🔄 Cliente no existe, inicializando desde /qr...');
     inicializarClienteWhatsApp();
   }
-  
+
   if (qrCodeData) {
     const qrImage = await qrcodeLib.toDataURL(qrCodeData, {
       width: 300,
@@ -884,26 +878,26 @@ app.get("/qr", async (req, res) => {
 // Endpoint para reiniciar servicios de API (reinicio completo)
 app.post("/api/restart-service", async (req, res) => {
   let responseSent = false;
-  
+
   try {
     console.log("🔄 ========================================");
     console.log("🔄 REINICIANDO SERVICIOS DE API DE WHATSAPP");
     console.log("🔄 ========================================");
-    
+
     // Guardar referencia al cliente antes de limpiarlo
     const clientToDestroy = client;
-    
+
     // Limpiar estado primero para evitar condiciones de carrera
     qrCodeData = null;
     clientReady = false;
     estaInicializando = false;
     intentosInicializacion = 0;
     client = null; // Establecer null inmediatamente
-    
+
     // Destruir cliente si existe (de forma segura y sin bloquear)
     if (clientToDestroy) {
       console.log("🗑️ Destruyendo cliente de WhatsApp...");
-      
+
       // Intentar logout de forma segura (no crítico si falla, ejecutar en background)
       if (typeof clientToDestroy.logout === 'function') {
         // Ejecutar logout en background sin esperar
@@ -913,7 +907,7 @@ app.post("/api/restart-service", async (req, res) => {
           console.log("⚠️ Error al hacer logout (no crítico):", logoutError.message);
         });
       }
-      
+
       // Destruir el cliente de forma segura (no crítico si falla, ejecutar en background)
       if (typeof clientToDestroy.destroy === 'function') {
         // Ejecutar destroy en background sin esperar
@@ -924,16 +918,16 @@ app.post("/api/restart-service", async (req, res) => {
         });
       }
     }
-    
+
     // Limpiar archivos de sesión si es posible
     try {
       const fs = require('fs');
       const path = require('path');
       const sessionPath = path.join(__dirname, '.wwebjs_auth');
-      
+
       if (fs.existsSync(sessionPath)) {
         console.log("🗑️ Eliminando archivos de sesión...");
-        
+
         // Usar método compatible con versiones antiguas de Node.js
         try {
           // Intentar con rmSync primero (Node.js 14.14.0+)
@@ -967,16 +961,16 @@ app.post("/api/restart-service", async (req, res) => {
       console.log("   Continuando sin eliminar archivos de sesión...");
       // No es crítico, continuar de todas formas
     }
-    
+
     // Responder inmediatamente antes de inicializar nuevo cliente
     if (!responseSent && !res.headersSent) {
       responseSent = true;
-      res.json({ 
-        success: true, 
-        message: "Servicios de API reiniciados correctamente. Se generará un nuevo código QR en breve." 
+      res.json({
+        success: true,
+        message: "Servicios de API reiniciados correctamente. Se generará un nuevo código QR en breve."
       });
     }
-    
+
     // Esperar antes de reiniciar
     console.log("⏳ Esperando 5 segundos antes de inicializar nuevo cliente...");
     setTimeout(() => {
@@ -988,7 +982,7 @@ app.post("/api/restart-service", async (req, res) => {
     console.error("   Tipo:", error.constructor ? error.constructor.name : typeof error);
     console.error("   Mensaje:", error.message);
     console.error("   Stack:", error.stack);
-    
+
     // Asegurarse de limpiar el estado incluso si hay error
     try {
       qrCodeData = null;
@@ -999,12 +993,12 @@ app.post("/api/restart-service", async (req, res) => {
     } catch (cleanupError) {
       console.error("⚠️ Error al limpiar estado:", cleanupError.message);
     }
-    
+
     // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
     if (!responseSent && !res.headersSent) {
       responseSent = true;
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: error.message || "Error desconocido al reiniciar servicios",
         message: "El reinicio de servicios puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente."
       });
@@ -1018,12 +1012,12 @@ app.post("/restart", async (req, res) => {
   // Redirigir a /api/restart usando el mismo código
   try {
     console.log("🔄 Reiniciando sesión de WhatsApp (endpoint /restart)...");
-    
+
     // Destruir cliente si existe
     if (client) {
       try {
         console.log("🗑️ Destruyendo cliente de WhatsApp...");
-        
+
         // Desconectar el cliente primero
         try {
           await client.logout();
@@ -1031,26 +1025,26 @@ app.post("/restart", async (req, res) => {
         } catch (logoutError) {
           console.log("⚠️ Error al hacer logout (puede ser normal):", logoutError.message);
         }
-        
+
         await client.destroy();
         console.log("✅ Cliente destruido correctamente");
       } catch (error) {
         console.error("⚠️ Error al destruir cliente:", error.message);
       }
     }
-    
+
     // Limpiar estado completamente
     qrCodeData = null;
     clientReady = false;
     client = null;
     estaInicializando = false;
     intentosInicializacion = 0;
-    
+
     // Limpiar archivos de sesión si es posible
     const fs = require('fs');
     const path = require('path');
     const sessionPath = path.join(__dirname, '.wwebjs_auth');
-    
+
     try {
       if (fs.existsSync(sessionPath)) {
         console.log("🗑️ Eliminando archivos de sesión...");
@@ -1060,23 +1054,23 @@ app.post("/restart", async (req, res) => {
     } catch (fsError) {
       console.log("⚠️ No se pudieron eliminar los archivos de sesión:", fsError.message);
     }
-    
+
     // Esperar un momento antes de inicializar nuevo cliente
     setTimeout(() => {
       console.log("🔄 Inicializando nuevo cliente...");
       inicializarClienteWhatsApp();
     }, 2000);
-    
-    res.json({ 
-      success: true, 
-      message: "Sesión reiniciada correctamente. Se generará un nuevo código QR en breve." 
+
+    res.json({
+      success: true,
+      message: "Sesión reiniciada correctamente. Se generará un nuevo código QR en breve."
     });
   } catch (error) {
     console.error("❌ Error al reiniciar sesión:", error);
     console.error("   Tipo:", error.constructor ? error.constructor.name : typeof error);
     console.error("   Mensaje:", error.message);
     console.error("   Stack:", error.stack);
-    
+
     // Asegurarse de limpiar el estado incluso si hay error
     try {
       qrCodeData = null;
@@ -1087,20 +1081,20 @@ app.post("/restart", async (req, res) => {
     } catch (cleanupError) {
       console.error("⚠️ Error al limpiar estado:", cleanupError.message);
     }
-    
+
     // Responder con error pero no crítico
     if (!res.headersSent) {
-    // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
-    if (!res.headersSent) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message || "Error desconocido al reiniciar sesión",
-        message: "El reinicio puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente.",
-        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-      });
-    } else {
-      console.error("⚠️ No se pudo enviar respuesta de error porque los headers ya fueron enviados");
-    }
+      // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
+      if (!res.headersSent) {
+        res.status(500).json({
+          success: false,
+          error: error.message || "Error desconocido al reiniciar sesión",
+          message: "El reinicio puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente.",
+          details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+      } else {
+        console.error("⚠️ No se pudo enviar respuesta de error porque los headers ya fueron enviados");
+      }
     }
   }
 });
@@ -1110,9 +1104,9 @@ const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.EN
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // En desarrollo local (htdocs), permitir WhatsApp si está explícitamente habilitado
-const isDevelopment = NODE_ENV === 'development' || 
-                      process.cwd().includes('htdocs') || 
-                      process.cwd().includes('xampp');
+const isDevelopment = NODE_ENV === 'development' ||
+  process.cwd().includes('htdocs') ||
+  process.cwd().includes('xampp');
 
 // Habilitar WhatsApp si:
 // 1. ENABLE_WHATSAPP es explícitamente 'true', O
@@ -1142,7 +1136,7 @@ app.listen(PORT, listenHost, () => {
     console.log(`🌐 Dominios permitidos: rutalan.cloud, www.rutalan.cloud`);
     console.log(`🔒 CORS configurado para producción`);
   }
-  
+
   if (shouldEnableWhatsApp) {
     console.log(`🔄 Iniciando cliente de WhatsApp...`);
     // Inicializar el cliente después de que el servidor esté listo
