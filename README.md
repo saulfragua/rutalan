@@ -128,7 +128,7 @@ Este proyecto es el producto integrador del programa **Análisis y Desarrollo de
 
 ## 👤 Autores
 
-- **Sebastian Moreno** — Frontend (Angular), documentación y gestión administrativa.
+- **Sebastian Moreno**([@hsmorenom](https://github.com/hsmorenom)) — Frontend (Angular), documentación y gestión administrativa.
 - **Saúl Fragua** ([@saulfragua](https://github.com/saulfragua)) — Backend (PHP/MVC/MySQL) y operación comercial.
 
 ---
