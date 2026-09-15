@@ -471,11 +471,20 @@
                 [class.fa-exclamation-triangle]="!whatsappConectado" style="font-size: 1.5rem; color: #ffffff;"></i>
             </div>
             <div>
+              <!-- Mensaje estado de conexión -->
               <p style="font-size: 1rem; font-weight: 700; color: #02416d; margin: 0;">
                 Estado: <span [style.color]="whatsappConectado ? '#10b981' : '#f59e0b'">{{ whatsappConectado ?
                   'Conectado' : 'No conectado' }}</span>
               </p>
-              <p style="font-size: 0.875rem; color: #6b7280; margin: 0.25rem 0 0 0;" *ngIf="!whatsappConectado">
+              <!-- Mensaje de progreso en vivo -->
+              <p *ngIf="mensajeEstadoWhatsapp"
+                style="font-size: 0.8125rem; color: #066699; margin: 0.375rem 0 0 0; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <i *ngIf="reiniciandoServicio || cargandoQR" class="fas fa-circle-notch fa-spin"></i>
+                {{ mensajeEstadoWhatsapp }}
+              </p>
+              <!-- Mensaje por defecto -->
+              <p style="font-size: 0.875rem; color: #6b7280; margin: 0.25rem 0 0 0;"
+                *ngIf="!whatsappConectado && !mensajeEstadoWhatsapp">
                 Escanea el código QR para conectar WhatsApp
               </p>
             </div>
@@ -499,7 +508,7 @@
             onmouseover="if (!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
             onmouseout="if (!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; }">
             <i class="fas fa-redo" [class.fa-spin]="reiniciandoServicio"></i>
-            Reiniciar sesión WhatsApp
+            {{ reiniciandoServicio ? 'Reiniciando...' : 'Reiniciar sesión WhatsApp' }}
           </button>
           <button (click)="reiniciarServiciosAPI()" [disabled]="reiniciandoServicio"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
@@ -508,7 +517,7 @@
             onmouseover="if (!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'; }"
             onmouseout="if (!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; }">
             <i class="fas fa-power-off" [class.fa-spin]="reiniciandoServicio"></i>
-            Reiniciar servicios de API
+            {{ reiniciandoServicio ? 'Reiniciando...' : 'Reiniciar servicios de API' }}
           </button>
         </div>
 

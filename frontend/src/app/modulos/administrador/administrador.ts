@@ -49,6 +49,8 @@ export class Administrador implements OnInit, OnDestroy {
   cargandoQR: boolean = false;
   reiniciandoServicio: boolean = false;
   intervaloQR?: any;
+  mensajeEstadoWhatsapp: string = '';
+  timeoutReinicio?: any;
 
   // Errores
   errores: any[] = [];
@@ -167,6 +169,9 @@ export class Administrador implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.intervaloQR) {
       clearInterval(this.intervaloQR);
+    }
+    if (this.timeoutReinicio) {
+      clearTimeout(this.timeoutReinicio);
     }
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
@@ -393,7 +398,6 @@ export class Administrador implements OnInit, OnDestroy {
   verificarEstadoWhatsApp() {
     fetch(`${environment.whatsappApiUrl}/api/status`)
       .then(response => {
-        // Si el servicio no está disponible, detener la verificación
         if (!response.ok) {
           if (response.status === 404) {
             console.warn('Servicio de WhatsApp no disponible');
@@ -403,6 +407,7 @@ export class Administrador implements OnInit, OnDestroy {
             }
             this.whatsappConectado = false;
             this.qrCodeDataUrl = '';
+            this.finalizarReinicio('El servicio de WhatsApp no responde.');
             return null;
           }
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -410,7 +415,7 @@ export class Administrador implements OnInit, OnDestroy {
         return response.json();
       })
       .then(data => {
-        if (!data) return; // Servicio no disponible
+        if (!data) return;
 
         console.log('📊 Estado verificado:', {
           ready: data.ready,
@@ -419,48 +424,63 @@ export class Administrador implements OnInit, OnDestroy {
           clientState: data.clientState || 'no disponible'
         });
 
-        // Verificar si está conectado por el estado real del cliente también
-        const estaConectado = data.ready || (data.clientState === 'CONNECTED');
-
-        // Actualizar estado de conexión
-        if (estaConectado) {
-          console.log('✅ WhatsApp está conectado! (ready:', data.ready, ', state:', data.clientState, ')');
+        // Solo 'ready' confirma que WhatsApp terminó de sincronizar
+        if (data.ready) {
+          console.log('✅ WhatsApp está conectado!');
           this.whatsappConectado = true;
-          this.qrCodeDataUrl = ''; // Ocultar QR cuando está conectado
-          this.cargandoQR = false;
-          this.cdr.detectChanges();
-          // Detener verificación automática cuando está conectado
+          this.qrCodeDataUrl = '';
+          this.finalizarReinicio('');
           if (this.intervaloQR) {
             clearInterval(this.intervaloQR);
             this.intervaloQR = undefined;
           }
           return;
-        } else {
-          // Si no está listo, actualizar estado
-          console.log('⏳ WhatsApp no está conectado aún... (ready:', data.ready, ', state:', data.clientState, ')');
-          this.whatsappConectado = false;
-          this.cdr.detectChanges();
         }
 
-        // Si hay QR disponible y no lo tenemos, obtenerlo
-        if (data.hasQR && !this.qrCodeDataUrl && !this.cargandoQR) {
-          console.log('📲 Hay QR disponible, obteniéndolo...');
-          this.obtenerQRWhatsApp();
-        }
+        this.whatsappConectado = false;
 
-        // Si no hay QR y no está conectado, podría estar inicializando o escaneando
-        if (!data.hasQR && !estaConectado && data.clientExists) {
-          if (data.clientState === 'CONNECTING' || data.clientState === 'OPENING') {
-            console.log('⏳ Cliente está conectando/abriendo, esperando sincronización...');
+        // Hay QR disponible: el reinicio terminó su parte pesada
+        if (data.hasQR) {
+          if (!this.qrCodeDataUrl && !this.cargandoQR) {
+            console.log('📲 Hay QR disponible, obteniéndolo...');
+            this.obtenerQRWhatsApp();
+          }
+          if (this.reiniciandoServicio) {
+            this.finalizarReinicio('Código QR listo. Escanéalo con tu teléfono.');
           } else {
-            console.log('⏳ Cliente existe pero no hay QR ni está conectado, esperando...');
+            this.mensajeEstadoWhatsapp = 'Código QR listo. Escanéalo con tu teléfono.';
+          }
+          this.cdr.detectChanges();
+          return;
+        }
+
+        // Sin QR todavía: reportar en qué va el arranque
+        if (this.reiniciandoServicio || this.cargandoQR) {
+          switch (data.clientState) {
+            case 'UNLAUNCHED':
+              this.mensajeEstadoWhatsapp = 'Abriendo el navegador interno...';
+              break;
+            case 'PAIRING':
+            case 'UNPAIRED':
+              this.mensajeEstadoWhatsapp = 'Generando el código QR...';
+              break;
+            case 'OPENING':
+            case 'CONNECTING':
+              this.mensajeEstadoWhatsapp = 'Conectando con WhatsApp...';
+              break;
+            case 'CONNECTED':
+              this.mensajeEstadoWhatsapp = 'Sincronizando conversaciones, ya casi...';
+              break;
+            default:
+              this.mensajeEstadoWhatsapp = data.clientExists
+                ? 'Iniciando el servicio de WhatsApp...'
+                : 'Esperando al servicio de WhatsApp...';
           }
         }
+        this.cdr.detectChanges();
       })
       .catch(error => {
         console.error('Error al verificar estado:', error);
-        // No detener la verificación si es un error temporal
-        // Solo detener si es un error 404 (servicio no disponible)
         if (error.message && error.message.includes('404')) {
           if (this.intervaloQR) {
             clearInterval(this.intervaloQR);
@@ -468,32 +488,31 @@ export class Administrador implements OnInit, OnDestroy {
           }
           this.whatsappConectado = false;
           this.qrCodeDataUrl = '';
-          this.cdr.detectChanges();
+          this.finalizarReinicio('');
         }
       });
   }
 
   reiniciarSesionWhatsApp() {
-    // Confirmar acción
     if (!confirm('¿Está seguro de que desea reiniciar la sesión de WhatsApp?\n\nEsto destruirá la sesión actual y deberá escanear el código QR nuevamente.')) {
       return;
     }
 
     console.log('🔄 Iniciando reinicio de sesión de WhatsApp...');
 
-    // Detener verificación automática si está activa
     if (this.intervaloQR) {
       clearInterval(this.intervaloQR);
       this.intervaloQR = undefined;
     }
 
-    // Limpiar estado local completamente
+    // Bloquear botones y mostrar estado
+    this.reiniciandoServicio = true;
     this.cargandoQR = true;
     this.qrCodeDataUrl = '';
     this.whatsappConectado = false;
+    this.mensajeEstadoWhatsapp = 'Destruyendo la sesión actual...';
     this.cdr.detectChanges();
 
-    // Llamar al endpoint de reinicio
     fetch(`${environment.whatsappApiUrl}/api/restart`, { method: 'POST' })
       .then(response => {
         if (!response.ok) {
@@ -506,75 +525,39 @@ export class Administrador implements OnInit, OnDestroy {
       })
       .then((data) => {
         console.log('✅ Sesión reiniciada en el servidor:', data);
-        console.log('⏳ Esperando a que se destruya la sesión y se genere nuevo QR...');
+        this.mensajeEstadoWhatsapp = 'Iniciando WhatsApp, esto puede tardar hasta 2 minutos...';
+        this.cdr.detectChanges();
 
-        // Esperar más tiempo para que el servidor:
-        // 1. Destruya el cliente
-        // 2. Elimine los archivos de sesión
-        // 3. Inicialice un nuevo cliente
-        // 4. Genere un nuevo QR
-        setTimeout(() => {
-          console.log('🔄 Intentando obtener nuevo QR...');
-          this.cargandoQR = false;
-          // Obtener nuevo QR después del reinicio
-          this.obtenerQRWhatsApp();
-        }, 3000); // Aumentado a 3 segundos para dar tiempo al servidor
+        // El sondeo detecta cuándo aparece el QR y apaga el indicador
+        this.iniciarVerificacionEstado();
+        this.activarTimeoutReinicio();
       })
       .catch(error => {
         console.error('❌ Error al reiniciar sesión:', error);
-        this.cargandoQR = false;
-        this.whatsappConectado = false;
-        this.cdr.detectChanges();
-
-        let mensajeError = '';
-        if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
-          error.message.includes('Failed to fetch') ||
-          error.message.includes('404')) {
-          mensajeError = 'El servicio de WhatsApp no está disponible.\n\n';
-          mensajeError += `Verifica que el servicio esté corriendo en: ${environment.whatsappApiUrl}\n\n`;
-          mensajeError += `Para iniciar el servicio:\n`;
-          mensajeError += `1. Ve a la carpeta whatsapp-api\n`;
-          mensajeError += `2. Ejecuta: ENABLE_WHATSAPP=true node server.js`;
-        } else if (error.message.includes('500') || error.message.includes('Internal Server Error')) {
-          mensajeError = 'Error interno del servidor al reiniciar la sesión.\n\n';
-          mensajeError += `Esto puede deberse a:\n`;
-          mensajeError += `1. Problemas al destruir el cliente anterior\n`;
-          mensajeError += `2. Archivos de sesión bloqueados\n`;
-          mensajeError += `3. Problemas con el sistema de archivos\n\n`;
-          mensajeError += `Solución:\n`;
-          mensajeError += `1. Verifica los logs del servidor de WhatsApp\n`;
-          mensajeError += `2. Intenta detener y reiniciar el servicio manualmente\n`;
-          mensajeError += `3. Si el problema persiste, elimina manualmente la carpeta .wwebjs_auth`;
-        } else {
-          mensajeError = `No se pudo reiniciar la sesión de WhatsApp.\n\nError: ${error.message}`;
-        }
-
-        alert(mensajeError);
+        this.finalizarReinicio('');
+        this.mostrarErrorReinicio(error, 'la sesión');
       });
   }
 
   reiniciarServiciosAPI() {
-    // Confirmar acción
     if (!confirm('¿Está seguro de que desea reiniciar los servicios de la API de WhatsApp?\n\nEsto reiniciará completamente los servicios y deberá escanear el código QR nuevamente.')) {
       return;
     }
 
     console.log('🔄 Iniciando reinicio de servicios de API de WhatsApp...');
 
-    // Detener verificación automática si está activa
     if (this.intervaloQR) {
       clearInterval(this.intervaloQR);
       this.intervaloQR = undefined;
     }
 
-    // Limpiar estado local completamente
     this.reiniciandoServicio = true;
     this.cargandoQR = true;
     this.qrCodeDataUrl = '';
     this.whatsappConectado = false;
+    this.mensajeEstadoWhatsapp = 'Reiniciando los servicios de la API...';
     this.cdr.detectChanges();
 
-    // Llamar al endpoint de reinicio de servicios
     fetch(`${environment.whatsappApiUrl}/api/restart-service`, { method: 'POST' })
       .then(response => {
         if (!response.ok) {
@@ -587,55 +570,62 @@ export class Administrador implements OnInit, OnDestroy {
       })
       .then((data) => {
         console.log('✅ Servicios reiniciados en el servidor:', data);
-        console.log('⏳ Esperando a que se reinicien los servicios y se genere nuevo QR...');
+        this.mensajeEstadoWhatsapp = 'Iniciando WhatsApp, esto puede tardar hasta 2 minutos...';
+        this.cdr.detectChanges();
 
-        // Esperar más tiempo para que el servidor:
-        // 1. Reinicie completamente los servicios
-        // 2. Destruya el cliente
-        // 3. Elimine los archivos de sesión
-        // 4. Inicialice un nuevo cliente
-        // 5. Genere un nuevo QR
-        setTimeout(() => {
-          console.log('🔄 Intentando obtener nuevo QR después del reinicio de servicios...');
-          this.reiniciandoServicio = false;
-          this.cargandoQR = false;
-          this.cdr.detectChanges();
-          // Obtener nuevo QR después del reinicio
-          this.obtenerQRWhatsApp();
-        }, 4000); // 4 segundos para dar tiempo al reinicio completo
+        this.iniciarVerificacionEstado();
+        this.activarTimeoutReinicio();
       })
       .catch(error => {
         console.error('❌ Error al reiniciar servicios:', error);
-        this.reiniciandoServicio = false;
-        this.cargandoQR = false;
-        this.whatsappConectado = false;
-        this.cdr.detectChanges();
-
-        let mensajeError = '';
-        if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
-          error.message.includes('Failed to fetch') ||
-          error.message.includes('404')) {
-          mensajeError = 'El servicio de WhatsApp no está disponible.\n\n';
-          mensajeError += `Verifica que el servicio esté corriendo en: ${environment.whatsappApiUrl}\n\n`;
-          mensajeError += `Para iniciar el servicio:\n`;
-          mensajeError += `1. Ve a la carpeta whatsapp-api\n`;
-          mensajeError += `2. Ejecuta: ENABLE_WHATSAPP=true node server.js`;
-        } else if (error.message.includes('500') || error.message.includes('Internal Server Error')) {
-          mensajeError = 'Error interno del servidor al reiniciar los servicios.\n\n';
-          mensajeError += `Esto puede deberse a:\n`;
-          mensajeError += `1. Problemas al reiniciar los servicios\n`;
-          mensajeError += `2. Archivos de sesión bloqueados\n`;
-          mensajeError += `3. Problemas con el sistema de archivos\n\n`;
-          mensajeError += `Solución:\n`;
-          mensajeError += `1. Verifica los logs del servidor de WhatsApp\n`;
-          mensajeError += `2. Intenta detener y reiniciar el servicio manualmente\n`;
-          mensajeError += `3. Si el problema persiste, elimina manualmente la carpeta .wwebjs_auth`;
-        } else {
-          mensajeError = `No se pudieron reiniciar los servicios de WhatsApp.\n\nError: ${error.message}`;
-        }
-
-        alert(mensajeError);
+        this.finalizarReinicio('');
+        this.mostrarErrorReinicio(error, 'los servicios');
       });
+  }
+
+  /** Apaga los indicadores de carga y fija el mensaje final */
+  private finalizarReinicio(mensaje: string) {
+    this.reiniciandoServicio = false;
+    this.cargandoQR = false;
+    this.mensajeEstadoWhatsapp = mensaje;
+    if (this.timeoutReinicio) {
+      clearTimeout(this.timeoutReinicio);
+      this.timeoutReinicio = undefined;
+    }
+    this.cdr.detectChanges();
+  }
+
+  /** Red de seguridad: si en 60s no pasa nada, libera los botones */
+  private activarTimeoutReinicio() {
+    if (this.timeoutReinicio) {
+      clearTimeout(this.timeoutReinicio);
+    }
+    this.timeoutReinicio = setTimeout(() => {
+      if (this.reiniciandoServicio) {
+        console.warn('⚠️ El reinicio superó el tiempo esperado');
+        this.finalizarReinicio('El reinicio está tardando más de lo normal. Revisa los logs del servidor o intenta de nuevo.');
+      }
+    }, 240000);
+  }
+
+  private mostrarErrorReinicio(error: any, que: string) {
+    let mensajeError = '';
+    if (error.message === 'SERVICIO_NO_DISPONIBLE' ||
+      error.message.includes('Failed to fetch') ||
+      error.message.includes('404')) {
+      mensajeError = 'El servicio de WhatsApp no está disponible.\n\n';
+      mensajeError += `Verifica que el servicio esté corriendo en: ${environment.whatsappApiUrl}\n\n`;
+      mensajeError += `Para iniciar el servicio:\n`;
+      mensajeError += `1. Ve a la carpeta whatsapp-api\n`;
+      mensajeError += `2. Ejecuta: $env:ENABLE_WHATSAPP="true"; node server.js`;
+    } else if (error.message.includes('500') || error.message.includes('Internal Server Error')) {
+      mensajeError = `Error interno del servidor al reiniciar ${que}.\n\n`;
+      mensajeError += `Revisa los logs del servidor de WhatsApp. `;
+      mensajeError += `Si el problema persiste, detén el servicio y elimina manualmente la carpeta .wwebjs_auth`;
+    } else {
+      mensajeError = `No se pudo reiniciar ${que}.\n\nError: ${error.message}`;
+    }
+    alert(mensajeError);
   }
 
   /* =========================

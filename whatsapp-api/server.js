@@ -21,6 +21,10 @@ const { Client, LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const qrcodeLib = require("qrcode");
 
+process.on('unhandledRejection', (reason) => {
+  console.error('⚠️ Promesa rechazada sin capturar (el servidor sigue corriendo):', reason);
+});
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,6 +71,7 @@ app.use((req, res, next) => {
 let qrCodeData = null;
 let clientReady = false;
 let client = null;
+let reinicioManualEnCurso = false;
 
 let intentosInicializacion = 0;
 const maxIntentosInicializacion = 5;
@@ -213,6 +218,11 @@ function continuarInicializacion() {
       qrCodeData = null;
       client = null;
       estaInicializando = false;
+
+      if (reinicioManualEnCurso) {
+        console.log("ℹ️ Desconexión esperada (reinicio manual en curso), no se auto-reconecta.");
+        return;
+      }
 
       // Intentar reconectar después de 5 segundos
       setTimeout(() => {
@@ -660,130 +670,67 @@ app.post("/api/restart", async (req, res) => {
   let responseSent = false;
 
   try {
-    console.log("🔄 ========================================");
     console.log("🔄 REINICIANDO SESIÓN DE WHATSAPP");
-    console.log("🔄 ========================================");
 
-    // Guardar referencia al cliente antes de limpiarlo
+    reinicioManualEnCurso = true;   // ← bloquea el auto-reconectar del listener
+
     const clientToDestroy = client;
-
-    // Limpiar estado primero para evitar condiciones de carrera
     qrCodeData = null;
     clientReady = false;
     estaInicializando = false;
     intentosInicializacion = 0;
-    client = null; // Establecer null inmediatamente
+    client = null;
 
-    // Destruir cliente si existe (de forma segura y sin bloquear)
     if (clientToDestroy) {
       console.log("🗑️ Destruyendo cliente de WhatsApp...");
-
-      // Intentar logout de forma segura (no crítico si falla, ejecutar en background)
-      if (typeof clientToDestroy.logout === 'function') {
-        // Ejecutar logout en background sin esperar
-        clientToDestroy.logout().then(() => {
-          console.log("✅ Cliente desconectado (logout)");
-        }).catch((logoutError) => {
-          console.log("⚠️ Error al hacer logout (no crítico):", logoutError.message);
-        });
+      try {
+        await clientToDestroy.destroy();   // ← await real, sin logout() separado
+        console.log("✅ Cliente destruido correctamente");
+      } catch (e) {
+        console.log("⚠️ Error al destruir cliente (continuando):", e.message);
       }
-
-      // Destruir el cliente de forma segura (no crítico si falla, ejecutar en background)
-      if (typeof clientToDestroy.destroy === 'function') {
-        // Ejecutar destroy en background sin esperar
-        clientToDestroy.destroy().then(() => {
-          console.log("✅ Cliente destruido correctamente");
-        }).catch((destroyError) => {
-          console.log("⚠️ Error al destruir cliente (no crítico):", destroyError.message);
-        });
-      }
+      // Margen para que Windows suelte los archivos
+      await new Promise(r => setTimeout(r, 3000));
     }
 
-    // Limpiar archivos de sesión si es posible
+    // Borrar sesión (ahora sí, con el cliente ya muerto)
     try {
       const fs = require('fs');
       const path = require('path');
       const sessionPath = path.join(__dirname, '.wwebjs_auth');
-
       if (fs.existsSync(sessionPath)) {
-        console.log("🗑️ Eliminando archivos de sesión...");
-
-        // Usar método compatible con versiones antiguas de Node.js
-        try {
-          // Intentar con rmSync primero (Node.js 14.14.0+)
-          if (typeof fs.rmSync === 'function') {
-            fs.rmSync(sessionPath, { recursive: true, force: true });
-            console.log("✅ Archivos de sesión eliminados correctamente (rmSync)");
-          } else if (typeof fs.rmdirSync === 'function') {
-            // Fallback: usar rmdirSync recursivo (Node.js 12.10.0+)
-            try {
-              fs.rmdirSync(sessionPath, { recursive: true });
-              console.log("✅ Archivos de sesión eliminados correctamente (rmdirSync)");
-            } catch (rmdirError) {
-              console.log("⚠️ No se pudieron eliminar los archivos de sesión con rmdirSync:", rmdirError.message);
-              console.log("   Esto es normal si los archivos están en uso");
-              console.log("   Puedes eliminarlos manualmente desde: " + sessionPath);
-            }
-          } else {
-            console.log("⚠️ No se pudo eliminar archivos de sesión: métodos no disponibles");
-            console.log("   Puedes eliminarlos manualmente desde: " + sessionPath);
-          }
-        } catch (rmError) {
-          console.log("⚠️ No se pudieron eliminar los archivos de sesión:", rmError.message);
-          console.log("   Esto es normal si los archivos están en uso o no existen");
-          console.log("   Puedes eliminarlos manualmente desde: " + sessionPath);
-        }
-      } else {
-        console.log("ℹ️ No hay archivos de sesión para eliminar");
+        fs.rmSync(sessionPath, { recursive: true, force: true });
+        console.log("✅ Archivos de sesión eliminados correctamente");
       }
     } catch (fsError) {
-      console.log("⚠️ Error al acceder al sistema de archivos:", fsError.message);
-      console.log("   Continuando sin eliminar archivos de sesión...");
-      // No es crítico, continuar de todas formas
+      console.log("⚠️ No se pudieron eliminar los archivos de sesión:", fsError.message);
     }
 
-    // Responder inmediatamente antes de inicializar nuevo cliente
     if (!responseSent && !res.headersSent) {
       responseSent = true;
-      res.json({
-        success: true,
-        message: "Sesión reiniciada correctamente. Se generará un nuevo código QR en breve."
-      });
+      res.json({ success: true, message: "Sesión reiniciada correctamente." });
     }
 
-    // Esperar antes de reiniciar
-    console.log("⏳ Esperando 5 segundos antes de inicializar nuevo cliente...");
     setTimeout(() => {
+      reinicioManualEnCurso = false;   // ← liberar la bandera antes de reinicializar
       console.log("🔄 Inicializando nuevo cliente...");
       inicializarClienteWhatsApp();
-    }, 5000);
+    }, 2000);
+
   } catch (error) {
     console.error("❌ Error al reiniciar sesión:", error);
-    console.error("   Tipo:", error.constructor ? error.constructor.name : typeof error);
-    console.error("   Mensaje:", error.message);
-    console.error("   Stack:", error.stack);
+    reinicioManualEnCurso = false;
+    qrCodeData = null;
+    clientReady = false;
+    client = null;
+    estaInicializando = false;
 
-    // Asegurarse de limpiar el estado incluso si hay error
-    try {
-      qrCodeData = null;
-      clientReady = false;
-      client = null;
-      estaInicializando = false;
-      intentosInicializacion = 0;
-    } catch (cleanupError) {
-      console.error("⚠️ Error al limpiar estado:", cleanupError.message);
-    }
-
-    // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
     if (!responseSent && !res.headersSent) {
       responseSent = true;
       res.status(500).json({
         success: false,
-        error: error.message || "Error desconocido al reiniciar sesión",
-        message: "El reinicio puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente."
+        error: error.message || "Error desconocido al reiniciar sesión"
       });
-    } else {
-      console.error("⚠️ No se pudo enviar respuesta de error porque los headers ya fueron enviados");
     }
   }
 });
@@ -880,174 +827,33 @@ app.post("/api/restart-service", async (req, res) => {
   let responseSent = false;
 
   try {
-    console.log("🔄 ========================================");
     console.log("🔄 REINICIANDO SERVICIOS DE API DE WHATSAPP");
-    console.log("🔄 ========================================");
 
-    // Guardar referencia al cliente antes de limpiarlo
+    reinicioManualEnCurso = true;
+
     const clientToDestroy = client;
-
-    // Limpiar estado primero para evitar condiciones de carrera
     qrCodeData = null;
     clientReady = false;
     estaInicializando = false;
     intentosInicializacion = 0;
-    client = null; // Establecer null inmediatamente
+    client = null;
 
-    // Destruir cliente si existe (de forma segura y sin bloquear)
     if (clientToDestroy) {
       console.log("🗑️ Destruyendo cliente de WhatsApp...");
-
-      // Intentar logout de forma segura (no crítico si falla, ejecutar en background)
-      if (typeof clientToDestroy.logout === 'function') {
-        // Ejecutar logout en background sin esperar
-        clientToDestroy.logout().then(() => {
-          console.log("✅ Cliente desconectado (logout)");
-        }).catch((logoutError) => {
-          console.log("⚠️ Error al hacer logout (no crítico):", logoutError.message);
-        });
+      try {
+        await clientToDestroy.destroy();
+        console.log("✅ Cliente destruido correctamente");
+      } catch (e) {
+        console.log("⚠️ Error al destruir cliente (continuando):", e.message);
       }
-
-      // Destruir el cliente de forma segura (no crítico si falla, ejecutar en background)
-      if (typeof clientToDestroy.destroy === 'function') {
-        // Ejecutar destroy en background sin esperar
-        clientToDestroy.destroy().then(() => {
-          console.log("✅ Cliente destruido correctamente");
-        }).catch((destroyError) => {
-          console.log("⚠️ Error al destruir cliente (no crítico):", destroyError.message);
-        });
-      }
+      await new Promise(r => setTimeout(r, 3000));
     }
 
-    // Limpiar archivos de sesión si es posible
     try {
       const fs = require('fs');
       const path = require('path');
       const sessionPath = path.join(__dirname, '.wwebjs_auth');
-
       if (fs.existsSync(sessionPath)) {
-        console.log("🗑️ Eliminando archivos de sesión...");
-
-        // Usar método compatible con versiones antiguas de Node.js
-        try {
-          // Intentar con rmSync primero (Node.js 14.14.0+)
-          if (typeof fs.rmSync === 'function') {
-            fs.rmSync(sessionPath, { recursive: true, force: true });
-            console.log("✅ Archivos de sesión eliminados correctamente (rmSync)");
-          } else if (typeof fs.rmdirSync === 'function') {
-            // Fallback: usar rmdirSync recursivo (Node.js 12.10.0+)
-            try {
-              fs.rmdirSync(sessionPath, { recursive: true });
-              console.log("✅ Archivos de sesión eliminados correctamente (rmdirSync)");
-            } catch (rmdirError) {
-              console.log("⚠️ No se pudieron eliminar los archivos de sesión con rmdirSync:", rmdirError.message);
-              console.log("   Esto es normal si los archivos están en uso");
-              console.log("   Puedes eliminarlos manualmente desde: " + sessionPath);
-            }
-          } else {
-            console.log("⚠️ No se pudo eliminar archivos de sesión: métodos no disponibles");
-            console.log("   Puedes eliminarlos manualmente desde: " + sessionPath);
-          }
-        } catch (rmError) {
-          console.log("⚠️ No se pudieron eliminar los archivos de sesión:", rmError.message);
-          console.log("   Esto es normal si los archivos están en uso o no existen");
-          console.log("   Puedes eliminarlos manualmente desde: " + sessionPath);
-        }
-      } else {
-        console.log("ℹ️ No hay archivos de sesión para eliminar");
-      }
-    } catch (fsError) {
-      console.log("⚠️ Error al acceder al sistema de archivos:", fsError.message);
-      console.log("   Continuando sin eliminar archivos de sesión...");
-      // No es crítico, continuar de todas formas
-    }
-
-    // Responder inmediatamente antes de inicializar nuevo cliente
-    if (!responseSent && !res.headersSent) {
-      responseSent = true;
-      res.json({
-        success: true,
-        message: "Servicios de API reiniciados correctamente. Se generará un nuevo código QR en breve."
-      });
-    }
-
-    // Esperar antes de reiniciar
-    console.log("⏳ Esperando 5 segundos antes de inicializar nuevo cliente...");
-    setTimeout(() => {
-      console.log("🔄 Inicializando nuevo cliente después del reinicio de servicios...");
-      inicializarClienteWhatsApp();
-    }, 5000);
-  } catch (error) {
-    console.error("❌ Error al reiniciar servicios:", error);
-    console.error("   Tipo:", error.constructor ? error.constructor.name : typeof error);
-    console.error("   Mensaje:", error.message);
-    console.error("   Stack:", error.stack);
-
-    // Asegurarse de limpiar el estado incluso si hay error
-    try {
-      qrCodeData = null;
-      clientReady = false;
-      client = null;
-      estaInicializando = false;
-      intentosInicializacion = 0;
-    } catch (cleanupError) {
-      console.error("⚠️ Error al limpiar estado:", cleanupError.message);
-    }
-
-    // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
-    if (!responseSent && !res.headersSent) {
-      responseSent = true;
-      res.status(500).json({
-        success: false,
-        error: error.message || "Error desconocido al reiniciar servicios",
-        message: "El reinicio de servicios puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente."
-      });
-    } else {
-      console.error("⚠️ No se pudo enviar respuesta de error porque los headers ya fueron enviados");
-    }
-  }
-});
-
-app.post("/restart", async (req, res) => {
-  // Redirigir a /api/restart usando el mismo código
-  try {
-    console.log("🔄 Reiniciando sesión de WhatsApp (endpoint /restart)...");
-
-    // Destruir cliente si existe
-    if (client) {
-      try {
-        console.log("🗑️ Destruyendo cliente de WhatsApp...");
-
-        // Desconectar el cliente primero
-        try {
-          await client.logout();
-          console.log("✅ Cliente desconectado (logout)");
-        } catch (logoutError) {
-          console.log("⚠️ Error al hacer logout (puede ser normal):", logoutError.message);
-        }
-
-        await client.destroy();
-        console.log("✅ Cliente destruido correctamente");
-      } catch (error) {
-        console.error("⚠️ Error al destruir cliente:", error.message);
-      }
-    }
-
-    // Limpiar estado completamente
-    qrCodeData = null;
-    clientReady = false;
-    client = null;
-    estaInicializando = false;
-    intentosInicializacion = 0;
-
-    // Limpiar archivos de sesión si es posible
-    const fs = require('fs');
-    const path = require('path');
-    const sessionPath = path.join(__dirname, '.wwebjs_auth');
-
-    try {
-      if (fs.existsSync(sessionPath)) {
-        console.log("🗑️ Eliminando archivos de sesión...");
         fs.rmSync(sessionPath, { recursive: true, force: true });
         console.log("✅ Archivos de sesión eliminados correctamente");
       }
@@ -1055,50 +861,51 @@ app.post("/restart", async (req, res) => {
       console.log("⚠️ No se pudieron eliminar los archivos de sesión:", fsError.message);
     }
 
-    // Esperar un momento antes de inicializar nuevo cliente
+    if (!responseSent && !res.headersSent) {
+      responseSent = true;
+      res.json({ success: true, message: "Servicios de API reiniciados correctamente." });
+    }
+
     setTimeout(() => {
-      console.log("🔄 Inicializando nuevo cliente...");
+      reinicioManualEnCurso = false;
+      console.log("🔄 Inicializando nuevo cliente después del reinicio de servicios...");
       inicializarClienteWhatsApp();
     }, 2000);
 
-    res.json({
-      success: true,
-      message: "Sesión reiniciada correctamente. Se generará un nuevo código QR en breve."
-    });
   } catch (error) {
-    console.error("❌ Error al reiniciar sesión:", error);
-    console.error("   Tipo:", error.constructor ? error.constructor.name : typeof error);
-    console.error("   Mensaje:", error.message);
-    console.error("   Stack:", error.stack);
+    console.error("❌ Error al reiniciar servicios:", error);
+    reinicioManualEnCurso = false;
+    qrCodeData = null;
+    clientReady = false;
+    client = null;
+    estaInicializando = false;
 
-    // Asegurarse de limpiar el estado incluso si hay error
-    try {
-      qrCodeData = null;
-      clientReady = false;
-      client = null;
-      estaInicializando = false;
-      intentosInicializacion = 0;
-    } catch (cleanupError) {
-      console.error("⚠️ Error al limpiar estado:", cleanupError.message);
-    }
-
-    // Responder con error pero no crítico
-    if (!res.headersSent) {
-      // Asegurarse de que la respuesta se envíe solo si los headers no fueron enviados
-      if (!res.headersSent) {
-        res.status(500).json({
-          success: false,
-          error: error.message || "Error desconocido al reiniciar sesión",
-          message: "El reinicio puede haber fallado parcialmente. Intenta obtener un nuevo QR manualmente.",
-          details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-        });
-      } else {
-        console.error("⚠️ No se pudo enviar respuesta de error porque los headers ya fueron enviados");
-      }
+    if (!responseSent && !res.headersSent) {
+      responseSent = true;
+      res.status(500).json({
+        success: false,
+        error: error.message || "Error desconocido al reiniciar servicios"
+      });
     }
   }
 });
 
+app.post("/restart", async (req, res) => {
+  try {
+    const protocol = isProduction ? 'https' : 'http';
+    const domain = isProduction ? 'rutalan.cloud' : '127.0.0.1';
+    const response = await fetch(`${protocol}://${domain}:${process.env.PORT || 3000}/api/restart`, {
+      method: 'POST'
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message || "Error al redirigir a /api/restart"
+    });
+  }
+});
 // Detectar si estamos en desarrollo (carpeta htdocs) o producción
 const ENABLE_WHATSAPP = process.env.ENABLE_WHATSAPP === 'true' || process.env.ENABLE_WHATSAPP === undefined; // Por defecto true si no se especifica
 const NODE_ENV = process.env.NODE_ENV || 'development';
