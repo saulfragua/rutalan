@@ -1134,10 +1134,17 @@
             <i class="fas fa-lock" style="color: #02416d;"></i>
             Contraseña <span style="color: #dc3545;">*</span>
           </label>
-          <input type="password" name="clave" [(ngModel)]="usuario.clave" required placeholder="********"
-            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
-            onfocus="this.style.borderColor='#0aad60'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+          <div style="position: relative;">
+            <input [type]="mostrarClave ? 'text' : 'password'" name="clave" [(ngModel)]="usuario.clave" required
+              placeholder="********"
+              style="width: 100%; padding: 0.75rem 2.75rem 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#0aad60'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+            <button type="button" (click)="toggleMostrarClave()"
+              style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.25rem;">
+              <i class="fas" [class.fa-eye]="!mostrarClave" [class.fa-eye-slash]="mostrarClave"></i>
+            </button>
+          </div>
         </div>
 
         <!-- CONFIRMAR CLAVE -->
@@ -1147,10 +1154,17 @@
             <i class="fas fa-lock" style="color: #02416d;"></i>
             Confirmar Contraseña <span style="color: #dc3545;">*</span>
           </label>
-          <input type="password" name="confirmar_clave" [(ngModel)]="confirmarClave" required placeholder="********"
-            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
-            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)';"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+          <div style="position: relative;">
+            <input [type]="mostrarConfirmarClave ? 'text' : 'password'" name="confirmar_clave"
+              [(ngModel)]="confirmarClave" required placeholder="********"
+              style="width: 100%; padding: 0.75rem 2.75rem 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)';"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+            <button type="button" (click)="toggleMostrarConfirmarClave()"
+              style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.25rem;">
+              <i class="fas" [class.fa-eye]="!mostrarConfirmarClave" [class.fa-eye-slash]="mostrarConfirmarClave"></i>
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -1220,19 +1234,20 @@
       style="background-color: #f8f8ec; padding: 2rem; overflow-y: scroll !important; overflow-x: hidden !important; flex: 1; min-height: 0; max-height: calc(90vh - 200px);">
       <!-- LISTA DE RUTAS CON CHECKLIST PROFESIONAL -->
       <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto;">
-        <label *ngFor="let ruta of rutas"
-          style="display: flex; align-items: center; gap: 0.75rem; background-color: #ffffff; padding: 1rem; border-radius: 0.5rem; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.2s;"
+        <div *ngFor="let ruta of rutas"
+          style="display: flex; align-items: center; gap: 0.75rem; background-color: #ffffff; padding: 1rem; border-radius: 0.5rem; border: 2px solid #e5e7eb; transition: all 0.2s;"
           onmouseover="this.style.borderColor='#aedd2b'; this.style.backgroundColor='rgba(174, 221, 43, 0.05)'"
           onmouseout="this.style.borderColor='#e5e7eb'; this.style.backgroundColor='#ffffff'">
           <input type="checkbox" style="width: 1.25rem; height: 1.25rem; accent-color: #066699; cursor: pointer;"
             [checked]="rutasSeleccionadas.includes(ruta.id_ruta)"
             (change)="toggleRutaSeleccionada(ruta.id_ruta, $event.target.checked)" />
           <span
-            style="color: #02416d; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+            style="color: #02416d; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"
+            (click)="toggleRutaSeleccionada(ruta.id_ruta, !rutasSeleccionadas.includes(ruta.id_ruta))">
             <i class="fas fa-route" style="color: #02416d; font-size: 0.75rem;"></i>
             {{ ruta.nombre_ruta }}
           </span>
-        </label>
+        </div>
       </div>
     </div>
 
@@ -1364,11 +1379,17 @@
             Nueva Contraseña
             <span style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">(opcional)</span>
           </label>
-          <input type="password" [(ngModel)]="nuevaClave" name="nueva_clave"
-            placeholder="Dejar vacío para mantener la actual"
-            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
-            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+          <div style="position: relative;">
+            <input [type]="mostrarNuevaClave ? 'text' : 'password'" [(ngModel)]="nuevaClave" name="nueva_clave"
+              placeholder="Dejar vacío para mantener la actual"
+              style="width: 100%; padding: 0.75rem 2.75rem 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+            <button type="button" (click)="toggleMostrarNuevaClave()"
+              style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.25rem;">
+              <i class="fas" [class.fa-eye]="!mostrarNuevaClave" [class.fa-eye-slash]="mostrarNuevaClave"></i>
+            </button>
+          </div>
           <p
             style="margin-top: 0.5rem; font-size: 0.75rem; color: #6b7280; display: flex; align-items: center; gap: 0.375rem;">
             <i class="fas fa-info-circle" style="font-size: 0.625rem;"></i>
@@ -1384,11 +1405,18 @@
             Confirmar Nueva Contraseña
             <span style="font-size: 0.75rem; color: #6b7280; font-weight: 400;">(opcional)</span>
           </label>
-          <input type="password" [(ngModel)]="confirmarNuevaClave" name="confirmar_nueva_clave"
-            placeholder="Repetir la nueva contraseña"
-            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
-            onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+          <div style="position: relative;">
+            <input [type]="mostrarConfirmarNuevaClave ? 'text' : 'password'" [(ngModel)]="confirmarNuevaClave"
+              name="confirmar_nueva_clave" placeholder="Repetir la nueva contraseña"
+              style="width: 100%; padding: 0.75rem 2.75rem 0.75rem 1rem; font-size: 0.875rem; color: #02416d; background-color: #ffffff; border: 2px solid #e5e7eb; border-radius: 0.5rem; transition: all 0.2s; outline: none;"
+              onfocus="this.style.borderColor='#aedd2b'; this.style.boxShadow='0 0 0 3px rgba(174, 221, 43, 0.1)'"
+              onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+            <button type="button" (click)="toggleMostrarConfirmarNuevaClave()"
+              style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.25rem;">
+              <i class="fas" [class.fa-eye]="!mostrarConfirmarNuevaClave"
+                [class.fa-eye-slash]="mostrarConfirmarNuevaClave"></i>
+            </button>
+          </div>
         </div>
 
         <!-- ESTADO -->

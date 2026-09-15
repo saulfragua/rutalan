@@ -75,6 +75,14 @@ export class Administrador implements OnInit, OnDestroy {
   confirmarClave: string = '';
   verFormularioUsuario: boolean = false;
 
+  // Mostrar/ocultar contraseña
+  mostrarClave: boolean = false;
+  mostrarConfirmarClave: boolean = false;
+
+  // Mostrar/ocultar contraseña (edición de usuario)
+  mostrarNuevaClave: boolean = false;
+  mostrarConfirmarNuevaClave: boolean = false;
+
   // Rutas
   modalRuta: boolean = false;
   nombreRuta: string = '';
@@ -764,6 +772,26 @@ export class Administrador implements OnInit, OnDestroy {
     }
   }
 
+  // Mostrar/ocultar contraseña
+
+  toggleMostrarClave() {
+    this.mostrarClave = !this.mostrarClave;
+  }
+
+  toggleMostrarConfirmarClave() {
+    this.mostrarConfirmarClave = !this.mostrarConfirmarClave;
+  }
+
+  // Mostrar/ocultar contraseña (edición de usuario)
+
+  toggleMostrarNuevaClave() {
+    this.mostrarNuevaClave = !this.mostrarNuevaClave;
+  }
+
+  toggleMostrarConfirmarNuevaClave() {
+    this.mostrarConfirmarNuevaClave = !this.mostrarConfirmarNuevaClave;
+  }
+
   actualizarPaginacion() {
     this.totalPaginasUsuarios = Math.ceil(this.usuarios.length / this.usuariosPorPagina);
     if (this.paginaActualUsuarios > this.totalPaginasUsuarios) this.paginaActualUsuarios = 1;
@@ -1024,11 +1052,13 @@ export class Administrador implements OnInit, OnDestroy {
   abrirModalAsignarRuta(usuario: any) {
     this.usuarioSeleccionado = usuario;
     this.modalAsignarRuta = true;
+    this.cdr.detectChanges();
 
     // 1. Todas las rutas
     this.rutasService.consultar().subscribe({
       next: (rutas: any) => {
         this.rutas = rutas;
+        this.cdr.detectChanges();
       }
     });
 
@@ -1039,6 +1069,7 @@ export class Administrador implements OnInit, OnDestroy {
 
         // Copia para checklist
         this.rutasSeleccionadas = [...this.rutasAsignadas];
+        this.cdr.detectChanges();
       }
     });
   }
@@ -1048,6 +1079,7 @@ export class Administrador implements OnInit, OnDestroy {
     this.usuarioSeleccionado = null;
     this.rutasAsignadas = [];
     this.rutasSeleccionadas = [];
+    this.cdr.detectChanges();
   }
 
   toggleRutaSeleccionada(id_ruta: number, checked: boolean) {
@@ -1055,10 +1087,12 @@ export class Administrador implements OnInit, OnDestroy {
     if (checked) {
       if (!this.rutasSeleccionadas.includes(id_ruta)) {
         this.rutasSeleccionadas.push(id_ruta);
+        this.cdr.detectChanges();
       }
     } else {
       this.rutasSeleccionadas =
         this.rutasSeleccionadas.filter(r => r !== id_ruta);
+      this.cdr.detectChanges();
     }
   }
 
@@ -1094,6 +1128,7 @@ export class Administrador implements OnInit, OnDestroy {
 
     alert('Rutas actualizadas correctamente');
     this.cerrarModalAsignarRuta();
+    this.cdr.detectChanges();
   }
 
 
@@ -1127,6 +1162,8 @@ export class Administrador implements OnInit, OnDestroy {
     this.usuarioEdit = {};
     this.nuevaClave = '';
     this.confirmarNuevaClave = '';
+    this.mostrarNuevaClave = false;
+    this.mostrarConfirmarNuevaClave = false;
   }
 
   guardarEdicionUsuario() {
@@ -1157,6 +1194,7 @@ export class Administrador implements OnInit, OnDestroy {
           alert(resp.mensaje || resp.resultado);
           this.cerrarModalEditarUsuario();
           this.cargarUsuarios(); // refresca tabla
+          this.cdr.detectChanges();
         },
         error: () => {
           alert('Error al editar usuario');
