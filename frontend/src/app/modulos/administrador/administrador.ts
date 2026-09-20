@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Rutas as RutasService } from '../../servicios/rutas';
 import { Usuarios as UsuariosService } from '../../servicios/usuarios';
@@ -735,9 +735,9 @@ export class Administrador implements OnInit, OnDestroy {
               next: (rutas: any[]) => {
                 this.rutasPorUsuario[u.id_usuario] =
                   rutas.map(r => r.nombre_ruta);
+                this.cdr.detectChanges();
               }
             });
-          this.cdr.detectChanges();
         });
         this.actualizarPaginacion();
       },
@@ -1097,7 +1097,6 @@ export class Administrador implements OnInit, OnDestroy {
   }
 
   guardarAsignacionRutas() {
-
     const id_usuario = this.usuarioSeleccionado.id_usuario;
 
     // ➕ Rutas nuevas
@@ -1110,25 +1109,41 @@ export class Administrador implements OnInit, OnDestroy {
       r => !this.rutasSeleccionadas.includes(r)
     );
 
-    // Asignar nuevas
-    nuevas.forEach(id_ruta => {
-      this.usuarioRutaService.asignar({
-        id_usuario,
-        id_ruta
-      }).subscribe();
-    });
+    const peticiones = [
+      ...nuevas.map(id_ruta => this.usuarioRutaService.asignar({ id_usuario, id_ruta })),
+      ...quitadas.map(id_ruta => this.usuarioRutaService.quitar({ id_usuario, id_ruta }))
+    ];
 
-    // Quitar desmarcadas
-    quitadas.forEach(id_ruta => {
-      this.usuarioRutaService.quitar({
-        id_usuario,
-        id_ruta
-      }).subscribe();
-    });
+    // Sin cambios: solo cerrar
+    if (peticiones.length === 0) {
+      this.cerrarModalAsignarRuta();
+      return;
+    }
 
-    alert('Rutas actualizadas correctamente');
-    this.cerrarModalAsignarRuta();
-    this.cdr.detectChanges();
+    // Esperar a que TODAS terminen antes de refrescar la tabla
+    forkJoin(peticiones).subscribe({
+      next: () => {
+        this.refrescarRutasDeUsuario(id_usuario);
+        alert('Rutas actualizadas correctamente');
+        this.cerrarModalAsignarRuta();
+      },
+      error: (error) => {
+        console.error('Error al actualizar rutas', error);
+        // Aunque falle alguna, refrescamos para mostrar el estado real
+        this.refrescarRutasDeUsuario(id_usuario);
+        alert('Ocurrió un error al actualizar las rutas');
+      }
+    });
+  }
+
+  /** Recarga solo las rutas de un usuario y actualiza la columna de la tabla */
+  private refrescarRutasDeUsuario(id_usuario: number) {
+    this.usuarioRutaService.rutasPorUsuario(id_usuario).subscribe({
+      next: (rutas: any[]) => {
+        this.rutasPorUsuario[id_usuario] = rutas.map(r => r.nombre_ruta);
+        this.cdr.detectChanges();
+      }
+    });
   }
 
 
