@@ -34,6 +34,13 @@ export class Dashboard implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     }
   }
+
+  private formatearFecha(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dia}`;
+  }
   // ─────────────────────────────────────────────────────────────────────────
 
   // Datos para gráficos
@@ -209,7 +216,6 @@ export class Dashboard implements OnInit, OnDestroy {
     this.cargarTopRutas();
     this.cargarEstadisticasMorosidad();
 
-    this.finalizarCarga(); // Finalizar la carga inicial después de lanzar todas las llamadas 
   }
 
   cargarGastosPorRuta() {
@@ -300,11 +306,11 @@ export class Dashboard implements OnInit, OnDestroy {
     let fechaFinEvolucion = this.fechaFin;
 
     if (!fechaInicioEvolucion || !fechaFinEvolucion || this.periodoSeleccionado === 'hoy') {
-      const fechaHoy = new Date();
-      fechaFinEvolucion = fechaHoy.toISOString().split('T')[0];
-      const fecha30DiasAtras = new Date();
-      fecha30DiasAtras.setDate(fecha30DiasAtras.getDate() - 30);
-      fechaInicioEvolucion = fecha30DiasAtras.toISOString().split('T')[0];
+      const hoy = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+      fechaFinEvolucion = this.formatearFecha(hoy);
+      const hace30 = new Date(hoy);
+      hace30.setDate(hace30.getDate() - 30);
+      fechaInicioEvolucion = this.formatearFecha(hace30);
     }
 
     this.iniciarCarga();
@@ -429,10 +435,8 @@ export class Dashboard implements OnInit, OnDestroy {
           fechaFin = new Date(fechaColombia);
           fechaFin.setHours(23, 59, 59, 999);
         } else {
-          fechaInicio = new Date(this.fechaInicio);
-          fechaInicio.setHours(0, 0, 0, 0);
-          fechaFin = new Date(this.fechaFin);
-          fechaFin.setHours(23, 59, 59, 999);
+          fechaInicio = new Date(this.fechaInicio + 'T00:00:00');
+          fechaFin = new Date(this.fechaFin + 'T23:59:59');
         }
         this.mostrarRangoPersonalizado = true;
         break;
@@ -445,12 +449,13 @@ export class Dashboard implements OnInit, OnDestroy {
         this.mostrarRangoPersonalizado = false;
     }
 
-    this.fechaInicio = fechaInicio.toISOString().split('T')[0];
-    this.fechaFin = fechaFin.toISOString().split('T')[0];
+    this.fechaInicio = this.formatearFecha(fechaInicio);
+    this.fechaFin = this.formatearFecha(fechaFin);
 
     if (periodo !== 'personalizado') {
       this.cargarDatos();
     }
+
   }
 
   aplicarFiltros() {
