@@ -632,9 +632,19 @@ export class Clientes implements OnInit, OnDestroy {
     const telefono = (form.querySelector('[name="telefono"]') as HTMLInputElement)?.value?.trim() || '';
     const telefono2 = (form.querySelector('[name="telefono2"]') as HTMLInputElement)?.value?.trim() || '';
 
+    // Obtener el select de ruta antes de validar
+    const selectRuta = form.querySelector('[name="id_ruta"]') as HTMLSelectElement;
+    const idRutaSeleccionada = selectRuta?.value || '';
+
     // Validar campos obligatorios del cliente
-    if (!documento || !nombres || !apellidos) {
-      alert('Por favor complete los campos obligatorios del cliente (Documento, Nombres, Apellidos)');
+    if (!documento || !nombres || !apellidos || !telefono) {
+      alert('Por favor complete los campos obligatorios del cliente (Documento, Nombres, Apellidos, Teléfono)');
+      return;
+    }
+
+    // Validar que se haya seleccionado una ruta
+    if (!idRutaSeleccionada) {
+      alert('Por favor seleccione una ruta para el cliente');
       return;
     }
 
@@ -653,22 +663,8 @@ export class Clientes implements OnInit, OnDestroy {
     }
 
     // Obtener ruta seleccionada del select (tanto en creación como en edición)
-    const selectRuta = form.querySelector('[name="id_ruta"]') as HTMLSelectElement;
-    if (selectRuta && selectRuta.value) {
-      formData.append('id_ruta', selectRuta.value);
-    } else {
-      // Si no se seleccionó ruta y estamos en modo creación
-      if (!this.modoEdicion) {
-        // Si es administrador, usar primera ruta de todas las rutas disponibles
-        if (this.rolUsuario === 'admin' && this.todasLasRutas.length > 0) {
-          formData.append('id_ruta', this.todasLasRutas[0].id_ruta.toString());
-        }
-        // Si es cobrador, usar primera ruta asignada al usuario
-        else if (this.rolUsuario === 'cobrador' && this.rutasUsuario.length > 0) {
-          formData.append('id_ruta', this.rutasUsuario[0].id_ruta.toString());
-        }
-      }
-    }
+    // Agregar la ruta seleccionada (ya validada como obligatoria)
+    formData.append('id_ruta', idRutaSeleccionada);
 
     // Solo agregar id_usuario si es válido
     if (idUsuario && !isNaN(parseInt(idUsuario))) {

@@ -1,15 +1,18 @@
 <?php
-class Dashboard {
+class Dashboard
+{
     private $conexion;
 
-    public function __construct($conexion) {
+    public function __construct($conexion)
+    {
         $this->conexion = $conexion;
     }
 
     /**
      * Obtiene el valor total de créditos por ruta (suma de saldos según ruta del cliente)
      */
-    public function obtenerCreditosPorRuta() {
+    public function obtenerCreditosPorRuta()
+    {
         try {
             $sql = "SELECT 
                         r.id_ruta,
@@ -21,7 +24,7 @@ class Dashboard {
                     WHERE r.activo = 1
                     GROUP BY r.id_ruta, r.nombre_ruta
                     ORDER BY r.nombre_ruta";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,12 +37,13 @@ class Dashboard {
     /**
      * Obtiene el total general de créditos (suma de todas las rutas)
      */
-    public function obtenerTotalGeneralCreditos() {
+    public function obtenerTotalGeneralCreditos()
+    {
         try {
             $sql = "SELECT COALESCE(SUM(cr.saldo_actual), 0) AS total_general
                     FROM creditos cr
                     WHERE cr.activo = 1";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -53,7 +57,8 @@ class Dashboard {
     /**
      * Obtiene el total de clientes creados vs clientes con crédito
      */
-    public function obtenerEstadisticasClientes() {
+    public function obtenerEstadisticasClientes()
+    {
         try {
             $sql = "SELECT 
                         COUNT(DISTINCT c.id_cliente) AS total_clientes,
@@ -61,7 +66,7 @@ class Dashboard {
                     FROM clientes c
                     LEFT JOIN creditos cr ON c.id_cliente = cr.id_cliente
                     WHERE c.activo = 1";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -74,10 +79,11 @@ class Dashboard {
     /**
      * Obtiene estadísticas de clientes por ruta (total, con saldo, cobrado en el día)
      */
-    public function obtenerClientesPorRuta($fechaInicio = null, $fechaFin = null) {
+    public function obtenerClientesPorRuta($fechaInicio = null, $fechaFin = null)
+    {
         try {
             $fechaHoy = date('Y-m-d');
-            
+
             // Si no se proporcionan fechas, usar el día actual
             if (!$fechaInicio) {
                 $fechaInicio = $fechaHoy;
@@ -91,7 +97,7 @@ class Dashboard {
                         r.nombre_ruta,
                         COUNT(DISTINCT c.id_cliente) AS total_clientes,
                         COUNT(DISTINCT CASE WHEN cr.activo = 1 AND cr.saldo_actual > 0 THEN c.id_cliente END) AS clientes_con_saldo,
-                        COALESCE(SUM(CASE WHEN p.fecha_pago BETWEEN :fecha_inicio AND :fecha_fin THEN p.monto_pagado ELSE 0 END), 0) AS cobrado_en_dia
+                        COALESCE(SUM(CASE WHEN p.fecha_pago >= :fecha_inicio AND p.fecha_pago < DATE_ADD(:fecha_fin, INTERVAL 1 DAY) THEN p.monto_pagado ELSE 0 END), 0) AS cobrado_en_dia
                     FROM rutas r
                     LEFT JOIN clientes c ON r.id_ruta = c.id_ruta AND c.activo = 1
                     LEFT JOIN creditos cr ON c.id_cliente = cr.id_cliente
@@ -99,7 +105,7 @@ class Dashboard {
                     WHERE r.activo = 1
                     GROUP BY r.id_ruta, r.nombre_ruta
                     ORDER BY r.nombre_ruta";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":fecha_inicio", $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_fin", $fechaFin, PDO::PARAM_STR);
@@ -114,10 +120,11 @@ class Dashboard {
     /**
      * Obtiene el total cobrado en el día (suma de todos los cobros del día)
      */
-    public function obtenerTotalCobradoEnDia($fechaInicio = null, $fechaFin = null) {
+    public function obtenerTotalCobradoEnDia($fechaInicio = null, $fechaFin = null)
+    {
         try {
             $fechaHoy = date('Y-m-d');
-            
+
             // Si no se proporcionan fechas, usar el día actual
             if (!$fechaInicio) {
                 $fechaInicio = $fechaHoy;
@@ -127,9 +134,10 @@ class Dashboard {
             }
 
             $sql = "SELECT COALESCE(SUM(monto_pagado), 0) AS total_cobrado
-                    FROM pagos
-                    WHERE fecha_pago BETWEEN :fecha_inicio AND :fecha_fin";
-            
+            FROM pagos
+            WHERE fecha_pago >= :fecha_inicio
+            AND fecha_pago < DATE_ADD(:fecha_fin, INTERVAL 1 DAY)";
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":fecha_inicio", $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_fin", $fechaFin, PDO::PARAM_STR);
@@ -145,40 +153,32 @@ class Dashboard {
     /**
      * Obtiene gastos totales por ruta con filtro de fechas
      */
-    public function obtenerGastosPorRuta($fechaInicio = null, $fechaFin = null) {
+    public function obtenerGastosPorRuta($fechaInicio = null, $fechaFin = null)
+    {
         try {
             $sql = "SELECT 
-                        r.id_ruta,
-                        r.nombre_ruta,
-                        COALESCE(SUM(g.monto), 0) AS total_gastos
-                    FROM rutas r
-                    LEFT JOIN gastos g ON r.id_ruta = g.id_ruta";
-            
+                    r.id_ruta,
+                    r.nombre_ruta,
+                    COALESCE(SUM(g.monto), 0) AS total_gastos
+                FROM rutas r
+                LEFT JOIN gastos g ON r.id_ruta = g.id_ruta";
+
             $params = [];
-            $whereConditions = [];
-            
-            // Agregar filtro de fechas si se proporcionan
-            if ($fechaInicio && $fechaFin) {
-                $whereConditions[] = "(g.fecha_gasto IS NULL OR g.fecha_gasto BETWEEN :fecha_inicio AND :fecha_fin)";
+
+
+            if ($fechaInicio) {
+                $sql .= " AND g.fecha_gasto >= :fecha_inicio";
                 $params[':fecha_inicio'] = $fechaInicio;
-                $params[':fecha_fin'] = $fechaFin;
-            } elseif ($fechaInicio) {
-                $whereConditions[] = "(g.fecha_gasto IS NULL OR g.fecha_gasto >= :fecha_inicio)";
-                $params[':fecha_inicio'] = $fechaInicio;
-            } elseif ($fechaFin) {
-                $whereConditions[] = "(g.fecha_gasto IS NULL OR g.fecha_gasto <= :fecha_fin)";
+            }
+            if ($fechaFin) {
+                $sql .= " AND g.fecha_gasto < DATE_ADD(:fecha_fin, INTERVAL 1 DAY)";
                 $params[':fecha_fin'] = $fechaFin;
             }
-            
-            $sql .= " WHERE r.activo = 1";
-            
-            if (!empty($whereConditions)) {
-                $sql .= " AND " . implode(" AND ", $whereConditions);
-            }
-            
-            $sql .= " GROUP BY r.id_ruta, r.nombre_ruta
-                      ORDER BY r.nombre_ruta";
-            
+
+            $sql .= " WHERE r.activo = 1
+                  GROUP BY r.id_ruta, r.nombre_ruta
+                  ORDER BY r.nombre_ruta";
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute($params);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -191,7 +191,8 @@ class Dashboard {
     /**
      * Obtiene estadísticas de créditos por tipo
      */
-    public function obtenerCreditosPorTipo() {
+    public function obtenerCreditosPorTipo()
+    {
         try {
             $sql = "SELECT 
                         COALESCE(tipo_credito, 'comun') AS tipo_credito,
@@ -201,7 +202,7 @@ class Dashboard {
                     WHERE activo = 1
                     GROUP BY tipo_credito
                     ORDER BY tipo_credito";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -215,10 +216,11 @@ class Dashboard {
      * Obtiene estadísticas de seguros recaudados
      * El seguro está en la tabla creditos, se suma el seguro de los créditos únicos que tienen pagos en el período
      */
-    public function obtenerEstadisticasSeguros($fechaInicio = null, $fechaFin = null) {
+    public function obtenerEstadisticasSeguros($fechaInicio = null, $fechaFin = null)
+    {
         try {
             $fechaHoy = date('Y-m-d');
-            
+
             if (!$fechaInicio) {
                 $fechaInicio = $fechaHoy;
             }
@@ -239,7 +241,7 @@ class Dashboard {
                     ) AS creditos_pagados
                     INNER JOIN creditos cr ON creditos_pagados.id_credito = cr.id_credito
                     WHERE cr.activo = 1";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":fecha_inicio", $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_fin", $fechaFin, PDO::PARAM_STR);
@@ -254,7 +256,8 @@ class Dashboard {
     /**
      * Obtiene estadísticas de cajas
      */
-    public function obtenerEstadisticasCajas() {
+    public function obtenerEstadisticasCajas()
+    {
         try {
             $sql = "SELECT 
                         COUNT(CASE WHEN estado = 'ABIERTA' THEN 1 END) AS cajas_abiertas,
@@ -263,7 +266,7 @@ class Dashboard {
                         COALESCE(SUM(CASE WHEN estado = 'ABIERTA' THEN saldo_inicial ELSE 0 END), 0) AS total_saldo_inicial,
                         COALESCE(SUM(CASE WHEN estado = 'CERRADA' THEN saldo_final ELSE 0 END), 0) AS total_saldo_final
                     FROM cajas";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -276,7 +279,8 @@ class Dashboard {
     /**
      * Obtiene estadísticas de cuotas (pagadas, pendientes, vencidas)
      */
-    public function obtenerEstadisticasCuotas() {
+    public function obtenerEstadisticasCuotas()
+    {
         try {
             $sql = "SELECT 
                         COUNT(CASE WHEN estado = 'pagada' THEN 1 END) AS cuotas_pagadas,
@@ -286,7 +290,7 @@ class Dashboard {
                         COALESCE(SUM(CASE WHEN estado = 'pagada' THEN monto_cuota ELSE 0 END), 0) AS total_pagado,
                         COALESCE(SUM(CASE WHEN estado IN ('pendiente', 'vencida') THEN monto_restante ELSE 0 END), 0) AS total_pendiente
                     FROM planpagos";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -300,10 +304,11 @@ class Dashboard {
      * Obtiene evolución de pagos por día en un rango de fechas
      * El seguro se obtiene de la tabla creditos, sumando el seguro de créditos únicos por día
      */
-    public function obtenerEvolucionPagos($fechaInicio = null, $fechaFin = null) {
+    public function obtenerEvolucionPagos($fechaInicio = null, $fechaFin = null)
+    {
         try {
             $fechaHoy = date('Y-m-d');
-            
+
             if (!$fechaInicio) {
                 // Por defecto, últimos 30 días
                 $fechaInicio = date('Y-m-d', strtotime('-30 days'));
@@ -331,7 +336,7 @@ class Dashboard {
                     ) AS pagos_por_credito
                     GROUP BY fecha
                     ORDER BY fecha ASC";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":fecha_inicio", $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_fin", $fechaFin, PDO::PARAM_STR);
@@ -346,10 +351,11 @@ class Dashboard {
     /**
      * Obtiene estadísticas de refinanciaciones
      */
-    public function obtenerEstadisticasRefinanciaciones($fechaInicio = null, $fechaFin = null) {
+    public function obtenerEstadisticasRefinanciaciones($fechaInicio = null, $fechaFin = null)
+    {
         try {
             $fechaHoy = date('Y-m-d');
-            
+
             if (!$fechaInicio) {
                 $fechaInicio = $fechaHoy;
             }
@@ -363,9 +369,9 @@ class Dashboard {
                         COUNT(CASE WHEN tipo_credito IN ('refinanciado', 'refinanciado_por_sistema') THEN 1 END) AS total_refinanciados,
                         COALESCE(SUM(CASE WHEN tipo_credito IN ('refinanciado', 'refinanciado_por_sistema') THEN saldo_actual ELSE 0 END), 0) AS total_saldo_refinanciado
                     FROM creditos
-                    WHERE activo = 1
-                    AND fecha_toma_credito BETWEEN :fecha_inicio AND :fecha_fin";
-            
+                    WHERE activo = 1 
+                    AND fecha_toma_credito >= :fecha_inicio AND fecha_toma_credito < DATE_ADD(:fecha_fin, INTERVAL 1 DAY)";
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":fecha_inicio", $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_fin", $fechaFin, PDO::PARAM_STR);
@@ -380,10 +386,11 @@ class Dashboard {
     /**
      * Obtiene top rutas por rendimiento (mayor cobrado)
      */
-    public function obtenerTopRutasPorRendimiento($fechaInicio = null, $fechaFin = null, $limite = 5) {
+    public function obtenerTopRutasPorRendimiento($fechaInicio = null, $fechaFin = null, $limite = 5)
+    {
         try {
             $fechaHoy = date('Y-m-d');
-            
+
             if (!$fechaInicio) {
                 $fechaInicio = $fechaHoy;
             }
@@ -396,7 +403,7 @@ class Dashboard {
                         r.nombre_ruta,
                         COALESCE(SUM(p.monto_pagado), 0) AS total_cobrado,
                         COUNT(DISTINCT p.id_pago) AS cantidad_pagos,
-                        COUNT(DISTINCT c.id_cliente) AS clientes_atendidos
+                        COUNT(DISTINCT CASE WHEN p.id_pago IS NOT NULL THEN c.id_cliente END) AS clientes_atendidos
                     FROM rutas r
                     LEFT JOIN clientes c ON r.id_ruta = c.id_ruta AND c.activo = 1
                     LEFT JOIN creditos cr ON c.id_cliente = cr.id_cliente AND cr.activo = 1
@@ -407,7 +414,7 @@ class Dashboard {
                     HAVING total_cobrado > 0
                     ORDER BY total_cobrado DESC
                     LIMIT :limite";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":fecha_inicio", $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_fin", $fechaFin, PDO::PARAM_STR);
@@ -423,7 +430,8 @@ class Dashboard {
     /**
      * Obtiene estadísticas de morosidad (créditos vencidos)
      */
-    public function obtenerEstadisticasMorosidad() {
+    public function obtenerEstadisticasMorosidad()
+    {
         try {
             $sql = "SELECT 
                         COUNT(CASE WHEN cr.fecha_finaliza_credito < CURDATE() AND cr.saldo_actual > 0 THEN 1 END) AS creditos_vencidos,
@@ -433,7 +441,7 @@ class Dashboard {
                     FROM creditos cr
                     LEFT JOIN planpagos pp ON cr.id_credito = pp.id_credito
                     WHERE cr.activo = 1";
-            
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);

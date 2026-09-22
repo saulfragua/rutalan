@@ -32,6 +32,8 @@ export PORT=3000
 ```bash
 # Windows PowerShell
 $env:ENABLE_WHATSAPP="true"; node server.js
+# Remover Sesión
+Remove-Item -Recurse -Force .wwebjs_auth
 
 # Linux/Mac
 ENABLE_WHATSAPP=true node server.js
