@@ -7,10 +7,8 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth(); // también responde el preflight OPTIONS
 
 error_reporting(E_ALL);
 ini_set('display_errors', 0);

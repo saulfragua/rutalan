@@ -8,6 +8,8 @@ header("Content-Type: application/json");
 require_once "../config/conexion.php";
 require_once "../models/planPagosModelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $plan_pagos = new PlanPagos($conexion);
 

@@ -13,18 +13,19 @@ date_default_timezone_set('America/Bogota');
 // Detectar si estamos en producción o desarrollo
 $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
 $isProduction = !empty($host) && (
-    strpos($host, 'rutalan.cloud') !== false || 
-    strpos($host, 'www.rutalan.cloud') !== false
+    strpos($host, 'rutalan.tech') !== false || 
+    strpos($host, 'www.rutalan.tech') !== false
 );
 
 // Configuración de base de datos según el entorno
 if ($isProduction) {
     // CONFIGURACIÓN DE PRODUCCIÓN
     // ⚠️ IMPORTANTE: Actualiza estas credenciales con las de tu servidor de producción
-    $host     = "localhost";
-    $dbname   = "rutalan";  // Ajusta si el nombre de la BD es diferente
-    $user     = "admin";      // ⚠️ Cambiar por el usuario de MySQL de producción
-    $password = "Colombia+";          // ⚠️ Cambiar por la contraseña de MySQL de producción
+    require_once _DIR_ . '/key.php';
+    $host     = defined('DB_HOST') ? DB_HOST : 'localhost';
+    $dbname   = defined('DB_NAME') ? DB_NAME : 'rutalan';
+    $user     = defined('DB_USER') ? DB_USER : '';
+    $password = defined('DB_PASS') ? DB_PASS : '';
 } else {
     // CONFIGURACIÓN DE DESARROLLO
     $host     = "localhost";

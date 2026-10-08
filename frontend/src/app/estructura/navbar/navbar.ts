@@ -71,6 +71,7 @@ export class Navbar implements OnInit, AfterViewInit {
 
     // 🔐 Eliminar usuario del localStorage
     localStorage.removeItem('usuario');
+    localStorage.removeItem('token');
 
     // 🚪 Redirigir al login
     this.router.navigate(['/login']);

@@ -11,6 +11,8 @@ require_once "../models/planPagosModelos.php";
 require_once "../models/cajasModelos.php";
 require_once "../services/whatsapp_service.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $creditos = new Creditos($conexion);
 $clientes = new Clientes($conexion);

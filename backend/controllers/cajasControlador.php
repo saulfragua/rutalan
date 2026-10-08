@@ -23,6 +23,8 @@ header("Content-Type: application/json; charset=UTF-8");
 require_once "../config/conexion.php";
 require_once "../models/cajasModelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $cajas = new Cajas($conexion);
 

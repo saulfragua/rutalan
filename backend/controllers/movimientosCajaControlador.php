@@ -27,6 +27,8 @@ try {
     // $conexion ya está disponible después del require_once
     $movimientosCaja = new MovimientosCaja($conexion);
 
+    require_once __DIR__ . '/../config/auth.php';
+    requerirAuth();
     $control = $_GET['control'] ?? '';
 
     switch ($control) {

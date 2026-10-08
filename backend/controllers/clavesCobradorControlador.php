@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once "../config/conexion.php";
 require_once "../models/clavesCobradorModelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $clavesCobrador = new ClavesCobrador($conexion);
 

@@ -2,7 +2,8 @@ import { NgModule, provideBrowserGlobalErrorListeners, CUSTOM_ELEMENTS_SCHEMA } 
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './guards/auth.interceptor';
 
 import { App } from './app';
 import { Navbar } from './estructura/navbar/navbar';
@@ -52,12 +53,12 @@ import { Informes } from './modulos/informes/informes';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    HttpClientModule
+    FormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideClientHydration(withEventReplay())
   ],
   bootstrap: [App]
