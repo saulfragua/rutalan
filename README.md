@@ -113,6 +113,37 @@ rutalan/
 
 En desarrollo la conexión usa `root` sin contraseña sobre `localhost`; en producción (dominio `rutalan.tech`) toma las credenciales de `key.php`.
 
+
+### 3.1 API del backend (PHP)
+
+El backend expone una API REST en `backend/controllers/`. Cada controlador atiende un módulo y se invoca con
+`<nombre>Controlador.php?control=<acción>`. Las consultas usan `GET`; las operaciones que envían datos usan
+`POST` con cuerpo JSON o `FormData` (los diagramas de secuencia del documento de diseño, sección 2.2.3,
+detallan el método de cada flujo). Las respuestas son JSON con `resultado: "ok"` en caso de éxito
+(el login usa `estado: "ok"`).
+
+| Controlador | Acciones (`control=`) | Descripción |
+|---|---|---|
+| `loginControlador` | `login` | Valida usuario, contraseña (o clave dinámica de 8 dígitos para cobradores) y reCAPTCHA; devuelve el usuario, su rol y rutas asignadas. |
+| `clientesControlador` | `consultar`, `consultarPorId`, `filtrar`, `insertar`, `editar`, `eliminar`, `activar`, `inactivar`, `actualizarUbicacion`, `consultarConUbicacion` | Gestión de clientes, incluida la ubicación GPS para el mapa. |
+| `fiadoresControlador` | `consultar`, `filtrar`, `buscarPorDocumento`, `contarClientes`, `insertar`, `editar`, `eliminar` | Gestión de fiadores y conteo de clientes asociados. |
+| `creditosControlador` | `consultar`, `buscar`, `consultarPorId`, `tienePagos`, `clienteTieneCreditoPendiente`, `insertar`, `editar`, `eliminar`, `cancelar`, `refinanciar_automatico` | Gestión de créditos. |
+| `planPagosControlador` | `consultar`, `consultarPorIdCredito`, `filtrar`, `insertar`, `editar`, `eliminar` | Plan de amortización (cuotas) de cada crédito. |
+| `refinanciarControlador` | `consultarPorId`, `refinanciar` | Refinanciación de un crédito desde cobros. |
+| `pagosControlador` | `consultar`, `consultarClientesPorRuta`, `registrarPago`, `actualizarOrdenCobranza` | Panel de cobros por ruta, registro de pagos y orden de cobranza. |
+| `gastosControlador` | `consultar`, `consultarPorUsuario`, `consultarPorCaja`, `consultarPorId`, `filtrar`, `insertar`, `editar`, `eliminar` | Gastos operativos. |
+| `cajasControlador` | `obtenerCajaAbierta`, `tieneCajaAbierta`, `abrirCaja`, `cerrarCaja`, `consultarPorUsuario`, `consultarCajasAbiertasConResumen`, `consultarCajasCerradasConResumen` | Apertura, cierre y consulta de cajas. |
+| `movimientosCajaControlador` | `registrar`, `consultarPorCaja`, `consultarTodos` | Entradas y salidas de dinero. |
+| `informesControlador` | `pagos`, `creditos`, `gastos` | Informes por tipo y rango de fechas. |
+| `dashboardControlador` | 14 consultas (`obtenerCreditosPorRuta`, `obtenerTotalGeneralCreditos`, `obtenerEstadisticasClientes`, `obtenerClientesPorRuta`, `obtenerTotalCobradoEnDia`, `obtenerGastosPorRuta`, `obtenerCreditosPorTipo`, `obtenerEstadisticasSeguros`, `obtenerEstadisticasCajas`, `obtenerEstadisticasCuotas`, `obtenerEvolucionPagos`, `obtenerEstadisticasRefinanciaciones`, `obtenerTopRutasPorRendimiento`, `obtenerEstadisticasMorosidad`) | Datos de las tarjetas y gráficas del dashboard. |
+| `rutasControlador` | `consultar`, `filtrar`, `estado`, `insertar`, `editar`, `eliminar` | Gestión de rutas. |
+| `usuariosControlador` | `consultar`, `filtrar`, `insertar`, `editar`, `eliminar`, `cambiarEstado` | Gestión de usuarios. |
+| `usuarioRutaControlador` | `consultar`, `filtrar`, `insertar`, `eliminar` | Asignación de rutas a usuarios. |
+| `clavesCobradorControlador` | `generarClave`, `obtenerClaveActiva`, `consultarPorUsuario`, `validarClave`, `desactivarClavesExpiradas` | Claves temporales de cobradores. |
+| `erroresControlador` | `obtenerErrores`, `limpiarErrores`, `escribirErrorPrueba` | Log de errores del sistema. |
+
+El servicio de WhatsApp es independiente y su API se documenta en [`whatsapp-api/README.md`](whatsapp-api/README.md).
+
 ### 2. Frontend
 
 ```bash
@@ -122,6 +153,8 @@ ng serve
 ```
 
 Disponible en `http://localhost:4200`. La URL de la API se define en `frontend/src/environments/environment.ts` (`apiUrl: '/rutalan/backend'`).
+
+
 
 ### 3. Servicio de WhatsApp (opcional)
 
