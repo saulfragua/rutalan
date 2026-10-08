@@ -4,3 +4,9 @@
 // Luego, asegúrate de que key.php esté en tu .gitignore para evitar subirlo a repositorios públicos
 define('RECAPTCHA_SECRET', '');
 define('RECAPTCHA_SITE', '');
+// Base de datos: solo en producción. En local se usa root sin contraseña por defecto.
+define('DB_HOST', '');
+define('DB_NAME', '');
+define('DB_USER', '');
+define('DB_PASS', '');
+
