@@ -180,6 +180,12 @@ La aplicación almacena datos personales y fotos de documentos de identidad de c
 - Nunca subas fotos reales, claves ni respaldos de base de datos con datos reales al repositorio.
 - Usa un repositorio privado y rota cualquier secreto que haya estado expuesto.
 
+## Contribuir y documentación del proyecto
+
+- [CONTRIBUTING.md](CONTRIBUTING.md): flujo de trabajo, ramas, commits y Pull Requests.
+- [Estándares de codificación](docs/Estandares_de_Codificacion_Rutalan.docx): convenciones de PHP, Angular, base de datos y seguridad.
+- [Manual de usuario](docs/Manual_de_Usuario_Rutalan.docx): uso de la aplicación para los roles Administrador y Cobrador.
+
 ## Documentación académica
 
 Producto integrador del programa **Análisis y Desarrollo de Software (ADSO) — SENA**. Incluye:
