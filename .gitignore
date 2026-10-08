@@ -1,0 +1,23 @@
+# Claves y configuración sensible
+backend/config/key.php
+.env
+.env.*
+!.env.example
+
+# Archivos subidos (fotos y cédulas): se ignora el contenido, se conservan las carpetas
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/clientes/
+!backend/uploads/fiadores/
+backend/uploads/clientes/*
+!backend/uploads/clientes/.gitkeep
+backend/uploads/fiadores/*
+!backend/uploads/fiadores/.gitkeep
+
+# Logs, respaldos y archivos del sistema
+*.log
+backups/
+*.bak
+node_modules/
+.DS_Store
+Thumbs.db
