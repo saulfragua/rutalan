@@ -21,7 +21,7 @@ $isProduction = !empty($host) && (
 if ($isProduction) {
     // CONFIGURACIÓN DE PRODUCCIÓN
     // ⚠️ IMPORTANTE: Actualiza estas credenciales con las de tu servidor de producción
-    require_once _DIR_ . '/key.php';
+    require_once __DIR__  . '/key.php';
     $host     = defined('DB_HOST') ? DB_HOST : 'localhost';
     $dbname   = defined('DB_NAME') ? DB_NAME : 'rutalan';
     $user     = defined('DB_USER') ? DB_USER : '';

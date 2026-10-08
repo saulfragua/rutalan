@@ -95,10 +95,20 @@ rutalan/
 
 ### Requisitos previos
 
+<<<<<<< HEAD
+<!-- completar: versiones exactas -->
+- Node.js `<20.19 o superior (probado con v20.19.3) y npm 10 o superior>`
+- Angular CLI `21` <probado con 21.2.11>
+- PHP `8.0 o superior` (probado con 8.4.8)
+- MySQL `5.7 o superior`, o MariaDB equivalente (probado con MariaDB 10.4.32, incluida en XAMPP) 
+- XAMPP (o entorno equivalente) para el backend
+- Para el servicio de WhatsApp: Node.js 18 o superior (ver `whatsapp-api/README.md`)
+=======
 - **Node.js** 18 o superior y **npm** (Angular 21 requiere una versión LTS reciente)
 - **Angular CLI** (`npm i -g @angular/cli`)
 - **PHP** 8.x, **Apache** y **MySQL/MariaDB** (por ejemplo, XAMPP)
 - Una cuenta de WhatsApp (solo para el servicio de mensajería)
+>>>>>>> ec5f834657e02f5a960ad89975500a855fe07e46
 
 ### 1. Backend y base de datos
 
@@ -113,6 +123,37 @@ rutalan/
 
 En desarrollo la conexión usa `root` sin contraseña sobre `localhost`; en producción (dominio `rutalan.tech`) toma las credenciales de `key.php`.
 
+
+### 3.1 API del backend (PHP)
+
+El backend expone una API REST en `backend/controllers/`. Cada controlador atiende un módulo y se invoca con
+`<nombre>Controlador.php?control=<acción>`. Las consultas usan `GET`; las operaciones que envían datos usan
+`POST` con cuerpo JSON o `FormData` (los diagramas de secuencia del documento de diseño, sección 2.2.3,
+detallan el método de cada flujo). Las respuestas son JSON con `resultado: "ok"` en caso de éxito
+(el login usa `estado: "ok"`).
+
+| Controlador | Acciones (`control=`) | Descripción |
+|---|---|---|
+| `loginControlador` | `login` | Valida usuario, contraseña (o clave dinámica de 8 dígitos para cobradores) y reCAPTCHA; devuelve el usuario, su rol y rutas asignadas. |
+| `clientesControlador` | `consultar`, `consultarPorId`, `filtrar`, `insertar`, `editar`, `eliminar`, `activar`, `inactivar`, `actualizarUbicacion`, `consultarConUbicacion` | Gestión de clientes, incluida la ubicación GPS para el mapa. |
+| `fiadoresControlador` | `consultar`, `filtrar`, `buscarPorDocumento`, `contarClientes`, `insertar`, `editar`, `eliminar` | Gestión de fiadores y conteo de clientes asociados. |
+| `creditosControlador` | `consultar`, `buscar`, `consultarPorId`, `tienePagos`, `clienteTieneCreditoPendiente`, `insertar`, `editar`, `eliminar`, `cancelar`, `refinanciar_automatico` | Gestión de créditos. |
+| `planPagosControlador` | `consultar`, `consultarPorIdCredito`, `filtrar`, `insertar`, `editar`, `eliminar` | Plan de amortización (cuotas) de cada crédito. |
+| `refinanciarControlador` | `consultarPorId`, `refinanciar` | Refinanciación de un crédito desde cobros. |
+| `pagosControlador` | `consultar`, `consultarClientesPorRuta`, `registrarPago`, `actualizarOrdenCobranza` | Panel de cobros por ruta, registro de pagos y orden de cobranza. |
+| `gastosControlador` | `consultar`, `consultarPorUsuario`, `consultarPorCaja`, `consultarPorId`, `filtrar`, `insertar`, `editar`, `eliminar` | Gastos operativos. |
+| `cajasControlador` | `obtenerCajaAbierta`, `tieneCajaAbierta`, `abrirCaja`, `cerrarCaja`, `consultarPorUsuario`, `consultarCajasAbiertasConResumen`, `consultarCajasCerradasConResumen` | Apertura, cierre y consulta de cajas. |
+| `movimientosCajaControlador` | `registrar`, `consultarPorCaja`, `consultarTodos` | Entradas y salidas de dinero. |
+| `informesControlador` | `pagos`, `creditos`, `gastos` | Informes por tipo y rango de fechas. |
+| `dashboardControlador` | 14 consultas (`obtenerCreditosPorRuta`, `obtenerTotalGeneralCreditos`, `obtenerEstadisticasClientes`, `obtenerClientesPorRuta`, `obtenerTotalCobradoEnDia`, `obtenerGastosPorRuta`, `obtenerCreditosPorTipo`, `obtenerEstadisticasSeguros`, `obtenerEstadisticasCajas`, `obtenerEstadisticasCuotas`, `obtenerEvolucionPagos`, `obtenerEstadisticasRefinanciaciones`, `obtenerTopRutasPorRendimiento`, `obtenerEstadisticasMorosidad`) | Datos de las tarjetas y gráficas del dashboard. |
+| `rutasControlador` | `consultar`, `filtrar`, `estado`, `insertar`, `editar`, `eliminar` | Gestión de rutas. |
+| `usuariosControlador` | `consultar`, `filtrar`, `insertar`, `editar`, `eliminar`, `cambiarEstado` | Gestión de usuarios. |
+| `usuarioRutaControlador` | `consultar`, `filtrar`, `insertar`, `eliminar` | Asignación de rutas a usuarios. |
+| `clavesCobradorControlador` | `generarClave`, `obtenerClaveActiva`, `consultarPorUsuario`, `validarClave`, `desactivarClavesExpiradas` | Claves temporales de cobradores. |
+| `erroresControlador` | `obtenerErrores`, `limpiarErrores`, `escribirErrorPrueba` | Log de errores del sistema. |
+
+El servicio de WhatsApp es independiente y su API se documenta en [`whatsapp-api/README.md`](whatsapp-api/README.md).
+
 ### 2. Frontend
 
 ```bash
@@ -123,6 +164,45 @@ ng serve
 
 Disponible en `http://localhost:4200`. La URL de la API se define en `frontend/src/environments/environment.ts` (`apiUrl: '/rutalan/backend'`).
 
+<<<<<<< HEAD
+## API del backend (PHP)
+
+El backend expone una API REST en `backend/controllers/`. Cada controlador atiende un módulo y se invoca con
+`<nombre>Controlador.php?control=<acción>`. Las consultas usan `GET`; las operaciones que envían datos usan
+`POST` con cuerpo JSON o `FormData` (los diagramas de secuencia del documento de diseño, sección 2.2.3,
+detallan el método de cada flujo). Las respuestas son JSON con `resultado: "ok"` en caso de éxito
+(el login usa `estado: "ok"`).
+
+| Controlador | Acciones (`control=`) | Descripción |
+|---|---|---|
+| `loginControlador` | `login` | Valida usuario, contraseña (o clave dinámica de 8 dígitos para cobradores) y reCAPTCHA; devuelve el usuario, su rol y rutas asignadas. |
+| `clientesControlador` | `consultar`, `consultarPorId`, `filtrar`, `insertar`, `editar`, `eliminar`, `activar`, `inactivar`, `actualizarUbicacion`, `consultarConUbicacion` | Gestión de clientes, incluida la ubicación GPS para el mapa. |
+| `fiadoresControlador` | `consultar`, `filtrar`, `buscarPorDocumento`, `contarClientes`, `insertar`, `editar`, `eliminar` | Gestión de fiadores y conteo de clientes asociados. |
+| `creditosControlador` | `consultar`, `buscar`, `consultarPorId`, `tienePagos`, `clienteTieneCreditoPendiente`, `insertar`, `editar`, `eliminar`, `cancelar`, `refinanciar_automatico` | Gestión de créditos. |
+| `planPagosControlador` | `consultar`, `consultarPorIdCredito`, `filtrar`, `insertar`, `editar`, `eliminar` | Plan de amortización (cuotas) de cada crédito. |
+| `refinanciarControlador` | `consultarPorId`, `refinanciar` | Refinanciación de un crédito desde cobros. |
+| `pagosControlador` | `consultar`, `consultarClientesPorRuta`, `registrarPago`, `actualizarOrdenCobranza` | Panel de cobros por ruta, registro de pagos y orden de cobranza. |
+| `gastosControlador` | `consultar`, `consultarPorUsuario`, `consultarPorCaja`, `consultarPorId`, `filtrar`, `insertar`, `editar`, `eliminar` | Gastos operativos. |
+| `cajasControlador` | `obtenerCajaAbierta`, `tieneCajaAbierta`, `abrirCaja`, `cerrarCaja`, `consultarPorUsuario`, `consultarCajasAbiertasConResumen`, `consultarCajasCerradasConResumen` | Apertura, cierre y consulta de cajas. |
+| `movimientosCajaControlador` | `registrar`, `consultarPorCaja`, `consultarTodos` | Entradas y salidas de dinero. |
+| `informesControlador` | `pagos`, `creditos`, `gastos` | Informes por tipo y rango de fechas. |
+| `dashboardControlador` | 14 consultas (`obtenerCreditosPorRuta`, `obtenerTotalGeneralCreditos`, `obtenerEstadisticasClientes`, `obtenerClientesPorRuta`, `obtenerTotalCobradoEnDia`, `obtenerGastosPorRuta`, `obtenerCreditosPorTipo`, `obtenerEstadisticasSeguros`, `obtenerEstadisticasCajas`, `obtenerEstadisticasCuotas`, `obtenerEvolucionPagos`, `obtenerEstadisticasRefinanciaciones`, `obtenerTopRutasPorRendimiento`, `obtenerEstadisticasMorosidad`) | Datos de las tarjetas y gráficas del dashboard. |
+| `rutasControlador` | `consultar`, `filtrar`, `estado`, `insertar`, `editar`, `eliminar` | Gestión de rutas. |
+| `usuariosControlador` | `consultar`, `filtrar`, `insertar`, `editar`, `eliminar`, `cambiarEstado` | Gestión de usuarios. |
+| `usuarioRutaControlador` | `consultar`, `filtrar`, `insertar`, `eliminar` | Asignación de rutas a usuarios. |
+| `clavesCobradorControlador` | `generarClave`, `obtenerClaveActiva`, `consultarPorUsuario`, `validarClave`, `desactivarClavesExpiradas` | Claves temporales de cobradores. |
+| `erroresControlador` | `obtenerErrores`, `limpiarErrores`, `escribirErrorPrueba` | Log de errores del sistema. |
+
+El servicio de WhatsApp es independiente y su API se documenta en [`whatsapp-api/README.md`](whatsapp-api/README.md).
+
+### Limitaciones conocidas de seguridad
+
+- El control de roles se aplica en la interfaz (Angular); los endpoints todavía no verifican sesión ni rol
+  en el servidor. Se recomienda agregar tokens y validación por endpoint en una versión posterior.
+- El backend permite solicitudes desde cualquier origen (CORS abierto) para facilitar el desarrollo.
+=======
+
+
 ### 3. Servicio de WhatsApp (opcional)
 
 ```bash
@@ -131,6 +211,7 @@ npm install
 # Windows PowerShell
 $env:ENABLE_WHATSAPP="true"; node server.js
 ```
+>>>>>>> ec5f834657e02f5a960ad89975500a855fe07e46
 
 Escanea el código QR desde el módulo **Administrador** de la aplicación. Más detalles y solución de problemas en [whatsapp-api/README.md](whatsapp-api/README.md) y [SOLUCION-PROBLEMAS.md](whatsapp-api/SOLUCION-PROBLEMAS.md).
 
