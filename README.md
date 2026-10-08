@@ -79,11 +79,12 @@ rutalan/
 ### Requisitos previos
 
 <!-- completar: versiones exactas -->
-- Node.js `<versión>`
-- Angular CLI `<versión>`
-- PHP `<versión>`
-- MySQL / MariaDB
+- Node.js `<20.19 o superior (probado con v20.19.3) y npm 10 o superior>`
+- Angular CLI `21` <probado con 21.2.11>
+- PHP `8.0 o superior` (probado con 8.4.8)
+- MySQL `5.7 o superior`, o MariaDB equivalente (probado con MariaDB 10.4.32, incluida en XAMPP) 
 - XAMPP (o entorno equivalente) para el backend
+- Para el servicio de WhatsApp: Node.js 18 o superior (ver `whatsapp-api/README.md`)
 
 ### Frontend (Angular)
 
