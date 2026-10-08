@@ -4,9 +4,10 @@
 // Luego, asegúrate de que key.php esté en tu .gitignore para evitar subirlo a repositorios públicos
 define('RECAPTCHA_SECRET', '');
 define('RECAPTCHA_SITE', '');
+// Secreto para firmar los tokens de sesión (opcional: si queda vacío se genera config/.auth_secret). Ej: php -r "echo bin2hex(random_bytes(32));"
+define('AUTH_SECRET', '');
 // Base de datos: solo en producción. En local se usa root sin contraseña por defecto.
 define('DB_HOST', '');
 define('DB_NAME', '');
 define('DB_USER', '');
 define('DB_PASS', '');
-

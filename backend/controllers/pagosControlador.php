@@ -25,6 +25,8 @@ require_once "../models/pagosModelos.php";
 require_once "../models/cajasModelos.php";
 require_once "../services/whatsapp_service.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $pagos = new Pagos($conexion);
 $cajas = new Cajas($conexion);

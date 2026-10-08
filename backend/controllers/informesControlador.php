@@ -20,6 +20,8 @@ header("Content-Type: application/json; charset=UTF-8");
 require_once __DIR__ . "/../config/conexion.php";
 require_once __DIR__ . "/../models/informesModelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $informes = new Informes($conexion);
 

@@ -20,4 +20,15 @@ backups/
 *.bak
 node_modules/
 .DS_Store
+<<<<<<< HEAD
 Thumbs.db
+=======
+Thumbs.db
+backend/config/.auth_secret
+
+# Comprimidos, caché/sesión de WhatsApp y salida de graphify
+*.rar
+whatsapp-api/.wwebjs_cache/
+whatsapp-api/.wwebjs_auth/
+graphify-out/
+>>>>>>> ec5f834657e02f5a960ad89975500a855fe07e46

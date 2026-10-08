@@ -8,6 +8,8 @@ require_once "../config/conexion.php";
 require_once "../models/gastosModelos.php";
 require_once "../models/cajasModelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $gastos = new Gastos($conexion);
 $cajas = new Cajas($conexion);

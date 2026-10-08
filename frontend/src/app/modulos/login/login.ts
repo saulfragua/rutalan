@@ -122,6 +122,7 @@ export class Login implements AfterViewInit, OnDestroy {
             // Guardar sesión solo en el navegador
             if (this.isBrowser && typeof localStorage !== 'undefined') {
               localStorage.setItem('usuario', JSON.stringify(usuarioData));
+              localStorage.setItem('token', resp.token || '');
             }
 
             // Si es cobrador y requiere apertura de caja

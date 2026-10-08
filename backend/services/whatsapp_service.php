@@ -4,26 +4,46 @@ class WhatsAppService {
     private $apiUrl;
 
     public function __construct() {
-        // Detectar si estamos en producción o desarrollo
-        // Acepta tanto rutalan.cloud como www.rutalan.cloud
+        $this->apiUrl = $this->construirUrl('/api/send-message');
+
+        $env = $this->detectarEntorno();
+        error_log("📱 WhatsApp Service inicializado. API URL: " . $this->apiUrl);
+        error_log("📱 Entorno detectado: " . ($env['isProduction'] ? "PRODUCCIÓN" : "DESARROLLO"));
+        error_log("📱 Host detectado: " . $env['host']);
+    }
+
+    /**
+     * Detecta si estamos en producción (rutalan.cloud / www.rutalan.cloud),
+     * el host actual y el protocolo (http/https).
+     */
+    private function detectarEntorno() {
         $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
         $isProduction = !empty($host) && (
-            strpos($host, 'rutalan.cloud') !== false || 
+            strpos($host, 'rutalan.cloud') !== false ||
             strpos($host, 'www.rutalan.cloud') !== false
         );
-        
-        if ($isProduction) {
-            // En producción usar el proxy de Nginx /whatsapp-api
-            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-            $domain = $host; // Usar el dominio completo desde HTTP_HOST
-            $this->apiUrl = $protocol . '://' . $domain . '/whatsapp-api/api/send-message';
-        } else {
-            $this->apiUrl = 'http://localhost:3000/api/send-message';
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+
+        return [
+            'host' => $host,
+            'isProduction' => $isProduction,
+            'protocol' => $protocol
+        ];
+    }
+
+    /**
+     * Construye una URL completa hacia la API de WhatsApp según el entorno.
+     * En producción usa el proxy de Nginx /whatsapp-api, en desarrollo usa
+     * localhost:3000 directamente.
+     */
+    private function construirUrl($ruta) {
+        $env = $this->detectarEntorno();
+
+        if ($env['isProduction']) {
+            return $env['protocol'] . '://' . $env['host'] . '/whatsapp-api' . $ruta;
         }
-        
-        error_log("📱 WhatsApp Service inicializado. API URL: " . $this->apiUrl);
-        error_log("📱 Entorno detectado: " . ($isProduction ? "PRODUCCIÓN" : "DESARROLLO"));
-        error_log("📱 Host detectado: " . $host);
+
+        return 'http://localhost:3000' . $ruta;
     }
 
     public function enviarConfirmacionPago($id_pago) {
@@ -144,8 +164,8 @@ class WhatsAppService {
         $mensaje .= "✅ *¡Su crédito ha sido aprobado y registrado correctamente!*\n\n";
 
         if ($credito['seguro'] > 0) {
-            $mensaje .= "🛡️ *Políticas de Seguro:*\n";
-            $mensaje .= "El pago de seguro de incapacidad corresponde al préstamo adquirido.\n";
+        $mensaje .= "🛡️ *Información del Seguro:*\n";
+        $mensaje .= "El valor del seguro hace parte del crédito otorgado. La cobertura por incapacidad será aplicable únicamente a los créditos con modalidad de pago diario y estará sujeta al cumplimiento de las condiciones establecidas por la empresa.\n";
 
             if ($credito['cuotas'] == 31) {
                 $mensaje .= "• Si su crédito es de 31 días, se pagará un máximo de 6 cuotas.\n";
@@ -265,20 +285,35 @@ class WhatsAppService {
         $mensaje .= "💰 *Monto a entregar:* $" . number_format($monto_entregar_nuevo, 2) . "\n";
         $mensaje .= "💵 *Nuevo monto:* $" . number_format($credito_nuevo['monto_credito'], 2) . "\n";
 
+        // FIX: estos campos (seguro, total a pagar, plazo, frecuencia, fechas,
+        // tipo de refinanciación y el mensaje de éxito) antes solo se agregaban
+        // cuando el nuevo crédito tenía seguro > 0. Si el crédito refinanciado
+        // no llevaba seguro, el mensaje quedaba incompleto (sin total a pagar,
+        // sin fechas, sin siquiera la confirmación de éxito). Ahora se agregan
+        // siempre, igual que en enviarConfirmacionCredito, y solo el bloque de
+        // seguro queda condicional.
         if (!empty($credito_nuevo['seguro']) && $credito_nuevo['seguro'] > 0) {
             $mensaje .= "🛡️ *Seguro:* $" . number_format($credito_nuevo['seguro'], 2) . "\n";
-            $mensaje .= "💸 *Total a pagar:* $" . number_format($total_a_pagar_nuevo, 2) . "\n";
-            $mensaje .= "📅 *Plazo:* {$credito_nuevo['cuotas']} días\n";
-            $mensaje .= "🔄 *Frecuencia de pago:* " . ucfirst($credito_nuevo['frecuencia_pago']) . "\n";
-            $mensaje .= "📅 *Fecha de inicio:* $fecha_inicio_nuevo\n";
-            $mensaje .= "📅 *Fecha de finalización:* $fecha_fin_nuevo\n";
-            $mensaje .= "⚡ *Tipo de refinanciación:* " . ($tipo_refinanciacion === 'descontar' ? 'Descontar saldo' : 'Sumar saldo') . "\n\n";
-            $mensaje .= "✅ *¡Su crédito ha sido refinanciado exitosamente!*\n\n";
+        }
+        $mensaje .= "💸 *Total a pagar:* $" . number_format($total_a_pagar_nuevo, 2) . "\n";
+        $mensaje .= "📅 *Plazo:* {$credito_nuevo['cuotas']} días\n";
+        $mensaje .= "🔄 *Frecuencia de pago:* " . ucfirst($credito_nuevo['frecuencia_pago']) . "\n";
+        $mensaje .= "📅 *Fecha de inicio:* $fecha_inicio_nuevo\n";
+        $mensaje .= "📅 *Fecha de finalización:* $fecha_fin_nuevo\n";
+        $mensaje .= "⚡ *Tipo de refinanciación:* " . ($tipo_refinanciacion === 'descontar' ? 'Descontar saldo' : 'Sumar saldo') . "\n\n";
+        $mensaje .= "✅ *¡Su crédito ha sido refinanciado exitosamente!*\n\n";
 
-            $dias_credito = $credito_nuevo['dias'] ?? $credito_nuevo['cuotas'] ?? 0;
+        if (!empty($credito_nuevo['seguro']) && $credito_nuevo['seguro'] > 0) {
+            // FIX: el encabezado y el texto explicativo del seguro antes solo
+            // se mostraban cuando el plazo era de 31 días; para 40, 70 u otros
+            // plazos aparecía la viñeta suelta sin encabezado ni explicación.
+            // Ahora se muestra siempre que hay seguro, igual que en
+            // enviarConfirmacionCredito.
+            $mensaje .= "🛡️ *Información del Seguro:*\n";
+            $mensaje .= "El valor del seguro hace parte del crédito otorgado. La cobertura por incapacidad será aplicable únicamente a los créditos con modalidad de pago diario y estará sujeta al cumplimiento de las condiciones establecidas por la empresa.\n";
+
+            $dias_credito = $credito_nuevo['cuotas'];
             if ($dias_credito == 31) {
-                $mensaje .= "🛡️ *Políticas de Seguro:*\n";
-                $mensaje .= "El pago de seguro de incapacidad corresponde al préstamo refinanciado.\n";
                 $mensaje .= "• Si su crédito es de 31 días, se pagará un máximo de 6 cuotas.\n";
             } elseif ($dias_credito == 40) {
                 $mensaje .= "• Si su crédito es de 40 días, se pagará un máximo de 8 cuotas.\n";
@@ -323,30 +358,8 @@ class WhatsAppService {
         // Log de los datos que se enviarán
         error_log("📤 WhatsApp - Enviando a API: " . json_encode($data));
 
-        $options = [
-            'http' => [
-                'header'  => "Content-type: application/json\r\n",
-                'method'  => 'POST',
-                'content' => json_encode($data),
-                'timeout' => 3
-            ]
-        ];
-
-        $context  = stream_context_create($options);
-
         try {
-            // Detectar si estamos en producción o desarrollo
-            $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-            $isProduction = !empty($host) && (
-                strpos($host, 'rutalan.cloud') !== false || 
-                strpos($host, 'www.rutalan.cloud') !== false
-            );
-            if ($isProduction) {
-                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                $statusUrl = $protocol . '://' . $host . '/whatsapp-api/api/status';
-            } else {
-                $statusUrl = 'http://localhost:3000/api/status';
-            }
+            $statusUrl = $this->construirUrl('/api/status');
             $servicioDeshabilitado = false;
             
             try {
@@ -424,17 +437,7 @@ class WhatsAppService {
                 error_log("❌ WhatsApp - URL intentada: " . $this->apiUrl);
                 
                 // Verificar si el servicio Node.js está corriendo
-                $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-                $isProduction = !empty($host) && (
-                    strpos($host, 'rutalan.cloud') !== false || 
-                    strpos($host, 'www.rutalan.cloud') !== false
-                );
-                if ($isProduction) {
-                    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                    $testUrl = $protocol . '://' . $host . '/whatsapp-api/api/status';
-                } else {
-                    $testUrl = 'http://localhost:3000/api/status';
-                }
+                $testUrl = $this->construirUrl('/api/status');
                 $testCh = curl_init($testUrl);
                 curl_setopt($testCh, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($testCh, CURLOPT_TIMEOUT, 2);
@@ -449,17 +452,7 @@ class WhatsAppService {
                         error_log("⚠️ WhatsApp - El servicio está corriendo pero WhatsApp no está conectado");
                     }
                 } else {
-                    $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-                    $isProduction = !empty($host) && (
-                        strpos($host, 'rutalan.cloud') !== false || 
-                        strpos($host, 'www.rutalan.cloud') !== false
-                    );
-                    if ($isProduction) {
-                        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                        $serviceUrl = $protocol . '://' . $host . '/whatsapp-api';
-                    } else {
-                        $serviceUrl = 'http://localhost:3000';
-                    }
+                    $serviceUrl = $this->construirUrl('');
                     error_log("❌ WhatsApp - El servicio Node.js no está disponible en " . $serviceUrl);
                 }
                 

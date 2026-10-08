@@ -8,6 +8,8 @@ require_once "../config/conexion.php";
 require_once "../models/clientesModelos.php";
 require_once "../models/fiadoresmodelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'] ?? '';
 $clientes = new Clientes($conexion);
 $fiadores = new Fiadores($conexion);

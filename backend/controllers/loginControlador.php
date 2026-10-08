@@ -22,6 +22,7 @@ require_once "../models/cajasModelos.php";
 require_once "../models/usuarioRutaModelos.php";
 require_once "../models/clavesCobradorModelos.php";
 require_once "../config/key.php";
+require_once __DIR__ . '/../config/auth.php';
 
 $control = $_GET['control'] ?? '';
 $usuarios = new Usuarios($conexion);
@@ -187,6 +188,10 @@ switch ($control) {
                     $vec['usuario']['rutas_asignadas'] = $listaRutas;
                     $vec['requiere_apertura_caja'] = false;
                 }
+            }
+
+            if ($vec['estado'] === 'ok' && isset($vec['usuario'])) {
+                $vec['token'] = emitirToken((int) $vec['usuario']['id_usuario'], $vec['usuario']['rol']);
             }
 
             echo json_encode($vec);

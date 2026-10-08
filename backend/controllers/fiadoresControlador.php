@@ -7,6 +7,8 @@ header("Access-Control-Allow-Headers: origin, X-Requested-With, Content-Type, Ac
 require_once "../config/conexion.php";
 require_once "../models/fiadoresmodelos.php";
 
+require_once __DIR__ . '/../config/auth.php';
+requerirAuth();
 $control = $_GET['control'];
 $fiadores = new Fiadores($conexion);
 
