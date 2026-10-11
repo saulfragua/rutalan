@@ -4,7 +4,7 @@
 
 **Plataforma para la gestión de créditos y el control de rutas de cobranza**
 
-Digitaliza el registro de clientes, créditos, pagos, gastos y cajas de los cobradores en negocios de préstamos "gota a gota".
+GESTIÓN DE COBROS, CLIENTES Y RUTAS DE RECAUDO “RUTALAN” PARA PERSONAS NATURALES Y PEQUEÑAS EMPRESAS.
 
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8-777BB4?logo=php&logoColor=white)
