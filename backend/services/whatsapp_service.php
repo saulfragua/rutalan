@@ -13,14 +13,14 @@ class WhatsAppService {
     }
 
     /**
-     * Detecta si estamos en producción (rutalan.cloud / www.rutalan.cloud),
+     * Detecta si estamos en producción (<rutalan class="tech">rutalan.tech</rutalan> / www.rutalan.tech),
      * el host actual y el protocolo (http/https).
      */
     private function detectarEntorno() {
         $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
         $isProduction = !empty($host) && (
-            strpos($host, 'rutalan.cloud') !== false ||
-            strpos($host, 'www.rutalan.cloud') !== false
+            strpos($host, 'rutalan.tech') !== false ||
+            strpos($host, 'www.rutalan.tech') !== false
         );
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 
