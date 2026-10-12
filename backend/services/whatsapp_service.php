@@ -13,7 +13,7 @@ class WhatsAppService {
     }
 
     /**
-     * Detecta si estamos en producción (<rutalan class="tech">rutalan.tech</rutalan> / www.rutalan.tech),
+     * Detecta si estamos en producción (www.rutalan.tech),
      * el host actual y el protocolo (http/https).
      */
     private function detectarEntorno() {
