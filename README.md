@@ -224,8 +224,11 @@ La aplicación almacena datos personales y fotos de documentos de identidad de c
 ## Contribuir y documentación del proyecto
 
 - [CONTRIBUTING.md](CONTRIBUTING.md): flujo de trabajo, ramas, commits y Pull Requests.
-- [Estándares de codificación](docs/Estandares_de_Codificacion_Rutalan.docx): convenciones de PHP, Angular, base de datos y seguridad.
-- [Manual de usuario](docs/Manual_de_Usuario_Rutalan.docx): uso de la aplicación para los roles Administrador y Cobrador.
+- [Estándares de codificación](docs/Estandares_de_Codificacion_Rutalan.pdf): convenciones de PHP, Angular, base de datos y seguridad.
+- [Manual de usuario](docs/Manual_de_Usuario_Rutalan.pdf): uso de la aplicación para los roles Administrador y Cobrador.
+- [Especificación de requisitos (ERS)](docs/Formato_Levantamiento_Requerimientos_IEEE29148.pdf)
+- [Diseño del proyecto](docs/Dise%C3%B1o%20del%20proyecto.pdf)
+- [Diccionario de datos](docs/Diccionario_de_datos.pdf)
 
 ## Documentación académica
 
