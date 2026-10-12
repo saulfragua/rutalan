@@ -33,24 +33,24 @@ app.use(express.urlencoded({ extended: true }));
 const isProduction = process.env.NODE_ENV === 'production' ||
   process.env.PRODUCTION === 'true' ||
   process.cwd().includes('production') ||
-  (process.env.HOST && process.env.HOST.includes('rutalan.cloud'));
+  (process.env.HOST && process.env.HOST.includes('rutalan.tech'));
 
 app.use((req, res, next) => {
   // En producción, permitir solo los dominios específicos
   if (isProduction) {
     const origin = req.headers.origin;
     const allowedOrigins = [
-      'https://rutalan.cloud',
-      'https://www.rutalan.cloud',
-      'http://rutalan.cloud',
-      'http://www.rutalan.cloud'
+      'https://rutalan.tech',
+      'https://www.rutalan.tech',
+      'http://rutalan.tech',
+      'http://www.rutalan.tech'
     ];
 
     if (origin && allowedOrigins.includes(origin)) {
       res.header("Access-Control-Allow-Origin", origin);
     } else {
-      // Si no hay origin (petición directa), permitir desde rutalan.cloud
-      res.header("Access-Control-Allow-Origin", "https://rutalan.cloud");
+      // Si no hay origin (petición directa), permitir desde rutalan.tech
+      res.header("Access-Control-Allow-Origin", "https://rutalan.tech");
     }
   } else {
     // En desarrollo, permitir todo
@@ -740,7 +740,7 @@ app.get("/status", (req, res) => {
   // Redirigir a /api/status
   // isProduction ya está definido arriba en CORS
   const protocol = isProduction ? 'https' : 'http';
-  const domain = isProduction ? 'rutalan.cloud' : '127.0.0.1';
+  const domain = isProduction ? 'rutalan.tech' : '127.0.0.1';
   fetch(`${protocol}://${domain}:${process.env.PORT || 3000}/api/status`)
     .then(response => response.json())
     .then(data => res.json(data))
@@ -893,7 +893,7 @@ app.post("/api/restart-service", async (req, res) => {
 app.post("/restart", async (req, res) => {
   try {
     const protocol = isProduction ? 'https' : 'http';
-    const domain = isProduction ? 'rutalan.cloud' : '127.0.0.1';
+    const domain = isProduction ? 'rutalan.tech' : '127.0.0.1';
     const response = await fetch(`${protocol}://${domain}:${process.env.PORT || 3000}/api/restart`, {
       method: 'POST'
     });
@@ -933,14 +933,14 @@ const PORT = process.env.PORT || 3000;
 // Detectar si estamos en producción o desarrollo (ya definido arriba en CORS)
 const listenHost = isProduction ? '0.0.0.0' : '127.0.0.1';
 const protocol = isProduction ? 'https' : 'http';
-const domain = isProduction ? 'rutalan.cloud' : 'localhost';
+const domain = isProduction ? 'rutalan.tech' : 'localhost';
 
 app.listen(PORT, listenHost, () => {
   console.log(`🚀 API corriendo en ${protocol}://${domain}:${PORT}`);
   console.log(`📡 Escuchando en: ${listenHost}:${PORT}`);
   console.log(`🌍 Entorno: ${isProduction ? 'PRODUCCIÓN' : 'DESARROLLO'}`);
   if (isProduction) {
-    console.log(`🌐 Dominios permitidos: rutalan.cloud, www.rutalan.cloud`);
+    console.log(`🌐 Dominios permitidos: rutalan.tech, www.rutalan.tech`);
     console.log(`🔒 CORS configurado para producción`);
   }
 
